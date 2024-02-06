@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "832486882161",
+    "project_id": "newscasterai",
+    "storage_bucket": "newscasterai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832486882161:android:6d0fa851ff24fa39d0d4d0",
+        "android_client_info": {
+          "package_name": "com.example.ai_news_caster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDWNDT9_ujL62RyY9ErycshNZgjNIf570"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
