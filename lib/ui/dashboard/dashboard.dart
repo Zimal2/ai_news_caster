@@ -28,7 +28,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (response.statusCode == 200) {
       postList.clear();
       for (Map i in data) {
-        // postList.add(NewsModel.fromJson(i as Map<String, dynamic>));
+        postList.add(NewsModel.fromJson(i as Map<String, dynamic>));
       }
       return postList;
     } else {
