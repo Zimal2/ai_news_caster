@@ -3,7 +3,8 @@ class NewsModel {
   String? copyright;
   Response? response;
 
-  NewsModel({required this.status, required this.copyright, required this.response});
+  NewsModel(
+      {required this.status, required this.copyright, required this.response});
 
   NewsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -32,7 +33,8 @@ class Response {
 
   Response.fromJson(Map<String, dynamic> json) {
     if (json['docs'] != null) {
-      docs = new List<Docs>();
+      docs = [];
+      // docs = new List<Docs>();
       json['docs'].forEach((v) {
         docs?.add(new Docs.fromJson(v));
       });
@@ -105,7 +107,8 @@ class Docs {
     printPage = json['print_page'];
     source = json['source'];
     if (json['multimedia'] != null) {
-      multimedia = new List<Multimedia>();
+      // multimedia = new List<Multimedia>();
+      multimedia = [];
       json['multimedia'].forEach((v) {
         multimedia!.add(new Multimedia.fromJson(v));
       });
@@ -114,7 +117,8 @@ class Docs {
         ? new Headline.fromJson(json['headline'])
         : null;
     if (json['keywords'] != null) {
-      keywords = new List<Keywords>();
+      keywords = [];
+      //   keywords = new List<Keywords>();
       json['keywords'].forEach((v) {
         keywords!.add(new Keywords.fromJson(v));
       });
@@ -322,7 +326,11 @@ class Keywords {
   int? rank;
   String? major;
 
-  Keywords({required this.name, required this.value, required this.rank, required this.major});
+  Keywords(
+      {required this.name,
+      required this.value,
+      required this.rank,
+      required this.major});
 
   Keywords.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -351,7 +359,8 @@ class Byline {
   Byline.fromJson(Map<String, dynamic> json) {
     original = json['original'];
     if (json['person'] != null) {
-      person = List<Person>();
+      person = [];
+      // person = List<Person>();
       json['person'].forEach((v) {
         person!.add(new Person.fromJson(v));
       });

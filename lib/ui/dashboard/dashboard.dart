@@ -20,15 +20,15 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  List<NewsModals> postList = [];
-  Future<List<NewsModals>> getPostAPI() async {
+  List<NewsModel> postList = [];
+  Future<List<NewsModel>> getPostAPI() async {
     final response = await http.get(Uri.parse(
         'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=erPsHTGZ5ziQGFFbV73mvdviZpdsTqb7'));
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       postList.clear();
       for (Map i in data) {
-        // postList.add(NewsModals.fromJson(i as Map<String, dynamic>));
+        // postList.add(NewsModel.fromJson(i as Map<String, dynamic>));
       }
       return postList;
     } else {
