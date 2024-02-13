@@ -4,14 +4,14 @@ import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:flutter/material.dart';
 
-class EmailConfirmation extends StatefulWidget {
-  const EmailConfirmation({super.key});
+class PhoneNumberConfirmed extends StatefulWidget {
+  const PhoneNumberConfirmed({super.key});
 
   @override
-  State<EmailConfirmation> createState() => _EmailConfirmationState();
+  State<PhoneNumberConfirmed> createState() => _PhoneNumberConfirmedState();
 }
 
-class _EmailConfirmationState extends State<EmailConfirmation> {
+class _PhoneNumberConfirmedState extends State<PhoneNumberConfirmed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,18 +24,17 @@ class _EmailConfirmationState extends State<EmailConfirmation> {
               height: 200,
               child: Image.asset('lib/assests/images/mail icon.png'),
             ),
+            SizedBox(
+              height: 40,
+            ),
             sampleText(
-                text: "Yeah! Confirm your email!",
+                text: "Yeah! Your PhoneNumber has been confirmed!",
                 fontWeight: FontWeight.bold,
-                fontsize: 30,
-                textAlign: TextAlign.center),
-            sampleText(
-                text:
-                    "Please check your email for confirmation of phone number.Click link in mail to verify your account",
+                fontsize: 25,
                 textAlign: TextAlign.center),
             Spacer(),
             button(
-                title: "Resend Email?",
+                title: "Next",
                 ontap: () {
                   Navigator.push(
                       context,

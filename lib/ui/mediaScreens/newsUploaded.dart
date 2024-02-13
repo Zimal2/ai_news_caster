@@ -1,4 +1,3 @@
-import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in-administrator.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/uploadnews.dart';

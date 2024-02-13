@@ -1,3 +1,4 @@
+import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in-administrator.dart';
 import 'package:ai_news_caster/ui/signup_screens/signup.dart';
@@ -9,6 +10,7 @@ import 'package:ai_news_caster/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -43,6 +45,7 @@ class _SigninScreenState extends State<SigninScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final methodsProvider = Provider.of<Methods>(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -85,6 +88,12 @@ class _SigninScreenState extends State<SigninScreen> {
                             width: 270,
                             height: 50,
                             child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter email';
+                                }
+                                return null;
+                              },
                               controller: emailController,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -116,6 +125,12 @@ class _SigninScreenState extends State<SigninScreen> {
                             width: 270,
                             height: 50,
                             child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter password';
+                                }
+                                return null;
+                              },
                               controller: passwordController,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -172,7 +187,11 @@ class _SigninScreenState extends State<SigninScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    button(title: 'Sign in with Google', ontap: () {}),
+                    button(
+                        title: 'Sign in with Google',
+                        ontap: () {
+                          methodsProvider.signInWithGoogle(context);
+                        }),
                     const SizedBox(
                       height: 10,
                     ),

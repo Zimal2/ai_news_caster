@@ -1,4 +1,4 @@
-import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
+import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/signup_adminitrator.dart';
 import 'package:ai_news_caster/utils/flutterToast.dart';
@@ -8,6 +8,7 @@ import 'package:ai_news_caster/widgets/text.dart';
 import 'package:ai_news_caster/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -24,6 +25,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final methodsProvider = Provider.of<Methods>(context);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -52,36 +55,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    // CustomContainer(
-                    //   width: double.infinity,
-                    //   height: 60,
-                    //   color: const Color(0xFFD9D9D9),
-                    //   radius: const BorderRadius.all(Radius.circular(10)),
-                    //   child: Row(
-                    //     children: [
-                    //       const SizedBox(
-                    //         width: 10,
-                    //       ),
-                    //       CustomContainer(
-                    //         width: 270,
-                    //         height: 50,
-                    //         child: TextFormField(
-                    //           controller: usernameController,
-                    //           decoration: const InputDecoration(
-                    //               border: InputBorder.none, hintText: 'Username'),
-                    //         ),
-                    //       ),
-                    //       CustomContainer(
-                    //         width: 50,
-                    //         height: 50,
-                    //         child: const Icon(Icons.person),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
                     CustomContainer(
                       width: double.infinity,
                       height: 60,
@@ -96,6 +69,12 @@ class _SignupScreenState extends State<SignupScreen> {
                             width: 270,
                             height: 50,
                             child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter email';
+                                }
+                                return null;
+                              },
                               controller: emailController,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -127,6 +106,12 @@ class _SignupScreenState extends State<SignupScreen> {
                             width: 270,
                             height: 50,
                             child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter password';
+                                }
+                                return null;
+                              },
                               controller: passwordController,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -144,47 +129,26 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          if (_formkey.currentState!.validate()) {
-                            _auth
-                                .createUserWithEmailAndPassword(
-                                    email: emailController.text.toString(),
-                                    password:
-                                        passwordController.text.toString())
-                                .then((value) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const DashboardScreen(),
-                                  ));
-                            }).onError((error, stackTrace) {
-                              Utils().toastMessage(error.toString());
-                            });
-                          }
-                        },
-                        child: Text("click")),
-                    // button(
-                    //   title: 'Sign Up',
-                    //   ontap: () {
-                    //     if (_formkey.currentState!.validate()) {
-                    //       _auth
-                    //           .createUserWithEmailAndPassword(
-                    //               email: emailController.text.toString(),
-                    //               password: passwordController.text.toString())
-                    //           .then((value) {})
-                    //           .onError((error, stackTrace) {
-                    //         Utils().toastMessage(error.toString());
-                    //       });
-                    //     }
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => const DashboardScreen(),
-                    //     ));
-                    //   },
-                    // ),
+                    button(
+                      title: 'Sign Up',
+                      ontap: () {
+                        if (_formkey.currentState!.validate()) {
+                          _auth
+                              .createUserWithEmailAndPassword(
+                                  email: emailController.text.toString(),
+                                  password: passwordController.text.toString())
+                              .then((value) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SigninScreen(),
+                                ));
+                          }).onError((error, stackTrace) {
+                            Utils().toastMessage(error.toString());
+                          });
+                        }
+                      },
+                    ),
                     CustomContainer(
                         width: double.infinity,
                         height: 40,
@@ -209,7 +173,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    button(title: 'Sign Up with Google', ontap: () {}),
+                    button(
+                        title: 'Sign Up with Google',
+                        ontap: () {
+                          methodsProvider.signInWithGoogle(context);
+                        }),
                     const SizedBox(
                       height: 10,
                     ),

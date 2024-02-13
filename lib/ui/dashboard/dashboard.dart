@@ -1,11 +1,14 @@
 import 'package:ai_news_caster/ui/mediaScreens/newsScreen.dart';
 import 'package:ai_news_caster/ui/profile.dart';
+import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/widgets/Custom_list_tile.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/image_slider.dart';
 import 'package:ai_news_caster/widgets/news_history_list_view.dart';
 import 'package:ai_news_caster/widgets/text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -121,9 +124,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       );
                     },
                     child: CustomContainer(
+                      onTap: () async {
+                        await GoogleSignIn().signOut();
+                        FirebaseAuth.instance.signOut();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SigninScreen()));
+                      },
                       width: 50,
                       height: 50,
-                      child: Icon(Icons.person_4_outlined),
+                      child: Icon(Icons.power_settings_new_outlined),
                     ),
                   )
 

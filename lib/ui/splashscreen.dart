@@ -1,4 +1,4 @@
-import 'package:ai_news_caster/ui/emailconfirmation.dart';
+import 'package:ai_news_caster/ui/phoneNumberconfirmed.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:flutter/material.dart';

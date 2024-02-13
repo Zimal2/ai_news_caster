@@ -37,12 +37,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.25.3
   carousel_slider: ^4.2.1
+  firebase_database: ^10.4.5
   video_player: ^2.2.17
   firebase_auth: ^4.17.3
   firebase_storage: ^11.6.4
   fluttertoast: ^8.2.4
-  
+  cloud_firestore: ^4.15.4
   chewie: ^1.4.0
+  provider: ^6.1.1
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
