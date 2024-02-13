@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 class NewsHistoryListView extends StatelessWidget {
   final List<NewsItem> newsItems;
 
-  const NewsHistoryListView({Key? key, required this.newsItems})
-      : super(key: key);
+  NewsHistoryListView({Key? key, required this.newsItems}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +17,19 @@ class NewsHistoryListView extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NewsScreen()),
+              MaterialPageRoute(builder: (context) => const NewsScreen()),
             );
           },
           leading: CustomContainer(
               width: 100,
-              height: 300,
+              height: double.infinity,
               child: Image.asset(newsItems[index].imagePath, fit: BoxFit.fill)),
           title: sampleText(text: newsItems[index].description, fontsize: 13),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Image.asset("lib/assests/images/mark.png"),
-              SizedBox(
+              Image.asset("lib/assests/images/mark.png", fit: BoxFit.cover),
+              const SizedBox(
                 width: 10,
               ),
               sampleText(text: newsItems[index].watermark, fontsize: 12),
@@ -41,9 +40,9 @@ class NewsHistoryListView extends StatelessWidget {
             children: [
               Icon(
                 newsItems[index].trailingIcon,
-                color: Color(0xFFBD1616),
+                color: const Color(0xFFBD1616),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(newsItems[index].trailingText),
             ],
           ),
