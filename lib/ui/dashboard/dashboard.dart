@@ -1,4 +1,5 @@
 import 'package:ai_news_caster/modals/news_modals.dart';
+import 'package:ai_news_caster/provider/Methods.dart';
 
 import 'package:ai_news_caster/ui/profile.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
@@ -12,6 +13,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:provider/provider.dart';
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -20,21 +23,21 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  List<NewsModel> postList = [];
-  Future<List<NewsModel>> getPostAPI() async {
-    final response = await http.get(Uri.parse(
-        'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=erPsHTGZ5ziQGFFbV73mvdviZpdsTqb7'));
-    var data = jsonDecode(response.body.toString());
-    if (response.statusCode == 200) {
-      postList.clear();
-      for (Map i in data) {
-        postList.add(NewsModel.fromJson(i as Map<String, dynamic>));
-      }
-      return postList;
-    } else {
-      return postList;
-    }
-  }
+  // List<NewsModel> postList = [];
+  // Future<List<NewsModel>> getPostAPI() async {
+  //   final response = await http.get(Uri.parse(
+  //       'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=erPsHTGZ5ziQGFFbV73mvdviZpdsTqb7'));
+  //   var data = jsonDecode(response.body.toString());
+  //   if (response.statusCode == 200) {
+  //     postList.clear();
+  //     for (Map i in data) {
+  //       postList.add(NewsModel.fromJson(i as Map<String, dynamic>));
+  //     }
+  //     return postList;
+  //   } else {
+  //     return postList;
+  //   }
+  // }
 
   List<NewsItem> newsHistory = [
     const NewsItem(
@@ -83,6 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final methodsProvider = Provider.of<Methods>(context);
     return Scaffold(
       body: CustomContainer(
         width: double.infinity,
@@ -263,14 +267,56 @@ class _DashboardScreenState extends State<DashboardScreen> {
             //         text: "News History", color: Colors.black, fontsize: 20),
             //   ),
             // ),
-            Expanded(
-              child: NewsHistoryListView(newsItems: newsHistory),
-            )
+            // Expanded(
+            //   child: NewsHistoryListView(newsItems: newsHistory),
+            // )
             // CustomContainer(
             //   width: double.infinity,
             //   height: 270,
             //   child: NewsHistoryListView(newsItems: newsHistory),
             // ),
+            Expanded(
+            child: FutureBuilder(
+              future: methodsProvider.getPostApi(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator();
+                }
+                else if (snapshot.connectionState == ConnectionState.done){
+                  return ListView.builder(
+                    itemCount: methodsProvider.newsList.length,
+                    itemBuilder: ((context, index){
+                      return Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                                Text('Source:' , 
+                                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 10,),
+                                Text(methodsProvider.newsList[index].response!.docs![index].source.toString()),
+                                SizedBox(height: 10,),
+                                Text('Abstract:' , 
+                                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 10,),
+                                Text(methodsProvider.newsList[index].response!.docs![index].abstract.toString())
+                            ],
+                          ),
+                        ),
+                      );
+                    })
+                    );
+                }
+                else {
+      return Text('ConnectionState: ${snapshot.connectionState}');
+    }
+              }
+              ) 
+            )
           ],
         ),
       ),

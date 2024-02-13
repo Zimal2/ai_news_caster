@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/phoneNumberconfirmed.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
@@ -8,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 class Methods with ChangeNotifier {
   //variables
@@ -183,6 +187,22 @@ class Methods with ChangeNotifier {
     } else {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => SigninScreen()));
+    }
+  }
+
+  List <NewsModel> newsList = [];
+
+  Future<List<NewsModel>> getPostApi() async{
+    final response = await http.get(Uri.parse('https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=erPsHTGZ5ziQGFFbV73mvdviZpdsTqb7'));
+    var data = jsonDecode(response.body.toString());
+    if(response.statusCode == 200){
+      newsList.clear();
+      for(Map i in data){
+        newsList.add(NewsModel.fromJson(i as Map<String, dynamic>));
+      }
+      return newsList;
+    }else{
+      return newsList;
     }
   }
 }
