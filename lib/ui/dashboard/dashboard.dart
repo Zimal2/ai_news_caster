@@ -23,21 +23,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  // List<NewsModel> postList = [];
-  // Future<List<NewsModel>> getPostAPI() async {
-  //   final response = await http.get(Uri.parse(
-  //       'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=erPsHTGZ5ziQGFFbV73mvdviZpdsTqb7'));
-  //   var data = jsonDecode(response.body.toString());
-  //   if (response.statusCode == 200) {
-  //     postList.clear();
-  //     for (Map i in data) {
-  //       postList.add(NewsModel.fromJson(i as Map<String, dynamic>));
-  //     }
-  //     return postList;
-  //   } else {
-  //     return postList;
-  //   }
-  // }
 
   List<NewsItem> newsHistory = [
     const NewsItem(
@@ -156,7 +141,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       },
                       width: 50,
                       height: 50,
-                      child: Icon(Icons.power_settings_new_outlined),
+                      child:const Icon(Icons.power_settings_new_outlined),
                     ),
                   )
 
@@ -171,7 +156,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding:const EdgeInsets.only(left: 10),
               child: CustomContainer(
                 width: double.infinity,
                 height: 25,
@@ -180,9 +165,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Container(
                       child: sampleText(
-                          text: 'ALL', color: Color(0xFFBD1616), fontsize: 18),
+                          text: 'ALL', color:const Color(0xFFBD1616), fontsize: 18),
                     ),
-                    SizedBox(
+                  const  SizedBox(
                       width: 40,
                     ),
                     Container(
@@ -190,7 +175,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         text: 'PROGRAMMING',
                       ),
                     ),
-                    SizedBox(
+                 const   SizedBox(
                       width: 40,
                     ),
                     Container(
@@ -198,7 +183,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         text: 'SPORTS',
                       ),
                     ),
-                    SizedBox(
+                   const SizedBox(
                       width: 40,
                     ),
                     Container(
@@ -230,7 +215,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
             ),
-            SizedBox(
+          const  SizedBox(
               height: 5,
             ),
             CustomContainer(
@@ -240,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fit: BoxFit.cover),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding:const EdgeInsets.symmetric(horizontal: 8),
               child: CustomContainer(
                   width: double.infinity,
                   height: 100,
@@ -267,56 +252,56 @@ class _DashboardScreenState extends State<DashboardScreen> {
             //         text: "News History", color: Colors.black, fontsize: 20),
             //   ),
             // ),
-            // Expanded(
-            //   child: NewsHistoryListView(newsItems: newsHistory),
-            // )
+            Expanded(
+              child: NewsHistoryListView(newsItems: newsHistory),
+            )
             // CustomContainer(
             //   width: double.infinity,
             //   height: 270,
             //   child: NewsHistoryListView(newsItems: newsHistory),
             // ),
-            Expanded(
-            child: FutureBuilder(
-              future: methodsProvider.getPostApi(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-      return CircularProgressIndicator();
-                }
-                else if (snapshot.connectionState == ConnectionState.done){
-                  return ListView.builder(
-                    itemCount: methodsProvider.newsList.length,
-                    itemBuilder: ((context, index){
-                      return Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                                Text('Source:' , 
-                                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 10,),
-                                Text(methodsProvider.newsList[index].response!.docs![index].source.toString()),
-                                SizedBox(height: 10,),
-                                Text('Abstract:' , 
-                                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 10,),
-                                Text(methodsProvider.newsList[index].response!.docs![index].abstract.toString())
-                            ],
-                          ),
-                        ),
-                      );
-                    })
-                    );
-                }
-                else {
-      return Text('ConnectionState: ${snapshot.connectionState}');
-    }
-              }
-              ) 
-            )
+    //         Expanded(
+    //         child: FutureBuilder(
+    //           future: methodsProvider.getPostApi(),
+    //           builder: (context, snapshot) {
+    //             if (snapshot.connectionState == ConnectionState.waiting) {
+    //   return const CircularProgressIndicator();
+    //             }
+    //             else if (snapshot.connectionState == ConnectionState.done){
+    //               return ListView.builder(
+    //                 itemCount: methodsProvider.newsList.length,
+    //                 itemBuilder: ((context, index){
+    //                   return Card(
+    //                     child: Padding(
+    //                       padding: const EdgeInsets.all(8.0),
+    //                       child: Column(
+    //                         mainAxisAlignment: MainAxisAlignment.start,
+    //                         crossAxisAlignment: CrossAxisAlignment.start,
+    //                         children: [
+    //                          const   Text('Source:' , 
+    //                             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+    //                             ),
+    //                           const  SizedBox(height: 10,),
+    //                             Text(methodsProvider.newsList[index].response!.docs![index].source.toString()),
+    //                           const  SizedBox(height: 10,),
+    //                           const  Text('Abstract:' , 
+    //                             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+    //                             ),
+    //                           const  SizedBox(height: 10,),
+    //                             Text(methodsProvider.newsList[index].response!.docs![index].abstract.toString())
+    //                         ],
+    //                       ),
+    //                     ),
+    //                   );
+    //                 })
+    //                 );
+    //             }
+    //             else {
+    //   return Text('ConnectionState: ${snapshot.connectionState}');
+    // }
+    //           }
+    //           ) 
+    //         )
           ],
         ),
       ),

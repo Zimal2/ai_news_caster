@@ -189,7 +189,7 @@ class Methods with ChangeNotifier {
           context, MaterialPageRoute(builder: (context) => SigninScreen()));
     }
   }
-
+//get mews api model
   List <NewsModel> newsList = [];
 
   Future<List<NewsModel>> getPostApi() async{
