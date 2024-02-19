@@ -1,6 +1,3 @@
-import 'package:ai_news_caster/modals/news_modals.dart';
-import 'package:ai_news_caster/provider/Methods.dart';
-
 import 'package:ai_news_caster/ui/profile.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
@@ -10,10 +7,7 @@ import 'package:ai_news_caster/widgets/text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -23,55 +17,9 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
-  List<NewsItem> newsHistory = [
-    const NewsItem(
-      imagePath: 'lib/assests/images/slider1.png',
-      description: 'News of didgital market regarding the ups and down',
-      watermark: 'Digital Market',
-      trailingIcon: Icons.favorite,
-      trailingText: '2.1 k',
-    ),
-    const NewsItem(
-      imagePath: 'lib/assests/images/slider2.png',
-      description: 'News of didgital market regarding the ups and down',
-      watermark: 'Media',
-      trailingIcon: Icons.favorite,
-      trailingText: '2.1 k',
-    ),
-    const NewsItem(
-      imagePath: 'lib/assests/images/slider3.png',
-      description: 'News of didgital market regarding the ups and down',
-      watermark: 'Cyber Crime',
-      trailingIcon: Icons.favorite,
-      trailingText: '2.1 k',
-    ),
-    const NewsItem(
-      imagePath: 'lib/assests/images/slider1.png',
-      description: 'News of didgital market regarding the ups and down',
-      watermark: 'Digital Market',
-      trailingIcon: Icons.favorite,
-      trailingText: '2.1 k',
-    ),
-    const NewsItem(
-      imagePath: 'lib/assests/images/slider4.png',
-      description: 'News of didgital market regarding the ups and down',
-      watermark: 'Nature',
-      trailingIcon: Icons.favorite,
-      trailingText: '2.1 k',
-    ),
-    const NewsItem(
-      imagePath: 'lib/assests/images/slider5.png',
-      description: 'News of didgital market regarding the ups and down',
-      watermark: 'Fashion',
-      trailingIcon: Icons.favorite,
-      trailingText: '2.1 k',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final methodsProvider = Provider.of<Methods>(context);
+  
     return Scaffold(
       body: CustomContainer(
         width: double.infinity,
@@ -145,10 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   )
 
-                  // CustomContainer(
-                  //     width: 50,
-                  //     height: 50,
-                  //     child: Image.asset("lib/assests/images/notif.png")),
+                
                 ],
               ),
             ),
@@ -191,26 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         text: 'MEDIA',
                       ),
                     )
-                    // CustomListTile(
-                    //   title: 'ALL',
-                    //   color: Color(0xFFBD1616),
-                    //   fontsize: 15,
-                    // ),
-                    // CustomListTile(
-                    //   title: 'SPORTS',
-                    //   color: Colors.black,
-                    //   fontsize: 15,
-                    // ),
-                    // CustomListTile(
-                    //   title: 'PROGRAMMING',
-                    //   color: Colors.black,
-                    //   fontsize: 15,
-                    // ),
-                    // CustomListTile(
-                    //   title: 'MEDIA',
-                    //   color: Colors.black,
-                    //   fontsize: 15,
-                    // ),
+                    
                   ],
                 ),
               ),
@@ -243,65 +169,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: sampleText(
                   text: "News History", color: Colors.black, fontsize: 20),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 8),
-            //   child: CustomContainer(
-            //     width: double.infinity,
-            //   //  height: 50,
-            //     child: sampleText(
-            //         text: "News History", color: Colors.black, fontsize: 20),
-            //   ),
-            // ),
+           
             Expanded(
-              child: NewsHistoryListView(newsItems: newsHistory),
+              child: NewsHistoryListView(),
             )
-            // CustomContainer(
-            //   width: double.infinity,
-            //   height: 270,
-            //   child: NewsHistoryListView(newsItems: newsHistory),
-            // ),
-    //         Expanded(
-    //         child: FutureBuilder(
-    //           future: methodsProvider.getPostApi(),
-    //           builder: (context, snapshot) {
-    //             if (snapshot.connectionState == ConnectionState.waiting) {
-    //   return const CircularProgressIndicator();
-    //             }
-    //             else if (snapshot.connectionState == ConnectionState.done){
-    //               return ListView.builder(
-    //                 itemCount: methodsProvider.newsList.length,
-    //                 itemBuilder: ((context, index){
-    //                   return Card(
-    //                     child: Padding(
-    //                       padding: const EdgeInsets.all(8.0),
-    //                       child: Column(
-    //                         mainAxisAlignment: MainAxisAlignment.start,
-    //                         crossAxisAlignment: CrossAxisAlignment.start,
-    //                         children: [
-    //                          const   Text('Source:' , 
-    //                             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-    //                             ),
-    //                           const  SizedBox(height: 10,),
-    //                             Text(methodsProvider.newsList[index].response!.docs![index].source.toString()),
-    //                           const  SizedBox(height: 10,),
-    //                           const  Text('Abstract:' , 
-    //                             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-    //                             ),
-    //                           const  SizedBox(height: 10,),
-    //                             Text(methodsProvider.newsList[index].response!.docs![index].abstract.toString())
-    //                         ],
-    //                       ),
-    //                     ),
-    //                   );
-    //                 })
-    //                 );
-    //             }
-    //             else {
-    //   return Text('ConnectionState: ${snapshot.connectionState}');
-    // }
-    //           }
-    //           ) 
-    //         )
+            
           ],
         ),
       ),

@@ -190,19 +190,21 @@ class Methods with ChangeNotifier {
     }
   }
 //get mews api model
-  List <NewsModel> newsList = [];
+Future<NewsModel> getPostApimethod() async {
+  final response = await http.get(Uri.parse(
+    'https://newsapi.org/v2/everything?q=category&apiKey=8a5ec37e26f845dcb4c2b78463734448'
+    //  'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=erPsHTGZ5ziQGFFbV73mvdviZpdsTqb7'
+      
+      ));
+ var jsonData = jsonDecode(response.body);
+  if (response.statusCode == 200) {
+        
+    
+    
+    return NewsModel.fromJson(jsonData);
+  } else {
+      return NewsModel.fromJson(jsonData);
+}
 
-  Future<List<NewsModel>> getPostApi() async{
-    final response = await http.get(Uri.parse('https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=erPsHTGZ5ziQGFFbV73mvdviZpdsTqb7'));
-    var data = jsonDecode(response.body.toString());
-    if(response.statusCode == 200){
-      newsList.clear();
-      for(Map i in data){
-        newsList.add(NewsModel.fromJson(i as Map<String, dynamic>));
-      }
-      return newsList;
-    }else{
-      return newsList;
-    }
-  }
+}
 }
