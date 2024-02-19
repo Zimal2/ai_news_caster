@@ -60,7 +60,7 @@ class NewsHistoryListView extends StatelessWidget {
                     color: const Color(0xFFBD1616),
                   ),
                   const SizedBox(width: 8),
-                  Text( doc.publishedAt.toString()),
+                  Text(''),
                 ],
               ),
             );
