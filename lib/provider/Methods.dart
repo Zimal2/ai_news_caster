@@ -7,6 +7,7 @@ import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/phoneNumber_confirm.dart';
 import 'package:ai_news_caster/ui/uploadnews.dart';
 import 'package:ai_news_caster/utils/flutterToast.dart';
+import 'package:ai_news_caster/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -200,5 +201,38 @@ class Methods with ChangeNotifier {
     } else {
       return NewsModel.fromJson(jsonData);
     }
+  }
+
+  void showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Logout'),
+          content: Text('Do you want to logout of your account?'),
+          actions: [
+            Textbutton(
+              title: 'No', 
+              color: Colors.black, 
+              ontap: () {
+                Navigator.of(context).pop();
+              }
+              ),
+            Textbutton(
+              title: 'Yes', 
+              color: const Color(0xFFBD1616), 
+              ontap: () async {
+                await GoogleSignIn().signOut();
+                FirebaseAuth.instance.signOut();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SigninScreen()),
+                );
+              }
+              ),
+          ],
+        );
+      },
+    );
   }
 }
