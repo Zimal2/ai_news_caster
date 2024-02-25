@@ -1,13 +1,9 @@
-import 'package:ai_news_caster/ui/profile.dart';
-import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
+import 'package:ai_news_caster/ui/dashboard/appbarWidget.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/image_slider.dart';
 import 'package:ai_news_caster/widgets/news_history_list_view.dart';
 import 'package:ai_news_caster/widgets/text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -19,7 +15,6 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
       body: CustomContainer(
         width: double.infinity,
@@ -28,80 +23,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomContainer(
-              width: double.infinity,
-              height: 100,
-              child: Row(
-                children: [
-                  CustomContainer(
-                      width: 50, height: 50, child: const Icon(Icons.menu)),
-                  const SizedBox(
-                    width: 35,
-                  ),
-                  CustomContainer(
-                    width: 200,
-                    height: 130,
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        CustomContainer(
-                            width: 150,
-                            height: 30,
-                            child: sampleText(
-                                text: 'ANCHOR AI',
-                                color: const Color(0xFFBD1616),
-                                textAlign: TextAlign.center,
-                                fontsize: 20)),
-                        CustomContainer(
-                            width: 200,
-                            height: 30,
-                            child: sampleText(
-                                text: 'Smart News Broadcasting Platform',
-                                color: Colors.black,
-                                textAlign: TextAlign.center,
-                                fontsize: 11)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 18,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              Profile(), // Replace ProfilePage() with your profile page widget
-                        ),
-                      );
-                    },
-                    child: CustomContainer(
-                      onTap: () async {
-                        await GoogleSignIn().signOut();
-                        FirebaseAuth.instance.signOut();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SigninScreen()));
-                      },
-                      width: 50,
-                      height: 50,
-                      child:const Icon(Icons.power_settings_new_outlined),
-                    ),
-                  )
-
-                
-                ],
-              ),
-            ),
+            AppBarWidget(),
             const SizedBox(
               height: 10,
             ),
+            //menu
             Padding(
-              padding:const EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: 10),
               child: CustomContainer(
                 width: double.infinity,
                 height: 25,
@@ -110,9 +38,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Container(
                       child: sampleText(
-                          text: 'ALL', color:const Color(0xFFBD1616), fontsize: 18),
+                          text: 'ALL',
+                          color: const Color(0xFFBD1616),
+                          fontsize: 18),
                     ),
-                  const  SizedBox(
+                    const SizedBox(
                       width: 40,
                     ),
                     Container(
@@ -120,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         text: 'PROGRAMMING',
                       ),
                     ),
-                 const   SizedBox(
+                    const SizedBox(
                       width: 40,
                     ),
                     Container(
@@ -128,7 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         text: 'SPORTS',
                       ),
                     ),
-                   const SizedBox(
+                    const SizedBox(
                       width: 40,
                     ),
                     Container(
@@ -136,22 +66,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         text: 'MEDIA',
                       ),
                     )
-                    
                   ],
                 ),
               ),
             ),
-          const  SizedBox(
-              height: 5,
+            //divider
+            const Divider(
+              height: 20,
+              thickness: 2,
+              color: Colors.grey,
             ),
-            CustomContainer(
-              width: double.infinity,
-              height: 10,
-              child: Image.asset('lib/assests/images/line1.png',
-                  fit: BoxFit.cover),
-            ),
+
             Padding(
-              padding:const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: CustomContainer(
                   width: double.infinity,
                   height: 100,
@@ -160,20 +87,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       color: Colors.black,
                       fontsize: 35)),
             ),
-            const ImageSlider(),
+            //slider
+            ImageSlider(),
             const SizedBox(
               height: 5,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 5, left: 10),
               child: sampleText(
-                  text: "News History", color: Colors.black, fontsize: 20),
+                  text: "News History",
+                  color: const Color.fromARGB(255, 120, 28, 21),
+                  fontsize: 20,
+                  fontWeight: FontWeight.w700),
             ),
-           
+
             Expanded(
               child: NewsHistoryListView(),
             )
-            
           ],
         ),
       ),

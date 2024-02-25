@@ -189,22 +189,16 @@ class Methods with ChangeNotifier {
           context, MaterialPageRoute(builder: (context) => SigninScreen()));
     }
   }
-//get mews api model
-Future<NewsModel> getPostApimethod() async {
-  final response = await http.get(Uri.parse(
-    'https://newsapi.org/v2/everything?q=category&apiKey=8a5ec37e26f845dcb4c2b78463734448'
-    //  'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=erPsHTGZ5ziQGFFbV73mvdviZpdsTqb7'
-      
-      ));
- var jsonData = jsonDecode(response.body);
-  if (response.statusCode == 200) {
-        
-    
-    
-    return NewsModel.fromJson(jsonData);
-  } else {
-      return NewsModel.fromJson(jsonData);
-}
 
-}
+//get mews api model
+  Future<NewsModel> getPostApimethod() async {
+    final response = await http.get(Uri.parse(
+        'https://newsapi.org/v2/everything?q=category&apiKey=8a5ec37e26f845dcb4c2b78463734448'));
+    var jsonData = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return NewsModel.fromJson(jsonData);
+    } else {
+      return NewsModel.fromJson(jsonData);
+    }
+  }
 }

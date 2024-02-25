@@ -1,52 +1,68 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:provider/provider.dart';
 
-class ImageSlider extends StatefulWidget {
+class ImageSlider extends StatelessWidget {
   const ImageSlider({super.key});
 
   @override
-  State<ImageSlider> createState() => _ImageSliderState();
-}
-
-class _ImageSliderState extends State<ImageSlider> {
-  final controller = CarouselController();
-  int activeIndex = 0;
-  final urlImage = [
-    "lib/assests/images/slider1.png",
-    "lib/assests/images/slider2.png",
-    "lib/assests/images/slider3.png",
-  ];
-
-  @override
   Widget build(BuildContext context) {
-    return CarouselSlider.builder(
-        options: CarouselOptions(
-            height: 150,
-            autoPlay: false,
-            enlargeCenterPage: true,
-            enableInfiniteScroll: true,
-            // viewportFraction: 1,
-            aspectRatio: 2.0,
-            initialPage: 1,
-            scrollDirection: Axis.horizontal,
-            onPageChanged: (index, reason) {
-              setState(
-                () => activeIndex = index,
+    final methodsProvider = Provider.of<Methods>(context);
+
+    return FutureBuilder(
+      future: methodsProvider.getPostApimethod(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          debugPrint(snapshot.error.toString());
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.articles == null) {
+          return const Center(child: Text("No data available"));
+        }
+
+        return Container(
+           width: double.infinity,
+      
+          height: 250,
+          child: CarouselSlider.builder(
+            itemCount: snapshot.data!.articles!.length,
+            itemBuilder: (context, index, realIndex) {
+              final doc = snapshot.data!.articles![index];
+
+              return Card(
+                elevation: 10,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * .9,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child:Image.network(
+                                doc.urlToImage != null && doc.urlToImage != ""
+                                    ? doc.urlToImage!
+                                    : 'https://i.pinimg.com/564x/4e/d1/26/4ed126ab70265d07682cba1995385822.jpg',
+                                fit: BoxFit.fill,
+                              ),
+                  ),
+                ),
               );
-            }),
-        itemCount: urlImage.length,
-        itemBuilder: (context, index, realIndex) {
-          return buildImage(urlImage[index]);
-        });
+            },
+            options: CarouselOptions(
+              aspectRatio: 1.2,
+              autoPlay: true,
+              enlargeCenterPage: true,
+              initialPage: 0,
+              viewportFraction: 0.7,
+              reverse: true,
+              scrollDirection: Axis.horizontal,
+               
+            ),
+          ),
+        );
+      },
+    );
   }
 }
-
-Widget buildImage(String urlImage) => Container(
-      width: double.infinity,
-      //  margin: EdgeInsets.symmetric(horizontal: 5),
-      color: Colors.white,
-      child: Image.asset(
-        urlImage,
-        fit: BoxFit.cover,
-      ),
-    );

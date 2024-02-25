@@ -7,11 +7,13 @@ sampleText({
   Color? color,
   TextAlign? textAlign,
   TextDecoration? decoration,
+  TextOverflow? overflow,
 }) {
   return Text(
     text!,
     textAlign: textAlign,
     style: TextStyle(
+      overflow: overflow,
       fontSize: fontsize,
       fontWeight: fontWeight,
       color: color,
