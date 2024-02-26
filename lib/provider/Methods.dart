@@ -5,12 +5,13 @@ import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/phoneNumberconfirmed.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/phoneNumber_confirm.dart';
-import 'package:ai_news_caster/ui/uploadnews.dart';
+import 'package:ai_news_caster/ui/admin%20side/uploadnews.dart';
 import 'package:ai_news_caster/utils/flutterToast.dart';
 import 'package:ai_news_caster/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
@@ -234,5 +235,13 @@ class Methods with ChangeNotifier {
         );
       },
     );
+  }
+
+  //text to speech
+  final FlutterTts flutterTts=FlutterTts();
+  speak(String text) async{
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setPitch(1);  //range 0.5-1.5
+    await flutterTts.speak(text);
   }
 }

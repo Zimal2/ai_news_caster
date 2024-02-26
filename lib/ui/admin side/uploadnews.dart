@@ -1,8 +1,11 @@
+import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsUploaded.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:provider/provider.dart';
 
 class UploadNews extends StatefulWidget {
   const UploadNews({super.key});
@@ -25,6 +28,7 @@ class _UploadNewsState extends State<UploadNews> {
   ];
   @override
   Widget build(BuildContext context) {
+    final methodsProvider=Provider.of<Methods>(context);
     return Scaffold(
       appBar: AppBar(title: Text("Upload News")),
       body: SafeArea(
@@ -92,21 +96,24 @@ class _UploadNewsState extends State<UploadNews> {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: 130,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(color: Colors.black)),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        child: Image.asset(
-                            "lib/assests/images/chatpgt icon 1.png"),
-                      ),
-                      sampleText(text: "Chatgpt", fontWeight: FontWeight.bold)
-                    ],
+                GestureDetector(
+                  onTap: () => methodsProvider.speak(decriptionController.text),
+                  child: Container(
+                    width: 130,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(color: Colors.black)),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          child: Image.asset(
+                              "lib/assests/images/chatpgt icon 1.png"),
+                        ),
+                        sampleText(text: "Chatgpt", fontWeight: FontWeight.bold)
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(

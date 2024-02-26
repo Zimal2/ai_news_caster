@@ -1,6 +1,6 @@
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/signup_screens/signup_adminitrator.dart';
-import 'package:ai_news_caster/ui/uploadnews.dart';
+import 'package:ai_news_caster/ui/admin%20side/uploadnews.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
