@@ -3,9 +3,7 @@ import 'package:ai_news_caster/ui/mediaScreens/newsMedia.dart';
 import 'package:ai_news_caster/ui/mediaScreens/readMore.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/text.dart';
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({Key? key}) : super(key: key);

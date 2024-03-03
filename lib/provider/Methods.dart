@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
+import 'package:ai_news_caster/ui/mediaScreens/newsUploaded.dart';
 import 'package:ai_news_caster/ui/phoneNumberconfirmed.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/phoneNumber_confirm.dart';
@@ -18,6 +19,7 @@ import 'package:http/http.dart' as http;
 class Methods with ChangeNotifier {
   //variables
   var userID;
+  
   //firebase var
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
@@ -29,6 +31,9 @@ class Methods with ChangeNotifier {
   final institueController = new TextEditingController();
   final designationController = new TextEditingController();
   final phoneController = new TextEditingController();
+   TextEditingController decriptionController = TextEditingController();
+      TextEditingController titleController = TextEditingController();
+
   TextEditingController phoneCodeController = TextEditingController();
 
   //methods
@@ -87,6 +92,9 @@ class Methods with ChangeNotifier {
       "Password": passwordController.text,
     });
   }
+
+  
+
 
 //signin admin
   void signinA(BuildContext context) async {
@@ -243,5 +251,34 @@ class Methods with ChangeNotifier {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(1);  //range 0.5-1.5
     await flutterTts.speak(text);
+  }
+
+//Upload news data
+// Dropdown items
+String? selectedItem;
+
+  List<String> items = [
+    'Sports',
+    'Programming',
+    'Media',
+    'Entertainment',
+  ];
+  //News Upload data on firebase
+  void newsUploadToFirebase(BuildContext context) async{
+    CollectionReference _information=FirebaseFirestore.instance.collection('NewsUploadData');
+    String uploaderId= FirebaseFirestore.instance.collection('NewsUploadData').doc().id;
+    await _information.doc(uploaderId).set({
+     "title":titleController.text ,
+   //  "image path": ,
+     "description": decriptionController.text,
+     "tag": selectedItem?.toString()?? "",
+
+    });
+  Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NewsUploaded(),
+                            ));
+
   }
 }
