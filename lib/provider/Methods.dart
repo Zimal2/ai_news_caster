@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
@@ -10,10 +11,13 @@ import 'package:ai_news_caster/utils/flutterToast.dart';
 import 'package:ai_news_caster/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class Methods with ChangeNotifier {
   //variables
@@ -244,4 +248,63 @@ class Methods with ChangeNotifier {
     await flutterTts.setPitch(1);  //range 0.5-1.5
     await flutterTts.speak(text);
   }
+
+  final _post = FirebaseFirestore.instance.collection('NewsUploadData');
+   get post => _post;
+
+  void setPicture(String value){
+    var picture = value;
+    notifyListeners();
+  }
+
+  void setimage(File value){
+    image = value;
+    notifyListeners();
+  }
+
+  final descriptionController = TextEditingController();
+  final titleController = TextEditingController();
+
+ UploadTask? uploadTask;
+ File? image;
+
+ Future<void> pickImage(BuildContext context, ImageSource source) async {
+  try {
+    ImageCache().clear();
+    final image = await ImagePicker().pickImage(source: source);
+
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    setimage(imageTemporary);
+
+    final path = 'News_Image/${image.name}';
+    final file = File(image.path);
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putFile(file);
+
+    final snapshot = await uploadTask!.whenComplete(() {});
+
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        userID = user.uid;
+      }
+
+    final postRef = FirebaseFirestore.instance.collection('PostsInfo').doc(userID);
+    await postRef.set({
+      'image path': urlDownload,
+      'description' : descriptionController,
+      'title' : titleController
+    });
+
+    setPicture(urlDownload);
+
+    print('Download Link: $urlDownload');
+  } on PlatformException catch (e) {
+    Utils().toastMessage(e.toString());
+  }
+}
 }
