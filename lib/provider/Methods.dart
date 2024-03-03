@@ -249,8 +249,6 @@ class Methods with ChangeNotifier {
     await flutterTts.speak(text);
   }
 
-  final _post = FirebaseFirestore.instance.collection('NewsUploadData');
-   get post => _post;
 
   void setPicture(String value){
     var picture = value;
@@ -261,9 +259,6 @@ class Methods with ChangeNotifier {
     image = value;
     notifyListeners();
   }
-
-  final descriptionController = TextEditingController();
-  final titleController = TextEditingController();
 
  UploadTask? uploadTask;
  File? image;
@@ -287,18 +282,6 @@ class Methods with ChangeNotifier {
     final snapshot = await uploadTask!.whenComplete(() {});
 
     final urlDownload = await snapshot.ref.getDownloadURL();
-
-    final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        userID = user.uid;
-      }
-
-    final postRef = FirebaseFirestore.instance.collection('PostsInfo').doc(userID);
-    await postRef.set({
-      'image path': urlDownload,
-      'description' : descriptionController,
-      'title' : titleController
-    });
 
     setPicture(urlDownload);
 
