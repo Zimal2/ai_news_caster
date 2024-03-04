@@ -31,33 +31,44 @@ class _UploadNewsState extends State<UploadNews> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                    child: GestureDetector(
-                  onTap: () => methodsProvider.pickImage,
-                  child: CustomContainer(
-                      height: 200,
-                      width: 250,
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 150,
-                            height: 150,
-                            child: Image.asset("lib/assests/images/image.png"),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          sampleText(
-                              text:
-                                  "Upload images or videos from gallery or camera",
-                              fontsize: 10,
-                              textAlign: TextAlign.center,
-                              fontWeight: FontWeight.bold),
-                        ],
-                      )),
-                )),
+  child: GestureDetector(
+    onTap: () {
+      methodsProvider.pickImage(context);
+    },
+    child: CustomContainer(
+      height: 200,
+      width: 250,
+      border: Border.all(
+        color: Colors.black,
+      ),
+      child:Column(
+          children: [
+            methodsProvider.image != null
+                ? Image.file(
+                    methodsProvider.image!,
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  )
+                : Container(
+                    width: 150,
+                    height: 150,
+                    child: Image.asset("lib/assests/images/image.png"),
+                  ),
+            const SizedBox(
+              height: 20,
+            ),
+            sampleText(
+              text: "Upload images or videos from gallery or camera",
+              fontsize: 10,
+              textAlign: TextAlign.center,
+              fontWeight: FontWeight.bold,
+            ),
+          ],
+        ),
+    ),
+  ),
+),
                 SizedBox(
                   height: 20,
                 ),
