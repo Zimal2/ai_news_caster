@@ -17,7 +17,7 @@ class _UploadNewsState extends State<UploadNews> {
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
-    double size=MediaQuery.of(context).size.height;
+    double size = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(title: Text("Upload News")),
       body: SafeArea(
@@ -29,11 +29,13 @@ class _UploadNewsState extends State<UploadNews> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
+                    child: GestureDetector(
+                  onTap: () => methodsProvider.pickImage,
                   child: CustomContainer(
                       height: 200,
                       width: 250,
                       border: Border.all(
-                        color: const Color.fromRGBO(0, 0, 0, 1),
+                        color: Colors.black,
                       ),
                       child: Column(
                         children: [
@@ -42,7 +44,7 @@ class _UploadNewsState extends State<UploadNews> {
                             height: 150,
                             child: Image.asset("lib/assests/images/image.png"),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           sampleText(
@@ -53,8 +55,8 @@ class _UploadNewsState extends State<UploadNews> {
                               fontWeight: FontWeight.bold),
                         ],
                       )),
-                ),
-                 SizedBox(
+                )),
+                SizedBox(
                   height: 20,
                 ),
                 //title
@@ -78,7 +80,7 @@ class _UploadNewsState extends State<UploadNews> {
                     ),
                   ),
                 ),
-                 SizedBox(
+                SizedBox(
                   height: 20,
                 ),
                 //description
@@ -107,7 +109,8 @@ class _UploadNewsState extends State<UploadNews> {
                 ),
                 //chatgpt option
                 GestureDetector(
-                  onTap: () => methodsProvider.speak(methodsProvider.decriptionController.text),
+                  onTap: () => methodsProvider
+                      .speak(methodsProvider.decriptionController.text),
                   child: Container(
                     width: 130,
                     decoration: BoxDecoration(
@@ -134,11 +137,11 @@ class _UploadNewsState extends State<UploadNews> {
                   height: 15,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5,right: 5),
+                  padding: const EdgeInsets.only(left: 5, right: 5),
                   child: DropdownButton<String>(
                     elevation: 2,
                     focusColor: Colors.grey,
-                    
+
                     value: methodsProvider
                         .selectedItem, // Initially selected item (if any)
                     hint: Text('Select an item'), // Placeholder or hint text
@@ -162,22 +165,22 @@ class _UploadNewsState extends State<UploadNews> {
                         value: item,
                         child: Text(
                           item,
-                          style:const  TextStyle(
-                              color: Colors.black), 
+                          style: const TextStyle(color: Colors.black),
                         ),
                       );
                     }).toList(),
                   ),
                 ),
-                   SizedBox(
-                  height: size*0.05,
+                SizedBox(
+                  height: size * 0.05,
                 ),
                 Center(
                   child: button(
                       title: "Done",
                       ontap: () {
+                      debugPrint("userid in upload: ${methodsProvider.userID ?? 'nothing'}");
+
                         methodsProvider.newsUploadToFirebase(context);
-                      
                       }),
                 )
               ],

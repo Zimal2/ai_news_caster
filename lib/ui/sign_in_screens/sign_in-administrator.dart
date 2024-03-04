@@ -70,7 +70,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                                 }
                                 return null;
                               },
-                              controller: methodsProvider.phoneController,
+                              controller: methodsProvider.phoneControllerSignin,
                               keyboardType: TextInputType.phone,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -108,7 +108,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                                 }
                                 return null;
                               },
-                              controller: methodsProvider.passwordController,
+                              controller: methodsProvider.passwordControllerSignin,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Password'),

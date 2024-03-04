@@ -222,7 +222,7 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                               }
                               return null;
                             },
-                            controller: methodsProvider.phoneController,
+                            controller: methodsProvider.phoneControllerSignup,
                             keyboardType: TextInputType.phone,
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -261,7 +261,7 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                               }
                               return null;
                             },
-                            controller: methodsProvider.passwordController,
+                            controller: methodsProvider.passwordControllerSignup,
                             decoration: const InputDecoration(
                                 border: InputBorder.none, hintText: 'Password'),
                           ),
