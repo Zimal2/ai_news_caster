@@ -39,7 +39,8 @@ class _NewsUploadedState extends State<NewsUploaded> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => UploadNews(),
+                        builder: (context) => SigninScreen()
+                        //UploadNews(),
                       ));
                 }),
             SizedBox(

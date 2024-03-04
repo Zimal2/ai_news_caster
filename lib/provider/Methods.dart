@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsUploaded.dart';
@@ -9,7 +8,6 @@ import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/phoneNumber_confirm.dart';
 import 'package:ai_news_caster/ui/admin%20side/uploadnews.dart';
 import 'package:ai_news_caster/utils/flutterToast.dart';
-import 'package:ai_news_caster/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -118,6 +116,7 @@ class Methods with ChangeNotifier {
       if (querySnapshot.docs.isNotEmpty) {
         // User found, proceed with signing in
         userIDSignin = _auth.currentUser?.uid;
+        debugPrint("User ID while sign in: ${userIDSignin}");
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -138,7 +137,8 @@ class Methods with ChangeNotifier {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => UploadNews(),
+              builder: (context) =>
+              UploadNews(useridA: userIDSignin,),
             ));
       } else {
         // User not found or password incorrect
@@ -274,11 +274,11 @@ class Methods with ChangeNotifier {
   ];
 //get user id
 
-  void newsUploadToFirebase(BuildContext context) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    final userid;
+  void newsUploadToFirebase(BuildContext context,User? userIdA) async {
+    // User? user = FirebaseAuth.instance.currentUser;
+    // final userid;
     // debugPrint("User ID: ${user}");
-    if (user == null) {
+    if (userIdA == null) {
       // User is not signed in, display an error message or redirect to sign-in page
       showDialog(
         context: context,
@@ -299,12 +299,12 @@ class Methods with ChangeNotifier {
       );
       return; // Exit the function if user is not signed in
     }
-    if (user != null) {
-      userid = user.uid;
-      debugPrint("User ID here: ${userid}");
+    if (userIdA != null) {
+    //  userid = user.uid;
+      debugPrint("User ID in news upload method : ${userIdA}");
       CollectionReference _information =
           FirebaseFirestore.instance.collection('NewsUploadData');
-      DocumentReference documentRef = _information.doc(userid);
+      DocumentReference documentRef = _information.doc(userIdA.toString());
       await documentRef.set({
         "description": decriptionController.text,
         "image path": [
@@ -315,7 +315,7 @@ class Methods with ChangeNotifier {
         ],
         "tag": selectedItem?.toString() ?? "no tag",
         "title": titleController.text,
-        "uploaderId": user, // Add the uploader's ID to the document
+        "uploaderId": userIdA, // Add the uploader's ID to the document
       });
 
       Navigator.push(
@@ -395,8 +395,8 @@ class Methods with ChangeNotifier {
 
       print('Download Link: $urlDownload');
 
-      newsUploadToFirebase(
-          context); // Call newsUploadToFirebase here after setting urlDownload
+      // newsUploadToFirebase(
+      //     context);
     } on PlatformException catch (e) {
       Utils().toastMessage(e.toString());
     }

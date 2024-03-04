@@ -1,7 +1,5 @@
 import 'package:ai_news_caster/provider/Methods.dart';
-import 'package:ai_news_caster/ui/admin%20side/uploadnews.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in-administrator.dart';
-import 'package:ai_news_caster/ui/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';

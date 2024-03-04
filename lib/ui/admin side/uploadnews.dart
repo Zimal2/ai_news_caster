@@ -2,12 +2,14 @@ import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class UploadNews extends StatefulWidget {
-  const UploadNews({super.key});
+  User? useridA;
+   UploadNews({super.key,required this.useridA});
 
   @override
   State<UploadNews> createState() => _UploadNewsState();
@@ -178,9 +180,9 @@ class _UploadNewsState extends State<UploadNews> {
                   child: button(
                       title: "Done",
                       ontap: () {
-                      debugPrint("userid in upload: ${methodsProvider.userID ?? 'nothing'}");
+                      debugPrint("useridA in upload class: ${widget.useridA ?? 'nothing'}");
 
-                        methodsProvider.newsUploadToFirebase(context);
+                        methodsProvider.newsUploadToFirebase(context,widget.useridA);
                       }),
                 )
               ],
