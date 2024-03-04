@@ -241,7 +241,7 @@ class Methods with ChangeNotifier {
   ];
 //get user id
 
-  void newsUploadToFirebase(BuildContext context,User? userIdA) async {
+  void newsUploadToFirebase(BuildContext context,String? userIdA) async {
     // User? user = FirebaseAuth.instance.currentUser;
     // final userid;
     // debugPrint("User ID: ${user}");
