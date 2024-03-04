@@ -41,7 +41,6 @@ class _UploadNewsState extends State<UploadNews> {
                   child: GestureDetector(
                     onTap: () {
                       widget.uploadedImagesCount++;
-                      methodsProvider.pickImage(context);
                     },
                     child: CustomContainer(
                       height: 200,
@@ -110,8 +109,8 @@ Row(
           });
         },
         child: Container(
-          width: 150,
-          height: 150,
+          width: 100,
+          height: 100,
           child: Image.asset("lib/assests/images/image.png"),
         ),
       ),

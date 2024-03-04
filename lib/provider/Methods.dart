@@ -313,6 +313,7 @@ class Methods with ChangeNotifier {
 
   Future<void> pickImage(BuildContext context) async {
     try {
+
       ImageCache().clear();
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
