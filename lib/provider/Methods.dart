@@ -20,8 +20,8 @@ import 'package:image_picker/image_picker.dart';
 
 class Methods with ChangeNotifier {
   //variables
-  var userID;
-  var userIDSignin;
+  String? userID;
+  String? userIDSignin;
 
   //firebase var
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -99,6 +99,7 @@ class Methods with ChangeNotifier {
       "PhoneNumber": phoneControllerSignup.text,
       "UserName": usernameController.text,
       "Password": passwordControllerSignup.text,
+      "userId": userID.toString(),
     });
   }
 
@@ -114,8 +115,9 @@ class Methods with ChangeNotifier {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // User found, proceed with signing in
-        userIDSignin = _auth.currentUser?.uid;
+        String userId = querySnapshot.docs[0].get('userId');
+        userIDSignin = userId;
+
         debugPrint("User ID while sign in: ${userIDSignin}");
         showDialog(
           context: context,
@@ -137,8 +139,9 @@ class Methods with ChangeNotifier {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-              UploadNews(useridA: userIDSignin,),
+              builder: (context) => UploadNews(
+                useridA: userIDSignin,
+              ),
             ));
       } else {
         // User not found or password incorrect
@@ -241,8 +244,7 @@ class Methods with ChangeNotifier {
   ];
 //get user id
 
-  void newsUploadToFirebase(BuildContext context,String? userIdA) async {
-  
+  void newsUploadToFirebase(BuildContext context, String? userIdA) async {
     if (userIdA == null) {
       // User is not signed in, display an error message or redirect to sign-in page
       showDialog(
@@ -265,7 +267,7 @@ class Methods with ChangeNotifier {
       return; // Exit the function if user is not signed in
     }
     if (userIdA != null) {
-    //  userid = user.uid;
+      //  userid = user.uid;
       debugPrint("User ID in news upload method : ${userIdA}");
       CollectionReference _information =
           FirebaseFirestore.instance.collection('NewsUploadData');
@@ -274,9 +276,9 @@ class Methods with ChangeNotifier {
         "description": decriptionController.text,
         "image path": [
           urlDownload ?? "no url",
-          "1st index",
-          "2nd index",
-          "3rd index",
+          "",
+          "",
+          "",
         ],
         "tag": selectedItem?.toString() ?? "no tag",
         "title": titleController.text,
@@ -291,33 +293,6 @@ class Methods with ChangeNotifier {
       );
     }
   }
-  // User is signed in, proceed with news upload
-
-  // void newsUploadToFirebase(BuildContext context) async {
-  //   debugPrint("userid in method: ${userID ?? 'nothing'}");
-
-  //   CollectionReference _information =
-  //       FirebaseFirestore.instance.collection('NewsUploadData');
-  //   String uploaderId =
-  //       FirebaseFirestore.instance.collection('NewsUploadData').doc().id;
-  //   await _information.doc(uploaderId).set({
-  //     "description": decriptionController.text,
-  //     "image path": [
-  //       "urlDownload",
-  //       "1st index",
-  //       "2nd index",
-  //       "3rd index",
-  //     ],
-  //     "tag": selectedItem?.toString() ?? "",
-  //     "title": titleController.text,
-  //   });
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => NewsUploaded(),
-  //     ),
-  //   );
-  // }
 
 // Define urlDownload variable as a class-level variable
   String? urlDownload;
@@ -366,6 +341,4 @@ class Methods with ChangeNotifier {
       Utils().toastMessage(e.toString());
     }
   }
-
- 
 }

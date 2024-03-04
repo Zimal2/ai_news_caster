@@ -6,10 +6,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
+
+
 
 class UploadNews extends StatefulWidget {
-  User? useridA;
-   UploadNews({super.key,required this.useridA});
+  int uploadedImagesCount = 0;
+
+ // Define a list to store selected images
+List<File?> selectedImages = []; 
+ String? useridA;
+  UploadNews({super.key, required this.useridA});
 
   @override
   State<UploadNews> createState() => _UploadNewsState();
@@ -31,44 +38,91 @@ class _UploadNewsState extends State<UploadNews> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-  child: GestureDetector(
-    onTap: () {
-      methodsProvider.pickImage(context);
-    },
-    child: CustomContainer(
-      height: 200,
-      width: 250,
-      border: Border.all(
-        color: Colors.black,
-      ),
-      child:Column(
-          children: [
-            methodsProvider.image != null
-                ? Image.file(
-                    methodsProvider.image!,
-                    width: 150,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  )
-                : Container(
-                    width: 150,
-                    height: 150,
-                    child: Image.asset("lib/assests/images/image.png"),
+                  child: GestureDetector(
+                    onTap: () {
+                      widget.uploadedImagesCount++;
+                      methodsProvider.pickImage(context);
+                    },
+                    child: CustomContainer(
+                      height: 200,
+                      width: 250,
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                      child: Column(
+                        children: [
+                          methodsProvider.image != null
+                              ? Image.file(
+                                  methodsProvider.image!,
+                                  width: 150,
+                                  height: 150,
+                                  fit: BoxFit.cover,
+                                )
+                              : Container(
+                                  width: 150,
+                                  height: 150,
+                                  child: Image.asset(
+                                      "lib/assests/images/image.png"),
+                                ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          sampleText(
+                            text: "Upload images from gallery(maximum 4)",
+                            fontsize: 10,
+                            textAlign: TextAlign.center,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-            const SizedBox(
-              height: 20,
-            ),
-            sampleText(
-              text: "Upload images or videos from gallery or camera",
-              fontsize: 10,
-              textAlign: TextAlign.center,
-              fontWeight: FontWeight.bold,
-            ),
-          ],
+                ),
+                // Define a variable to track the number of images uploaded
+
+               
+
+// Inside your widget build method or function
+Row(
+  children: [
+    // Display previously selected images
+    for (int i = 0; i <widget.selectedImages.length; i++)
+      Image.file(
+        widget.selectedImages[i]!,
+        height: MediaQuery.of(context).size.height * 0.12,
+        width: MediaQuery.of(context).size.width * 0.2,
+        fit: BoxFit.cover,
+      ),
+    
+    // Display a placeholder or add new image button
+    if (widget.selectedImages.length < 4)
+      GestureDetector(
+        onTap: () {
+          // Call the method to pick an image
+          
+          methodsProvider.pickImage(context).then((image) {
+            // Update the selected images list with the newly picked image
+            if (methodsProvider.image  != null) {
+              setState(() {
+                widget.selectedImages.add(methodsProvider.image );
+              });
+            }
+          });
+        },
+        child: Container(
+          width: 150,
+          height: 150,
+          child: Image.asset("lib/assests/images/image.png"),
         ),
-    ),
-  ),
+      ),
+  ],
 ),
+
+
+                SizedBox(
+                  height: 10,
+                ),
+
                 SizedBox(
                   height: 20,
                 ),
@@ -191,9 +245,11 @@ class _UploadNewsState extends State<UploadNews> {
                   child: button(
                       title: "Done",
                       ontap: () {
-                      debugPrint("useridA in upload class: ${widget.useridA ?? 'nothing'}");
+                        debugPrint(
+                            "useridA in upload class: ${widget.useridA ?? 'nothing'}");
 
-                        methodsProvider.newsUploadToFirebase(context,widget.useridA);
+                        methodsProvider.newsUploadToFirebase(
+                            context, widget.useridA);
                       }),
                 )
               ],
