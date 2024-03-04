@@ -20,8 +20,8 @@ import 'package:image_picker/image_picker.dart';
 
 class Methods with ChangeNotifier {
   //variables
-  String? userID;
-  String? userIDSignin;
+  var userID;
+  var userIDSignin;
 
   //firebase var
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -99,7 +99,6 @@ class Methods with ChangeNotifier {
       "PhoneNumber": phoneControllerSignup.text,
       "UserName": usernameController.text,
       "Password": passwordControllerSignup.text,
-      "userId":userID.toString(),
     });
   }
 
@@ -115,9 +114,8 @@ class Methods with ChangeNotifier {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        String? userId = querySnapshot.docs[0].get('userId');
-      userIDSignin = userId;
-
+        // User found, proceed with signing in
+        userIDSignin = _auth.currentUser?.uid;
         debugPrint("User ID while sign in: ${userIDSignin}");
         showDialog(
           context: context,
@@ -139,9 +137,8 @@ class Methods with ChangeNotifier {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => UploadNews(
-                useridA: userIDSignin,
-              ),
+              builder: (context) =>
+              UploadNews(useridA: userIDSignin,),
             ));
       } else {
         // User not found or password incorrect
@@ -224,39 +221,6 @@ class Methods with ChangeNotifier {
     }
   }
 
-  // void showLogoutDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text('Logout'),
-  //         content: Text('Do you want to logout of your account?'),
-  //         actions: [
-  //           Textbutton(
-  //             title: 'No',
-  //             color: Colors.black,
-  //             ontap: () {
-  //               Navigator.of(context).pop();
-  //             }
-  //             ),
-  //           Textbutton(
-  //             title: 'Yes',
-  //             color: const Color(0xFFBD1616),
-  //             ontap: () async {
-  //               await GoogleSignIn().signOut();
-  //               FirebaseAuth.instance.signOut();
-  //               Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(builder: (context) => SigninScreen()),
-  //               );
-  //             }
-  //             ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   //text to speech
   final FlutterTts flutterTts = FlutterTts();
   speak(String text) async {
@@ -277,11 +241,13 @@ class Methods with ChangeNotifier {
   ];
 //get user id
 
-  void newsUploadToFirebase(BuildContext context, String? userIdA) async {
-   
-     debugPrint("User ID in upload outside if: ${userIdA}");
+  void newsUploadToFirebase(BuildContext context,User? userIdA) async {
+    // User? user = FirebaseAuth.instance.currentUser;
+    // final userid;
+    // debugPrint("User ID: ${user}");
     if (userIdA == null) {
-         showDialog(
+      // User is not signed in, display an error message or redirect to sign-in page
+      showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -301,7 +267,7 @@ class Methods with ChangeNotifier {
       return; // Exit the function if user is not signed in
     }
     if (userIdA != null) {
-      //  userid = user.uid;
+    //  userid = user.uid;
       debugPrint("User ID in news upload method : ${userIdA}");
       CollectionReference _information =
           FirebaseFirestore.instance.collection('NewsUploadData');
@@ -327,7 +293,33 @@ class Methods with ChangeNotifier {
       );
     }
   }
-  
+  // User is signed in, proceed with news upload
+
+  // void newsUploadToFirebase(BuildContext context) async {
+  //   debugPrint("userid in method: ${userID ?? 'nothing'}");
+
+  //   CollectionReference _information =
+  //       FirebaseFirestore.instance.collection('NewsUploadData');
+  //   String uploaderId =
+  //       FirebaseFirestore.instance.collection('NewsUploadData').doc().id;
+  //   await _information.doc(uploaderId).set({
+  //     "description": decriptionController.text,
+  //     "image path": [
+  //       "urlDownload",
+  //       "1st index",
+  //       "2nd index",
+  //       "3rd index",
+  //     ],
+  //     "tag": selectedItem?.toString() ?? "",
+  //     "title": titleController.text,
+  //   });
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => NewsUploaded(),
+  //     ),
+  //   );
+  // }
 
 // Define urlDownload variable as a class-level variable
   String? urlDownload;
@@ -377,5 +369,65 @@ class Methods with ChangeNotifier {
     }
   }
 
-  
+  //News Upload data on firebase
+//   void newsUploadToFirebase(BuildContext context) async{
+//     CollectionReference _information=FirebaseFirestore.instance.collection('NewsUploadData');
+//     String uploaderId= FirebaseFirestore.instance.collection('NewsUploadData').doc().id;
+//     await _information.doc(uploaderId).set({
+//      "title":titleController.text ,
+//      "image path":urlDownload ,
+//      "description": decriptionController.text,
+//      "tag": selectedItem?.toString()?? "",
+
+//     });
+//   Navigator.push(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: (context) => NewsUploaded(),
+//                             ));
+
+//   }
+
+// //image uploading
+//   void setPicture(String value){
+//    // var picture = value;
+//     notifyListeners();
+//   }
+
+//   void setimage(File value){
+//     image = value;
+//     notifyListeners();
+//   }
+
+//  UploadTask? uploadTask;
+//  File? image;
+
+//  Future<void> pickImage(BuildContext context, ImageSource source) async {
+//   try {
+//     ImageCache().clear();
+//     final image = await ImagePicker().pickImage(source: source);
+
+//     if (image == null) return;
+
+//     final imageTemporary = File(image.path);
+//     setimage(imageTemporary);
+
+//     final path = 'News_Image/${image.name}';
+//     final file = File(image.path);
+
+//     final ref = FirebaseStorage.instance.ref().child(path);
+//     uploadTask = ref.putFile(file);
+
+//     final snapshot = await uploadTask!.whenComplete(() {});
+
+//     final urlDownload = await snapshot.ref.getDownloadURL();
+
+//     setPicture(urlDownload);
+
+//     print('Download Link: $urlDownload');
+//      newsUploadToFirebase(context);
+//   } on PlatformException catch (e) {
+//     Utils().toastMessage(e.toString());
+//   }
+// }
 }
