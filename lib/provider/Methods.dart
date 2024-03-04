@@ -221,36 +221,38 @@ class Methods with ChangeNotifier {
     }
   }
 
-  void showLogoutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Logout'),
-          content: Text('Do you want to logout of your account?'),
-          actions: [
-            Textbutton(
-                title: 'No',
-                color: Colors.black,
-                ontap: () {
-                  Navigator.of(context).pop();
-                }),
-            Textbutton(
-                title: 'Yes',
-                color: const Color(0xFFBD1616),
-                ontap: () async {
-                  await GoogleSignIn().signOut();
-                  FirebaseAuth.instance.signOut();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SigninScreen()),
-                  );
-                }),
-          ],
-        );
-      },
-    );
-  }
+  // void showLogoutDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Logout'),
+  //         content: Text('Do you want to logout of your account?'),
+  //         actions: [
+  //           Textbutton(
+  //             title: 'No', 
+  //             color: Colors.black, 
+  //             ontap: () {
+  //               Navigator.of(context).pop();
+  //             }
+  //             ),
+  //           Textbutton(
+  //             title: 'Yes', 
+  //             color: const Color(0xFFBD1616), 
+  //             ontap: () async {
+  //               await GoogleSignIn().signOut();
+  //               FirebaseAuth.instance.signOut();
+  //               Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(builder: (context) => SigninScreen()),
+  //               );
+  //             }
+  //             ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   //text to speech
   final FlutterTts flutterTts = FlutterTts();

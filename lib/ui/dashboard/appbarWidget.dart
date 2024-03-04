@@ -2,6 +2,7 @@ import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/profile.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
+import 'package:ai_news_caster/widgets/dialog_box.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,27 @@ class AppBarWidget extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      methodsProvider.showLogoutDialog(context);
+                      DialogBox.showLogoutDialog(
+                        context: context,
+                        color: Colors.white,
+                        heading: 'Logout',
+                        text: 'Do you want to logout of our account?',
+                        button1text: 'No',
+                        button1color: Colors.black,
+                        button1onTap: () {
+                         Navigator.of(context).pop();
+                        },
+                        button2text: 'Yes',
+                        button2color: Colors.red,
+                        button2onTap: () async {
+                          await GoogleSignIn().signOut();
+                          FirebaseAuth.instance.signOut();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => SigninScreen()),
+                          );
+                        },
+                      );
                     },
                     child: CustomContainer(
                       // onTap: () async {
