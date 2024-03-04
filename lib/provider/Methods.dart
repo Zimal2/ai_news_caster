@@ -20,8 +20,8 @@ import 'package:image_picker/image_picker.dart';
 
 class Methods with ChangeNotifier {
   //variables
-  var userID;
-  var userIDSignin;
+  String? userID;
+  String? userIDSignin;
 
   //firebase var
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -99,6 +99,7 @@ class Methods with ChangeNotifier {
       "PhoneNumber": phoneControllerSignup.text,
       "UserName": usernameController.text,
       "Password": passwordControllerSignup.text,
+      "userId":userID.toString(),
     });
   }
 
@@ -114,8 +115,9 @@ class Methods with ChangeNotifier {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // User found, proceed with signing in
-        userIDSignin = _auth.currentUser?.uid;
+        String? userId = querySnapshot.docs[0].get('userId');
+      userIDSignin = userId;
+
         debugPrint("User ID while sign in: ${userIDSignin}");
         showDialog(
           context: context,
@@ -137,8 +139,9 @@ class Methods with ChangeNotifier {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-              UploadNews(useridA: userIDSignin,),
+              builder: (context) => UploadNews(
+                useridA: userIDSignin,
+              ),
             ));
       } else {
         // User not found or password incorrect
@@ -230,15 +233,15 @@ class Methods with ChangeNotifier {
   //         content: Text('Do you want to logout of your account?'),
   //         actions: [
   //           Textbutton(
-  //             title: 'No', 
-  //             color: Colors.black, 
+  //             title: 'No',
+  //             color: Colors.black,
   //             ontap: () {
   //               Navigator.of(context).pop();
   //             }
   //             ),
   //           Textbutton(
-  //             title: 'Yes', 
-  //             color: const Color(0xFFBD1616), 
+  //             title: 'Yes',
+  //             color: const Color(0xFFBD1616),
   //             ontap: () async {
   //               await GoogleSignIn().signOut();
   //               FirebaseAuth.instance.signOut();
@@ -274,13 +277,11 @@ class Methods with ChangeNotifier {
   ];
 //get user id
 
-  void newsUploadToFirebase(BuildContext context,User? userIdA) async {
-    // User? user = FirebaseAuth.instance.currentUser;
-    // final userid;
-    // debugPrint("User ID: ${user}");
+  void newsUploadToFirebase(BuildContext context, String? userIdA) async {
+   
+     debugPrint("User ID in upload outside if: ${userIdA}");
     if (userIdA == null) {
-      // User is not signed in, display an error message or redirect to sign-in page
-      showDialog(
+         showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -300,7 +301,7 @@ class Methods with ChangeNotifier {
       return; // Exit the function if user is not signed in
     }
     if (userIdA != null) {
-    //  userid = user.uid;
+      //  userid = user.uid;
       debugPrint("User ID in news upload method : ${userIdA}");
       CollectionReference _information =
           FirebaseFirestore.instance.collection('NewsUploadData');

@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class UploadNews extends StatefulWidget {
-  User? useridA;
+  String? useridA;
    UploadNews({super.key,required this.useridA});
 
   @override
