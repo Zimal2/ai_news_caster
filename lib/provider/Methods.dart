@@ -327,33 +327,7 @@ class Methods with ChangeNotifier {
       );
     }
   }
-  // User is signed in, proceed with news upload
-
-  // void newsUploadToFirebase(BuildContext context) async {
-  //   debugPrint("userid in method: ${userID ?? 'nothing'}");
-
-  //   CollectionReference _information =
-  //       FirebaseFirestore.instance.collection('NewsUploadData');
-  //   String uploaderId =
-  //       FirebaseFirestore.instance.collection('NewsUploadData').doc().id;
-  //   await _information.doc(uploaderId).set({
-  //     "description": decriptionController.text,
-  //     "image path": [
-  //       "urlDownload",
-  //       "1st index",
-  //       "2nd index",
-  //       "3rd index",
-  //     ],
-  //     "tag": selectedItem?.toString() ?? "",
-  //     "title": titleController.text,
-  //   });
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => NewsUploaded(),
-  //     ),
-  //   );
-  // }
+  
 
 // Define urlDownload variable as a class-level variable
   String? urlDownload;
@@ -403,65 +377,5 @@ class Methods with ChangeNotifier {
     }
   }
 
-  //News Upload data on firebase
-//   void newsUploadToFirebase(BuildContext context) async{
-//     CollectionReference _information=FirebaseFirestore.instance.collection('NewsUploadData');
-//     String uploaderId= FirebaseFirestore.instance.collection('NewsUploadData').doc().id;
-//     await _information.doc(uploaderId).set({
-//      "title":titleController.text ,
-//      "image path":urlDownload ,
-//      "description": decriptionController.text,
-//      "tag": selectedItem?.toString()?? "",
-
-//     });
-//   Navigator.push(
-//                             context,
-//                             MaterialPageRoute(
-//                               builder: (context) => NewsUploaded(),
-//                             ));
-
-//   }
-
-// //image uploading
-//   void setPicture(String value){
-//    // var picture = value;
-//     notifyListeners();
-//   }
-
-//   void setimage(File value){
-//     image = value;
-//     notifyListeners();
-//   }
-
-//  UploadTask? uploadTask;
-//  File? image;
-
-//  Future<void> pickImage(BuildContext context, ImageSource source) async {
-//   try {
-//     ImageCache().clear();
-//     final image = await ImagePicker().pickImage(source: source);
-
-//     if (image == null) return;
-
-//     final imageTemporary = File(image.path);
-//     setimage(imageTemporary);
-
-//     final path = 'News_Image/${image.name}';
-//     final file = File(image.path);
-
-//     final ref = FirebaseStorage.instance.ref().child(path);
-//     uploadTask = ref.putFile(file);
-
-//     final snapshot = await uploadTask!.whenComplete(() {});
-
-//     final urlDownload = await snapshot.ref.getDownloadURL();
-
-//     setPicture(urlDownload);
-
-//     print('Download Link: $urlDownload');
-//      newsUploadToFirebase(context);
-//   } on PlatformException catch (e) {
-//     Utils().toastMessage(e.toString());
-//   }
-// }
+  
 }
