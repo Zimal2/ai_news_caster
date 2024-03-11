@@ -38,44 +38,41 @@ class _GeminiState extends State<Gemini> {
       // backgroundColor: Color.fromARGB(255, 104, 103, 103),
       appBar: AppBar(title: Text("Gemini")),
 
-      body: Column(
-        children: [
-          Expanded(
-              child: Column(
-            children: [
-              Center(
-                child: Container(
-                    height: 50,
-                    width: 250,
-                    decoration: BoxDecoration(
-                        color: Colors.green,
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(35)),
-                    child: Center(
-                      child: Text(
-                        "Note: You can only enter one query",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: [
+            Center(
+              child: Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(35)),
+                  child: Center(
+                    child: Text(
+                      "Note: You can only enter one query",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: ListView.builder(
+                itemCount: _message.length,
+                itemBuilder: (context, index) {
+                  final message = _message[index];
+                  return Messages(
+                      date: DateFormat('HH:mm').format(message.date),
+                      isUser: message.isUser,
+                      message: message.message);
+                },
               ),
-              Container(
-                height: MediaQuery.of(context).size.height*0.8,
-                width:  MediaQuery.of(context).size.width*0.9,
-              //  color: Colors.amber,
-                child: ListView.builder(
-                  itemCount: _message.length,
-                  itemBuilder: (context, index) {
-                    final message = _message[index];
-                    return Messages(
-                        date: DateFormat('HH:mm').format(message.date),
-                        isUser: message.isUser,
-                        message: message.message);
-                  },
-                ),
-              ),
-            ],
-          ))
-        ],
+            ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Row(
