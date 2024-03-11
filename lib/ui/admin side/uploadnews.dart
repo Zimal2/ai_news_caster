@@ -172,11 +172,19 @@ class _UploadNewsState extends State<UploadNews> {
                 ),
                 //chatgpt option
                 GestureDetector(
-                  onTap: () => Navigator.push(
+                  onTap: () async {
+                    final response = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Gemini(),
-                      )),
+                      ));
+                    
+                     if (response != null && response is String) {
+      // Update the description TextFormField with the AI response
+      methodsProvider.decriptionController.text = response;
+    }
+
+                  },
 
                   //  methodsProvider
                   //     .speak(methodsProvider.decriptionController.text),
