@@ -79,41 +79,41 @@ class _UploadNewsState extends State<UploadNews> {
                 // Define a variable to track the number of images uploaded
 
 // Inside your widget build method or function
-Row(
-  children: [
-    // Display previously selected images
-    for (int i = 0; i <widget.selectedImages.length; i++)
-      Image.file(
-        widget.selectedImages[i]!,
-        height: MediaQuery.of(context).size.height * 0.12,
-        width: MediaQuery.of(context).size.width * 0.2,
-        fit: BoxFit.cover,
-      ),
-    
-    // Display a placeholder or add new image button
-    if (widget.selectedImages.length < 4)
-      GestureDetector(
-        onTap: () {
-          // Call the method to pick an image
-          
-          methodsProvider.pickImage(context).then((image) {
-            // Update the selected images list with the newly picked image
-            if (methodsProvider.image  != null) {
-              setState(() {
-                widget.selectedImages.add(methodsProvider.image );
-              });
-            }
-          });
-        },
-        child: Container(
-          width: 100,
-          height: 100,
-          child: Image.asset("lib/assests/images/image.png"),
-        ),
-      ),
-  ],
-),
+                Row(
+                  children: [
+                    // Display previously selected images
+                    for (int i = 0; i < widget.selectedImages.length; i++)
+                      Image.file(
+                        widget.selectedImages[i]!,
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        fit: BoxFit.cover,
+                      ),
 
+                    // Display a placeholder or add new image button
+                    if (widget.selectedImages.length < 4)
+                      GestureDetector(
+                        onTap: () {
+                          // Call the method to pick an image
+
+                          methodsProvider.pickImage(context).then((image) {
+                            // Update the selected images list with the newly picked image
+                            if (methodsProvider.image != null) {
+                              setState(() {
+                                widget.selectedImages
+                                    .add(methodsProvider.image);
+                              });
+                            }
+                          });
+                        },
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          child: Image.asset("lib/assests/images/image.png"),
+                        ),
+                      ),
+                  ],
+                ),
 
                 SizedBox(
                   height: 10,
@@ -170,44 +170,40 @@ Row(
                 SizedBox(
                   height: 20,
                 ),
-                //gemini option
+                //chatgpt option
                 GestureDetector(
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Gemini(),
-                      ))
+                      )),
+
                   //  methodsProvider
                   //     .speak(methodsProvider.decriptionController.text),
-                  ,
                   child: Container(
                     height: 50,
                     width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(color: Colors.black)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(35),
-                              child: Image.asset(
-                                "lib/assests/images/gemini_logo.png",
-                                fit: BoxFit.cover,
-                              ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(35),
+                            child: Image.asset(
+                              "lib/assests/images/gemini_logo.png",
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.01,
-                          ),
-                          sampleText(
-                              text: "Gemini", fontWeight: FontWeight.bold)
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                        ),
+                        sampleText(text: "Gemini", fontWeight: FontWeight.bold)
+                      ],
                     ),
                   ),
                 ),
