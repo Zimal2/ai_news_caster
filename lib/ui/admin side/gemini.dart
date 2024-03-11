@@ -41,12 +41,13 @@ class _GeminiState extends State<Gemini> {
         children: [
           Expanded(
               child: ListView.builder(
-                itemCount: _message.length,
+            itemCount: _message.length,
             itemBuilder: (context, index) {
-              final message=_message[index];
-              return Messages(date: DateFormat('HH:mm').format(message.date),
-               isUser: message.isUser, 
-               message: message.message);
+              final message = _message[index];
+              return Messages(
+                  date: DateFormat('HH:mm').format(message.date),
+                  isUser: message.isUser,
+                  message: message.message);
             },
           ))
         ],
@@ -148,7 +149,7 @@ class Messages extends StatelessWidget {
           ),
           Text(
             date,
-            style: TextStyle(color: isUser ? Colors.white : Colors.black),
+            style: TextStyle(color: isUser ? Colors.white : Colors.black,fontSize: 10),
           ),
         ],
       ),
