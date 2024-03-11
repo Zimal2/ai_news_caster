@@ -40,7 +40,6 @@ class _UploadNewsState extends State<UploadNews> {
                   child: GestureDetector(
                     onTap: () {
                       widget.uploadedImagesCount++;
-                      methodsProvider.pickImage(context);
                     },
                     child: CustomContainer(
                       height: 200,
@@ -80,41 +79,41 @@ class _UploadNewsState extends State<UploadNews> {
                 // Define a variable to track the number of images uploaded
 
 // Inside your widget build method or function
-                Row(
-                  children: [
-                    // Display previously selected images
-                    for (int i = 0; i < widget.selectedImages.length; i++)
-                      Image.file(
-                        widget.selectedImages[i]!,
-                        height: MediaQuery.of(context).size.height * 0.12,
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        fit: BoxFit.cover,
-                      ),
+Row(
+  children: [
+    // Display previously selected images
+    for (int i = 0; i <widget.selectedImages.length; i++)
+      Image.file(
+        widget.selectedImages[i]!,
+        height: MediaQuery.of(context).size.height * 0.12,
+        width: MediaQuery.of(context).size.width * 0.2,
+        fit: BoxFit.cover,
+      ),
+    
+    // Display a placeholder or add new image button
+    if (widget.selectedImages.length < 4)
+      GestureDetector(
+        onTap: () {
+          // Call the method to pick an image
+          
+          methodsProvider.pickImage(context).then((image) {
+            // Update the selected images list with the newly picked image
+            if (methodsProvider.image  != null) {
+              setState(() {
+                widget.selectedImages.add(methodsProvider.image );
+              });
+            }
+          });
+        },
+        child: Container(
+          width: 100,
+          height: 100,
+          child: Image.asset("lib/assests/images/image.png"),
+        ),
+      ),
+  ],
+),
 
-                    // Display a placeholder or add new image button
-                    if (widget.selectedImages.length < 4)
-                      GestureDetector(
-                        onTap: () {
-                          // Call the method to pick an image
-
-                          methodsProvider.pickImage(context).then((image) {
-                            // Update the selected images list with the newly picked image
-                            if (methodsProvider.image != null) {
-                              setState(() {
-                                widget.selectedImages
-                                    .add(methodsProvider.image);
-                              });
-                            }
-                          });
-                        },
-                        child: Container(
-                          width: 150,
-                          height: 150,
-                          child: Image.asset("lib/assests/images/image.png"),
-                        ),
-                      ),
-                  ],
-                ),
 
                 SizedBox(
                   height: 10,
