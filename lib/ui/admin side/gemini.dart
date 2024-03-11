@@ -31,6 +31,7 @@ class _GeminiState extends State<Gemini> {
     });
   }
 
+  bool _isChattingAllowed = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,15 +41,39 @@ class _GeminiState extends State<Gemini> {
       body: Column(
         children: [
           Expanded(
-              child: ListView.builder(
-            itemCount: _message.length,
-            itemBuilder: (context, index) {
-              final message = _message[index];
-              return Messages(
-                  date: DateFormat('HH:mm').format(message.date),
-                  isUser: message.isUser,
-                  message: message.message);
-            },
+              child: Column(
+            children: [
+              Center(
+                child: Container(
+                    height: 50,
+                    width: 250,
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(35)),
+                    child: Center(
+                      child: Text(
+                        "Note: You can only enter one query",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height*0.8,
+                width:  MediaQuery.of(context).size.width*0.9,
+              //  color: Colors.amber,
+                child: ListView.builder(
+                  itemCount: _message.length,
+                  itemBuilder: (context, index) {
+                    final message = _message[index];
+                    return Messages(
+                        date: DateFormat('HH:mm').format(message.date),
+                        isUser: message.isUser,
+                        message: message.message);
+                  },
+                ),
+              ),
+            ],
           ))
         ],
       ),
@@ -57,30 +82,41 @@ class _GeminiState extends State<Gemini> {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _geminiTextController,
-                decoration: InputDecoration(
-                    fillColor: Colors.black45,
-                    filled: true,
-                    hintText: "Enter your message",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50)),
-                    // focusedBorder: border,
-                    // disabledBorder: border,
-                    // enabledBorder: border,
-                    suffixIcon: IconButton(
-                        onPressed: () async {
-                          sendMessage();
-                          // await bloc
-                          //     .getAiResponse(controller.text, context)
-                          //     .then((value) {
-                          //   controller.text = '';
-                          // });
-                        },
-                        icon: const Icon(Icons.send))),
-              ),
-            ),
+                padding: const EdgeInsets.all(8.0),
+                child: _isChattingAllowed
+                    ? TextFormField(
+                        controller: _geminiTextController,
+                        decoration: InputDecoration(
+                            fillColor: Colors.black45,
+                            filled: true,
+                            hintText: "Enter your message",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            // focusedBorder: border,
+                            // disabledBorder: border,
+                            // enabledBorder: border,
+                            suffixIcon: IconButton(
+                                onPressed: () async {
+                                  _isChattingAllowed = false;
+                                  sendMessage();
+                                  // await bloc
+                                  //     .getAiResponse(controller.text, context)
+                                  //     .then((value) {
+                                  //   controller.text = '';
+                                  // });
+                                },
+                                icon: const Icon(Icons.send))),
+                      )
+                    : Container(
+                        height: 50,
+                        width: 200,
+                        decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.circular(35)),
+                        child: Center(
+                          child: Text("Cant enter more queries"),
+                        ),
+                      )),
           ),
           // InkWell(
           //     onTapDown: (value) async {
@@ -149,7 +185,8 @@ class Messages extends StatelessWidget {
           ),
           Text(
             date,
-            style: TextStyle(color: isUser ? Colors.white : Colors.black,fontSize: 10),
+            style: TextStyle(
+                color: isUser ? Colors.white : Colors.black, fontSize: 10),
           ),
         ],
       ),
