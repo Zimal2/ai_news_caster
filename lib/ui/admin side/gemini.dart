@@ -29,6 +29,9 @@ class _GeminiState extends State<Gemini> {
       _message.add(Message(
           date: DateTime.now(), isUser: false, message: response.text ?? ""));
     });
+
+    // Pass the response to the UploadNews screen
+  Navigator.pop(context, response.text);
   }
 
   bool _isChattingAllowed = true;
