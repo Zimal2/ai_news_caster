@@ -1,4 +1,5 @@
 import 'package:ai_news_caster/provider/Methods.dart';
+import 'package:ai_news_caster/ui/admin%20side/gemini.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
@@ -8,14 +9,12 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
-
-
 class UploadNews extends StatefulWidget {
   int uploadedImagesCount = 0;
 
- // Define a list to store selected images
-List<File?> selectedImages = []; 
- String? useridA;
+  // Define a list to store selected images
+  List<File?> selectedImages = [];
+  String? useridA;
   UploadNews({super.key, required this.useridA});
 
   @override
@@ -80,44 +79,42 @@ class _UploadNewsState extends State<UploadNews> {
                 ),
                 // Define a variable to track the number of images uploaded
 
-               
-
 // Inside your widget build method or function
-Row(
-  children: [
-    // Display previously selected images
-    for (int i = 0; i <widget.selectedImages.length; i++)
-      Image.file(
-        widget.selectedImages[i]!,
-        height: MediaQuery.of(context).size.height * 0.12,
-        width: MediaQuery.of(context).size.width * 0.2,
-        fit: BoxFit.cover,
-      ),
-    
-    // Display a placeholder or add new image button
-    if (widget.selectedImages.length < 4)
-      GestureDetector(
-        onTap: () {
-          // Call the method to pick an image
-          
-          methodsProvider.pickImage(context).then((image) {
-            // Update the selected images list with the newly picked image
-            if (methodsProvider.image  != null) {
-              setState(() {
-                widget.selectedImages.add(methodsProvider.image );
-              });
-            }
-          });
-        },
-        child: Container(
-          width: 150,
-          height: 150,
-          child: Image.asset("lib/assests/images/image.png"),
-        ),
-      ),
-  ],
-),
+                Row(
+                  children: [
+                    // Display previously selected images
+                    for (int i = 0; i < widget.selectedImages.length; i++)
+                      Image.file(
+                        widget.selectedImages[i]!,
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        fit: BoxFit.cover,
+                      ),
 
+                    // Display a placeholder or add new image button
+                    if (widget.selectedImages.length < 4)
+                      GestureDetector(
+                        onTap: () {
+                          // Call the method to pick an image
+
+                          methodsProvider.pickImage(context).then((image) {
+                            // Update the selected images list with the newly picked image
+                            if (methodsProvider.image != null) {
+                              setState(() {
+                                widget.selectedImages
+                                    .add(methodsProvider.image);
+                              });
+                            }
+                          });
+                        },
+                        child: Container(
+                          width: 150,
+                          height: 150,
+                          child: Image.asset("lib/assests/images/image.png"),
+                        ),
+                      ),
+                  ],
+                ),
 
                 SizedBox(
                   height: 10,
@@ -174,25 +171,44 @@ Row(
                 SizedBox(
                   height: 20,
                 ),
-                //chatgpt option
+                //gemini option
                 GestureDetector(
-                  onTap: () => methodsProvider
-                      .speak(methodsProvider.decriptionController.text),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Gemini(),
+                      ))
+                  //  methodsProvider
+                  //     .speak(methodsProvider.decriptionController.text),
+                  ,
                   child: Container(
+                    height: 50,
                     width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(color: Colors.black)),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 50,
-                          height: 50,
-                          child: Image.asset(
-                              "lib/assests/images/chatpgt icon 1.png"),
-                        ),
-                        sampleText(text: "Chatgpt", fontWeight: FontWeight.bold)
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(35),
+                              child: Image.asset(
+                                "lib/assests/images/gemini_logo.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.01,
+                          ),
+                          sampleText(
+                              text: "Gemini", fontWeight: FontWeight.bold)
+                        ],
+                      ),
                     ),
                   ),
                 ),
