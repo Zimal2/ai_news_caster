@@ -318,6 +318,9 @@ class Methods with ChangeNotifier {
   UploadTask? uploadTask;
   File? image;
 
+  bool _isUploadingImage = false;
+  bool get isUploadingImage => _isUploadingImage;
+
   Future<dynamic> pickImage(BuildContext context) async {
     try {
       ImageCache().clear();
@@ -334,7 +337,13 @@ class Methods with ChangeNotifier {
       final ref = FirebaseStorage.instance.ref().child(path);
       uploadTask = ref.putFile(file);
 
-      final snapshot = await uploadTask!.whenComplete(() {});
+      _isUploadingImage = true; // Set uploading to true
+      notifyListeners();
+
+      final snapshot = await uploadTask!.whenComplete(() {
+        _isUploadingImage = false; // Set uploading to false when upload is complete
+        notifyListeners();
+      });
 
       final urlDownload = await snapshot.ref.getDownloadURL();
 

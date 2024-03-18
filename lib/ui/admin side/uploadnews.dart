@@ -40,6 +40,22 @@ class UploadNewsState extends State<UploadNews> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
+                      if (widget.selectedImages.length < 4) {
+                      methodsProvider.pickImage(context).then((image) {
+                            // Update the selected images list with the newly picked image
+                            if (methodsProvider.image != null) {
+                              setState(() {
+                                //add selected images to list to upload into firebase
+                                widget.ImagesToFirebase.add(
+                                    methodsProvider.urlDownload.toString());
+                                print(
+                                    "urlDownload: ${widget.ImagesToFirebase}");
+                                widget.selectedImages
+                                    .add(methodsProvider.image);
+                              });
+                            }
+                          });
+                      }
                       widget.uploadedImagesCount++;
                     },
                     child: CustomContainer(
@@ -50,19 +66,21 @@ class UploadNewsState extends State<UploadNews> {
                       ),
                       child: Column(
                         children: [
-                          methodsProvider.image != null
-                              ? Image.file(
-                                  methodsProvider.image!,
-                                  width: 150,
-                                  height: 150,
-                                  fit: BoxFit.cover,
-                                )
-                              : Container(
-                                  width: 150,
-                                  height: 150,
-                                  child: Image.asset(
-                                      "lib/assests/images/image.png"),
-                                ),
+                          methodsProvider.isUploadingImage
+              ? CircularProgressIndicator()
+              : methodsProvider.image != null
+                  ? Image.file(
+                      methodsProvider.image!,
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(
+                      width: 150,
+                      height: 150,
+                      child: Image.asset(
+                          "lib/assests/images/image.png"),
+                    ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -97,20 +115,20 @@ class UploadNewsState extends State<UploadNews> {
                         onTap: () {
                           // Call the method to pick an image
 
-                          methodsProvider.pickImage(context).then((image) {
-                            // Update the selected images list with the newly picked image
-                            if (methodsProvider.image != null) {
-                              setState(() {
-                                //add selected images to list to upload into firebase
-                                widget.ImagesToFirebase.add(
-                                    methodsProvider.urlDownload.toString());
-                                print(
-                                    "urlDownload: ${widget.ImagesToFirebase}");
-                                widget.selectedImages
-                                    .add(methodsProvider.image);
-                              });
-                            }
-                          });
+                          // methodsProvider.pickImage(context).then((image) {
+                          //   // Update the selected images list with the newly picked image
+                          //   if (methodsProvider.image != null) {
+                          //     setState(() {
+                          //       //add selected images to list to upload into firebase
+                          //       widget.ImagesToFirebase.add(
+                          //           methodsProvider.urlDownload.toString());
+                          //       print(
+                          //           "urlDownload: ${widget.ImagesToFirebase}");
+                          //       widget.selectedImages
+                          //           .add(methodsProvider.image);
+                          //     });
+                          //   }
+                          // });
                         },
                         child: Container(
                           width: 100,
