@@ -28,17 +28,17 @@ class Methods with ChangeNotifier {
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   //textfeild controllers
-  final usernameController = new TextEditingController();
-  final emailController = new TextEditingController();
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
 
-  final passwordControllerSignin = new TextEditingController();
-  final passwordControllerSignup = new TextEditingController();
+  final passwordControllerSignin = TextEditingController();
+  final passwordControllerSignup = TextEditingController();
 
-  final institueController = new TextEditingController();
-  final designationController = new TextEditingController();
+  final institueController = TextEditingController();
+  final designationController = TextEditingController();
 
-  final phoneControllerSignup = new TextEditingController();
-  final phoneControllerSignin = new TextEditingController();
+  final phoneControllerSignup = TextEditingController();
+  final phoneControllerSignin = TextEditingController();
 
   TextEditingController decriptionController = TextEditingController();
   TextEditingController titleController = TextEditingController();
@@ -244,7 +244,8 @@ class Methods with ChangeNotifier {
   ];
 //get user id
 
-  void newsUploadToFirebase(BuildContext context, String? userIdA,List imageslist) async {
+  void newsUploadToFirebase(
+      BuildContext context, String? userIdA, List imageslist) async {
     if (userIdA == null) {
       // User is not signed in, display an error message or redirect to sign-in page
       showDialog(
@@ -267,29 +268,18 @@ class Methods with ChangeNotifier {
       return; // Exit the function if user is not signed in
     }
     if (userIdA != null) {
-      //  userid = user.uid;
       debugPrint("User ID in news upload method : ${userIdA}");
       CollectionReference _information =
           FirebaseFirestore.instance.collection('NewsUploadData');
       DocumentReference documentRef = _information.doc(userIdA.toString());
-      // Add empty strings to fill the array if necessary
-      // while (ImagesToFirebase.length < 4) {
-      //   ImagesToFirebase.add(
-      //       "");
-      // }
-        print("final images: $imageslist");
+
+      print("final images: $imageslist");
       await documentRef.set({
         "description": decriptionController.text,
-         "image path":imageslist,
-        //  [
-        //   urlDownload ?? "no url",
-        //   "",
-        //   "",
-        //   "",
-        // ],
+        "image path": imageslist,
         "tag": selectedItem?.toString() ?? "no tag",
         "title": titleController.text,
-        "uploaderId": userIdA, // Add the uploader's ID to the document
+        "uploaderId": userIdA,
       });
 
       Navigator.push(
@@ -358,22 +348,4 @@ class Methods with ChangeNotifier {
     }
   }
 
-  // List<String> ImagesToFirebase = [];
-  // Future<void> GetImagesUrl(BuildContext context) async {
-  //   final image = await pickImage(context);
-  //   if (image != null) {
-  //     ImagesToFirebase.add(urlDownload.toString());
-  //     print("urlDownload: ${ImagesToFirebase}");
-  //     UploadNews.selectedImages.add(image);
-  //   }
-  //   // pickImage(context).then((image) {
-  //   //   // Update the selected images list with the newly picked image
-  //   //   if (image != null) {
-  //   //     //add selected images to list to upload into firebase
-  //   //     ImagesToFirebase.add(urlDownload.toString());
-  //   //     print("urlDownload: ${ImagesToFirebase}");
-  //   //   //  selectedImages.add(image);
-  //   //   }
-  //   // });
-  // }
-}
+  }
