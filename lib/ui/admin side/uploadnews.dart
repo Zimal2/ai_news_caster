@@ -28,7 +28,7 @@ class UploadNewsState extends State<UploadNews> {
     final methodsProvider = Provider.of<Methods>(context);
     double size = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(title: Text("Upload News")),
+      appBar: AppBar(title: const Text("Upload News")),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -104,6 +104,10 @@ class UploadNewsState extends State<UploadNews> {
                                 //add selected images to list to upload into firebase
                                 widget.ImagesToFirebase.add(
                                     methodsProvider.urlDownload.toString());
+                                // Add empty strings to fill the array if necessary
+                                while (widget.ImagesToFirebase.length < 4) {
+                                  widget.ImagesToFirebase.add("");
+                                }
                                 print(
                                     "urlDownload: ${widget.ImagesToFirebase}");
                                 widget.selectedImages
@@ -121,11 +125,11 @@ class UploadNewsState extends State<UploadNews> {
                   ],
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 //title
@@ -137,19 +141,19 @@ class UploadNewsState extends State<UploadNews> {
                     fillColor: Colors.grey[200],
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 //description
@@ -161,19 +165,19 @@ class UploadNewsState extends State<UploadNews> {
                     fillColor: Colors.grey[200],
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 //chatgpt option
@@ -182,7 +186,7 @@ class UploadNewsState extends State<UploadNews> {
                     final response = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Gemini(),
+                          builder: (context) => const Gemini(),
                         ));
 
                     if (response != null && response is String) {
@@ -232,22 +236,17 @@ class UploadNewsState extends State<UploadNews> {
                   child: DropdownButton<String>(
                     elevation: 2,
                     focusColor: Colors.grey,
-
                     value: methodsProvider.selectedItem,
-                    hint: Text('Select an item'),
+                    hint: const Text('Select an item'),
                     isExpanded: true,
-                    style: const TextStyle(
-                        color: Colors
-                            .grey), // Set dropdown button text color to grey
+                    style: const TextStyle(color: Colors.grey),
                     underline: Container(
                       height: 2,
-                      color: Colors.grey, // Set the underline color to grey
+                      color: Colors.grey,
                     ),
                     onChanged: (newValue) {
-                      // Callback function to handle the item selection
                       setState(() {
-                        methodsProvider.selectedItem =
-                            newValue; // Update the selected item
+                        methodsProvider.selectedItem = newValue;
                       });
                     },
                     items: methodsProvider.items.map((String item) {
@@ -272,7 +271,7 @@ class UploadNewsState extends State<UploadNews> {
                             "useridA in upload class: ${widget.useridA ?? 'nothing'}");
 
                         methodsProvider.newsUploadToFirebase(
-                            context, widget.useridA,widget.ImagesToFirebase);
+                            context, widget.useridA, widget.ImagesToFirebase);
                       }),
                 )
               ],
