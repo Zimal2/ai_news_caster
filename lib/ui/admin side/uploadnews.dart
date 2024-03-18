@@ -3,25 +3,26 @@ import 'package:ai_news_caster/ui/admin%20side/gemini.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
 class UploadNews extends StatefulWidget {
   int uploadedImagesCount = 0;
+  List<String> ImagesToFirebase = [];
 
   // Define a list to store selected images
   List<File?> selectedImages = [];
+  // List<String> ImagesToFirebase = [];
+
   String? useridA;
   UploadNews({super.key, required this.useridA});
 
   @override
-  State<UploadNews> createState() => _UploadNewsState();
+  State<UploadNews> createState() => UploadNewsState();
 }
 
-class _UploadNewsState extends State<UploadNews> {
+class UploadNewsState extends State<UploadNews> {
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -100,6 +101,11 @@ class _UploadNewsState extends State<UploadNews> {
                             // Update the selected images list with the newly picked image
                             if (methodsProvider.image != null) {
                               setState(() {
+                                //add selected images to list to upload into firebase
+                                widget.ImagesToFirebase.add(
+                                    methodsProvider.urlDownload.toString());
+                                print(
+                                    "urlDownload: ${widget.ImagesToFirebase}");
                                 widget.selectedImages
                                     .add(methodsProvider.image);
                               });
@@ -174,16 +180,15 @@ class _UploadNewsState extends State<UploadNews> {
                 GestureDetector(
                   onTap: () async {
                     final response = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Gemini(),
-                      ));
-                    
-                     if (response != null && response is String) {
-      // Update the description TextFormField with the AI response
-      methodsProvider.decriptionController.text = response;
-    }
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Gemini(),
+                        ));
 
+                    if (response != null && response is String) {
+                      // Update the description TextFormField with the AI response
+                      methodsProvider.decriptionController.text = response;
+                    }
                   },
 
                   //  methodsProvider
@@ -228,10 +233,9 @@ class _UploadNewsState extends State<UploadNews> {
                     elevation: 2,
                     focusColor: Colors.grey,
 
-                    value: methodsProvider
-                        .selectedItem, // Initially selected item (if any)
-                    hint: Text('Select an item'), // Placeholder or hint text
-                    isExpanded: true, // Expand dropdown to fit maximum width
+                    value: methodsProvider.selectedItem,
+                    hint: Text('Select an item'),
+                    isExpanded: true,
                     style: const TextStyle(
                         color: Colors
                             .grey), // Set dropdown button text color to grey
@@ -268,7 +272,7 @@ class _UploadNewsState extends State<UploadNews> {
                             "useridA in upload class: ${widget.useridA ?? 'nothing'}");
 
                         methodsProvider.newsUploadToFirebase(
-                            context, widget.useridA);
+                            context, widget.useridA,widget.ImagesToFirebase);
                       }),
                 )
               ],

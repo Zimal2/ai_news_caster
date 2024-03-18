@@ -32,7 +32,7 @@ apply plugin:"kotlin-android"
 
 android {
     namespace "com.example.ai_news_caster"
-    compileSdkVersion 33
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {

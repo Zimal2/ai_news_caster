@@ -244,7 +244,7 @@ class Methods with ChangeNotifier {
   ];
 //get user id
 
-  void newsUploadToFirebase(BuildContext context, String? userIdA) async {
+  void newsUploadToFirebase(BuildContext context, String? userIdA,List imageslist) async {
     if (userIdA == null) {
       // User is not signed in, display an error message or redirect to sign-in page
       showDialog(
@@ -272,14 +272,21 @@ class Methods with ChangeNotifier {
       CollectionReference _information =
           FirebaseFirestore.instance.collection('NewsUploadData');
       DocumentReference documentRef = _information.doc(userIdA.toString());
+      // Add empty strings to fill the array if necessary
+      // while (ImagesToFirebase.length < 4) {
+      //   ImagesToFirebase.add(
+      //       "");
+      // }
+        print("final images: $imageslist");
       await documentRef.set({
         "description": decriptionController.text,
-        "image path": [
-          urlDownload ?? "no url",
-          "",
-          "",
-          "",
-        ],
+         "image path":imageslist,
+        //  [
+        //   urlDownload ?? "no url",
+        //   "",
+        //   "",
+        //   "",
+        // ],
         "tag": selectedItem?.toString() ?? "no tag",
         "title": titleController.text,
         "uploaderId": userIdA, // Add the uploader's ID to the document
@@ -311,9 +318,8 @@ class Methods with ChangeNotifier {
   UploadTask? uploadTask;
   File? image;
 
-  Future<void> pickImage(BuildContext context) async {
+  Future<dynamic> pickImage(BuildContext context) async {
     try {
-
       ImageCache().clear();
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -342,4 +348,23 @@ class Methods with ChangeNotifier {
       Utils().toastMessage(e.toString());
     }
   }
+
+  // List<String> ImagesToFirebase = [];
+  // Future<void> GetImagesUrl(BuildContext context) async {
+  //   final image = await pickImage(context);
+  //   if (image != null) {
+  //     ImagesToFirebase.add(urlDownload.toString());
+  //     print("urlDownload: ${ImagesToFirebase}");
+  //     UploadNews.selectedImages.add(image);
+  //   }
+  //   // pickImage(context).then((image) {
+  //   //   // Update the selected images list with the newly picked image
+  //   //   if (image != null) {
+  //   //     //add selected images to list to upload into firebase
+  //   //     ImagesToFirebase.add(urlDownload.toString());
+  //   //     print("urlDownload: ${ImagesToFirebase}");
+  //   //   //  selectedImages.add(image);
+  //   //   }
+  //   // });
+  // }
 }
