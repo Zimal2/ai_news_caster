@@ -348,4 +348,43 @@ class Methods with ChangeNotifier {
     }
   }
 
+
+// Python file integration
+
+Future<void> showLips(String text) async {
+  final response = await http.post(
+    Uri.parse('http://your_server_ip:5000/show_lips'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'text': text,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    print('Showing lips');
+  } else {
+    throw Exception('Failed to show lips');
+  }
+}
+
+Future<void> updateAudio(String text) async {
+  final response = await http.post(
+    Uri.parse('http://your_server_ip:5000/update_audio'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'text': text,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    print('Audio updated');
+  } else {
+    throw Exception('Failed to update audio');
+  }
+}
+
   }
