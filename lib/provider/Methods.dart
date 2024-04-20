@@ -271,23 +271,45 @@ class Methods with ChangeNotifier {
       debugPrint("User ID in news upload method : ${userIdA}");
       CollectionReference _information =
           FirebaseFirestore.instance.collection('NewsUploadData');
-      DocumentReference documentRef = _information.doc(userIdA.toString());
+      final String documentId2 = userIdA.toString();
+      print("id here: $documentId2");
+      try {
+        DocumentSnapshot snapshot = await _information.doc(documentId2).get();
+        if (snapshot.exists) {
+          Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+          print("data here: $data");
+          List<Map<String, dynamic>> NewsDataList = [];
+          for (int i = 0; i < data['NewsData'].length; i++) {
+            NewsDataList.add(data['NewsData'][i]);
+          }
+          print("user id here 2: $userIdA");
+          NewsDataList.add({
+            "description": decriptionController.text,
+            "image path": imageslist,
+            "tag": selectedItem?.toString() ?? "no tag",
+            "title": titleController.text,
+            "uploaderId": userIdA,
+          });
 
-      print("final images: $imageslist");
-      await documentRef.set({
-        "description": decriptionController.text,
-        "image path": imageslist,
-        "tag": selectedItem?.toString() ?? "no tag",
-        "title": titleController.text,
-        "uploaderId": userIdA,
-      });
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NewsUploaded(),
-        ),
-      );
+          print('after add 2 the ${NewsDataList}');
+          FirebaseFirestore.instance
+              .collection('NewsUploadData')
+              .doc(documentId2)
+              .update({
+            'NewsData': NewsDataList,
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NewsUploaded(),
+            ),
+          );
+        } else {
+          print("Document doesn't exist");
+        }
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -331,7 +353,8 @@ class Methods with ChangeNotifier {
       notifyListeners();
 
       final snapshot = await uploadTask!.whenComplete(() {
-        _isUploadingImage = false; // Set uploading to false when upload is complete
+        _isUploadingImage =
+            false; // Set uploading to false when upload is complete
         notifyListeners();
       });
 
@@ -340,12 +363,8 @@ class Methods with ChangeNotifier {
       setPicture(urlDownload);
 
       print('Download Link: $urlDownload');
-
-      // newsUploadToFirebase(
-      //     context);
     } on PlatformException catch (e) {
       Utils().toastMessage(e.toString());
     }
   }
-
-  }
+}

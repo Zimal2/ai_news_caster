@@ -1,5 +1,6 @@
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/admin%20side/gemini.dart';
+import 'package:ai_news_caster/ui/mediaScreens/newsUploaded.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
@@ -9,11 +10,11 @@ import 'dart:io';
 
 class UploadNews extends StatefulWidget {
   int uploadedImagesCount = 0;
-  List<String> ImagesToFirebase = [];
+
 
   // Define a list to store selected images
   List<File?> selectedImages = [];
-  // List<String> ImagesToFirebase = [];
+  List<String> ImagesToFirebase = [];
 
   String? useridA;
   UploadNews({super.key, required this.useridA});
@@ -41,20 +42,18 @@ class UploadNewsState extends State<UploadNews> {
                   child: GestureDetector(
                     onTap: () {
                       if (widget.selectedImages.length < 4) {
-                      methodsProvider.pickImage(context).then((image) {
-                            // Update the selected images list with the newly picked image
-                            if (methodsProvider.image != null) {
-                              setState(() {
-                                //add selected images to list to upload into firebase
-                                widget.ImagesToFirebase.add(
-                                    methodsProvider.urlDownload.toString());
-                                print(
-                                    "urlDownload: ${widget.ImagesToFirebase}");
-                                widget.selectedImages
-                                    .add(methodsProvider.image);
-                              });
-                            }
-                          });
+                        methodsProvider.pickImage(context).then((image) {
+                          // Update the selected images list with the newly picked image
+                          if (methodsProvider.image != null) {
+                            setState(() {
+                              //add selected images to list to upload into firebase
+                              widget.ImagesToFirebase.add(
+                                  methodsProvider.urlDownload.toString());
+                              print("urlDownload: ${widget.ImagesToFirebase}");
+                              widget.selectedImages.add(methodsProvider.image);
+                            });
+                          }
+                        });
                       }
                       widget.uploadedImagesCount++;
                     },
@@ -67,20 +66,20 @@ class UploadNewsState extends State<UploadNews> {
                       child: Column(
                         children: [
                           methodsProvider.isUploadingImage
-              ? CircularProgressIndicator()
-              : methodsProvider.image != null
-                  ? Image.file(
-                      methodsProvider.image!,
-                      width: 150,
-                      height: 150,
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      width: 150,
-                      height: 150,
-                      child: Image.asset(
-                          "lib/assests/images/image.png"),
-                    ),
+                              ? CircularProgressIndicator()
+                              : methodsProvider.image != null
+                                  ? Image.file(
+                                      methodsProvider.image!,
+                                      width: 150,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Container(
+                                      width: 150,
+                                      height: 150,
+                                      child: Image.asset(
+                                          "lib/assests/images/image.png"),
+                                    ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -282,7 +281,7 @@ class UploadNewsState extends State<UploadNews> {
                       ontap: () {
                         debugPrint(
                             "useridA in upload class: ${widget.useridA ?? 'nothing'}");
-
+                      
                         methodsProvider.newsUploadToFirebase(
                             context, widget.useridA, widget.ImagesToFirebase);
                       }),
