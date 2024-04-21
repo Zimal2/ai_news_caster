@@ -1,13 +1,8 @@
-//import 'package:ai_news_caster/ui/PhoneNumberconfirmation.dart';
 import 'package:ai_news_caster/provider/Methods.dart';
-import 'package:ai_news_caster/ui/phoneNumberconfirmed.dart';
-import 'package:ai_news_caster/utils/flutterToast.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
 class PhoneNumberConfirm extends StatefulWidget {

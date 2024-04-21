@@ -1,5 +1,6 @@
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
+import 'package:ai_news_caster/ui/sign_in_screens/forget_password.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in-administrator.dart';
 import 'package:ai_news_caster/ui/signup_screens/signup.dart';
 import 'package:ai_news_caster/utils/flutterToast.dart';
@@ -24,6 +25,32 @@ class _SigninScreenState extends State<SigninScreen> {
   final passwordController = new TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
   final _formkey = GlobalKey<FormState>();
+  // void login() {
+  //   if (_formkey.currentState!.validate()) {
+  //     _auth
+  //         .signInWithEmailAndPassword(
+  //             email: emailController.text.toString(),
+  //             password: passwordController.text.toString())
+  //         .then((value) {
+  //       Utils().toastMessage(value.user!.email!);
+  //       Navigator.push(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (context) => const DashboardScreen(),
+  //           ));
+  //     }).catchError((error) {
+  //       // Handle sign-in errors
+  //       String errorMessage = "Sign-in failed: ";
+  //       if (error is FirebaseAuthException) {
+  //         errorMessage += error.message ?? "Unknown error";
+  //       } else {
+  //         errorMessage += error.toString();
+  //       }
+  //       Utils().toastMessage(errorMessage);
+  //     });
+  //   }
+  // }
+
   void login() {
     if (_formkey.currentState!.validate()) {
       _auth
@@ -33,12 +60,26 @@ class _SigninScreenState extends State<SigninScreen> {
           .then((value) {
         Utils().toastMessage(value.user!.email!);
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const DashboardScreen(),
-            ));
-      }).onError((error, stackTrace) {
-        Utils().toastMessage(error.toString());
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DashboardScreen(),
+          ),
+        );
+      }).catchError((error) {
+        // Handle sign-in errors
+        String errorMessage = "Sign-in failed: ";
+        if (error is FirebaseAuthException) {
+          if (error.code == 'user-not-found') {
+            errorMessage += 'No user found with this email.';
+          } else if (error.code == 'wrong-password') {
+            errorMessage += 'Wrong password provided for this user.';
+          } else {
+            errorMessage += error.message ?? "Unknown error";
+          }
+        } else {
+          errorMessage += error.toString();
+        }
+        Utils().toastMessage(errorMessage);
       });
     }
   }
@@ -146,6 +187,11 @@ class _SigninScreenState extends State<SigninScreen> {
                       ),
                     ),
                     CustomContainer(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgetPassword(),
+                          )),
                       width: double.infinity,
                       height: 40,
                       alignment: Alignment.centerRight,

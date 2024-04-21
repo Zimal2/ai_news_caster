@@ -4,6 +4,7 @@ import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsUploaded.dart';
 import 'package:ai_news_caster/ui/phoneNumberconfirmed.dart';
+import 'package:ai_news_caster/ui/sign_in_screens/sign_in-administrator.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/phoneNumber_confirm.dart';
 import 'package:ai_news_caster/ui/admin%20side/uploadnews.dart';
@@ -13,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -31,6 +33,12 @@ class Methods with ChangeNotifier {
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
 
+  TextEditingController newPassForgetController = new TextEditingController();
+  TextEditingController PassForgetPassPhoneNumberController =
+      new TextEditingController();
+  TextEditingController PhoneNumberForgetPassPhoneNumberController =
+      new TextEditingController();
+
   final passwordControllerSignin = TextEditingController();
   final passwordControllerSignup = TextEditingController();
 
@@ -42,8 +50,10 @@ class Methods with ChangeNotifier {
 
   TextEditingController decriptionController = TextEditingController();
   TextEditingController titleController = TextEditingController();
-
   TextEditingController phoneCodeController = TextEditingController();
+
+  //keys
+  final GlobalKey<FormState> forgetFormKey = GlobalKey<FormState>();
 
   //methods
 
@@ -53,6 +63,7 @@ class Methods with ChangeNotifier {
         phoneNumber: phoneControllerSignup.text,
         verificationCompleted: (_) {},
         verificationFailed: (e) {
+          showSnackBar(context, "Verfication Failed", SnackBarType.fail);
           Utils().toastMessage(e.toString());
         },
         codeSent: (String verificationId, int? token) {
@@ -77,12 +88,14 @@ class Methods with ChangeNotifier {
     try {
       await _auth.signInWithCredential(credentials);
       addSignUpAdminDetailsToFirebase();
+      showSnackBar(context, "Successfull Sign up", SnackBarType.success);
       Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => PhoneNumberConfirmed(),
           ));
     } catch (e) {
+      showSnackBar(context, "Sign up Failed", SnackBarType.fail);
       Utils().toastMessage(e.toString());
     }
   }
@@ -119,23 +132,27 @@ class Methods with ChangeNotifier {
         userIDSignin = userId;
 
         debugPrint("User ID while sign in: ${userIDSignin}");
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Sign In Success"),
-              content: Text("Admin signed in successfully."),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("OK"),
-                ),
-              ],
-            );
-          },
-        );
+        // showAwesomeSnackbar(context, "Sign In Success",
+
+        //     "Admin signed in successfully.", ContentType.success);
+        showSnackBar(context, "Sign In Success", SnackBarType.success);
+        // showDialog(
+        //   context: context,
+        //   builder: (BuildContext context) {
+        //     return AlertDialog(
+        //       title: Text("Sign In Success"),
+        //       content: Text("Admin signed in successfully."),
+        //       actions: [
+        //         TextButton(
+        //           onPressed: () {
+        //             Navigator.of(context).pop();
+        //           },
+        //           child: Text("OK"),
+        //         ),
+        //       ],
+        //     );
+        //   },
+        // );
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -145,43 +162,28 @@ class Methods with ChangeNotifier {
             ));
       } else {
         // User not found or password incorrect
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Sign In Failed"),
-              content: Text("Invalid phone number or password."),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("OK"),
-                ),
-              ],
-            );
-          },
-        );
+        showSnackBar(context, "Sign In Failed", SnackBarType.fail);
       }
     } catch (e) {
       // Error occurred
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Sign In Failed"),
-            content: Text(e.toString()),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
+      showSnackBar(context, "Sign In Failed", SnackBarType.fail);
+      // showDialog(
+      //   context: context,
+      //   builder: (BuildContext context) {
+      //     return AlertDialog(
+      //       title: Text("Sign In Failed"),
+      //       content: Text(e.toString()),
+      //       actions: [
+      //         TextButton(
+      //           onPressed: () {
+      //             Navigator.of(context).pop();
+      //           },
+      //           child: Text("OK"),
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );
     }
   }
   //google sign in
@@ -248,23 +250,26 @@ class Methods with ChangeNotifier {
       BuildContext context, String? userIdA, List imageslist) async {
     if (userIdA == null) {
       // User is not signed in, display an error message or redirect to sign-in page
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Error"),
-            content: Text("Please sign in to upload news."),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
+      showSnackBar(context, "Sign In Failed, Please Sign in to upload news",
+          SnackBarType.fail);
+      // showDialog(
+      //   context: context,
+      //   builder: (BuildContext context) {
+      //     return AlertDialog(
+      //       title: Text("Error"),
+      //       content: Text("Please sign in to upload news."),
+      //       actions: [
+      //         TextButton(
+      //           onPressed: () {
+      //             Navigator.of(context).pop();
+      //           },
+      //           child: Text("OK"),
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );
+
       return; // Exit the function if user is not signed in
     }
     if (userIdA != null) {
@@ -298,6 +303,8 @@ class Methods with ChangeNotifier {
               .update({
             'NewsData': NewsDataList,
           });
+          showSnackBar(
+              context, "News Uploaded Successfully", SnackBarType.success);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -368,47 +375,111 @@ class Methods with ChangeNotifier {
     }
   }
 
-}
+//snack bar
+  void showSnackBar(
+      BuildContext context, String title, SnackBarType snackBarType) {
+    IconSnackBar.show(context,
+        snackBarType: snackBarType,
+        snackBarStyle: const SnackBarStyle(
+          maxLines: 2,
+        ),
+        label: title);
+  }
 
+//for forget password: SIMPLE SIGNIN
+  validateForm(BuildContext context) async {
+    FocusManager.instance.primaryFocus!.unfocus();
+    final valid = forgetFormKey.currentState!.validate();
+    if (!valid) {
+      return;
+    }
+    forgetFormKey.currentState!.save();
+    // loading(true);
+    bool value = await makeResetPassword(newPassForgetController.text, context);
+    if (value == false) {
+      // loading(false);
+      return;
+    }
+    Navigator.pop(context);
+    showSnackBar(
+        context,
+        "Successfully Send Link, Please Check Your Email and Update Password",
+        SnackBarType.success);
 
+    // loading(false);
+  }
+
+  Future<bool> makeResetPassword(String email, BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, "Error in Password Reset: $e", SnackBarType.alert);
+      return false;
+    }
+  }
+
+//forget password: SIGN IN AMDIN
+  void forgetPasswordAdmin(BuildContext context) async {
+    CollectionReference _information =
+        FirebaseFirestore.instance.collection('SignUpAdminData');
+
+    // Query documents where PhoneNumber matches the provided value
+    QuerySnapshot querySnapshot = await _information
+        .where("PhoneNumber",
+            isEqualTo: PhoneNumberForgetPassPhoneNumberController.text)
+        .get();
+
+    // Iterate through the documents and update the matching documents
+    querySnapshot.docs.forEach((doc) async {
+      // Update the document with the new PhoneNumber and Password
+      await doc.reference.update({
+        "PhoneNumber": PhoneNumberForgetPassPhoneNumberController.text,
+        "Password": PassForgetPassPhoneNumberController.text,
+      }).then((value) {
+        showSnackBar(context, "Password update", SnackBarType.success);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => SigninAdminitrator()));
+      }).onError((error, stackTrace) {
+        showSnackBar(context, "Password update Failed", SnackBarType.fail);
+      });
+    });
+  }
 
 // Python file integration
+  Future<void> showLips(String text) async {
+    final response = await http.post(
+      Uri.parse('http://your_server_ip:5000/show_lips'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'text': text,
+      }),
+    );
 
-Future<void> showLips(String text) async {
-  final response = await http.post(
-    Uri.parse('http://your_server_ip:5000/show_lips'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'text': text,
-    }),
-  );
+    if (response.statusCode == 200) {
+      print('Showing lips');
+    } else {
+      throw Exception('Failed to show lips');
+    }
+  }
 
-  if (response.statusCode == 200) {
-    print('Showing lips');
-  } else {
-    throw Exception('Failed to show lips');
+  Future<void> updateAudio(String text) async {
+    final response = await http.post(
+      Uri.parse('http://your_server_ip:5000/update_audio'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'text': text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Audio updated');
+    } else {
+      throw Exception('Failed to update audio');
+    }
   }
 }
-
-Future<void> updateAudio(String text) async {
-  final response = await http.post(
-    Uri.parse('http://your_server_ip:5000/update_audio'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'text': text,
-    }),
-  );
-
-  if (response.statusCode == 200) {
-    print('Audio updated');
-  } else {
-    throw Exception('Failed to update audio');
-  }
-}
-
-  
-

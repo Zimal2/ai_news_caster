@@ -138,6 +138,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   email: emailController.text.toString(),
                                   password: passwordController.text.toString())
                               .then((value) {
+                              
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:ai_news_caster/provider/Methods.dart';
+import 'package:ai_news_caster/ui/sign_in_screens/forget_password_admin.dart';
 import 'package:ai_news_caster/ui/signup_screens/signup_adminitrator.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
@@ -107,7 +108,8 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                                 }
                                 return null;
                               },
-                              controller: methodsProvider.passwordControllerSignin,
+                              controller:
+                                  methodsProvider.passwordControllerSignin,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Password'),
@@ -122,6 +124,11 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                       ),
                     ),
                     CustomContainer(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgetPasswordAdmin(),
+                          )),
                       width: double.infinity,
                       height: 40,
                       alignment: Alignment.centerRight,
