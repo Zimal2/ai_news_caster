@@ -1,9 +1,11 @@
 import 'package:ai_news_caster/ui/dashboard/appbarWidget.dart';
+import 'package:ai_news_caster/ui/mediaScreens/new-Uploaded-News.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/image_slider.dart';
 import 'package:ai_news_caster/widgets/news_history_list_view.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -87,6 +89,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       color: Colors.black,
                       fontsize: 35)),
             ),
+            Padding(
+                padding: EdgeInsets.only(
+                    top: 5, left: MediaQuery.of(context).size.width * 0.6),
+                child: InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewNews(),
+                        )),
+                    child: Row(
+                      children: [
+                        sampleText(
+                            text: "Whats New",
+                            color: const Color.fromARGB(255, 120, 28, 21),
+                            fontsize: 20,
+                            decoration: TextDecoration.combine(
+                                [TextDecoration.underline]),
+                            fontWeight: FontWeight.w700),
+                        SizedBox(width: 2),
+                        const Icon(
+                          Icons.arrow_forward,
+                          size: 20,
+                          color: const Color.fromARGB(255, 120, 28, 21),
+                        )
+                      ],
+                    ))),
+
             //slider
             ImageSlider(),
             const SizedBox(

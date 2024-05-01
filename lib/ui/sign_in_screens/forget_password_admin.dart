@@ -20,23 +20,6 @@ class ForgetPasswordAdmin extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // const SizedBox(height: 8),
-                // TextField(
-                //   controller: methodsProvider.newPassForgetController,
-                //   decoration: InputDecoration(
-                //     filled: true,
-                //     fillColor: Colors.grey[200],
-                //     hintText: 'New Password',
-                //     contentPadding:
-                //         EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                //     border: OutlineInputBorder(
-                //       borderRadius: BorderRadius.circular(12),
-                //       borderSide: BorderSide.none,
-                //     ),
-                //     suffixIcon: const Icon(Icons.visibility),
-                //   ),
-                // ),
-                // const SizedBox(height: 16),
                 TextField(
                   controller: methodsProvider
                       .PhoneNumberForgetPassPhoneNumberController,

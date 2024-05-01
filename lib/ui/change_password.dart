@@ -41,9 +41,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                 radius: BorderRadius.all(Radius.circular(10)),
                 child: Row(
                   children: [
-                    // SizedBox(
-                    //   width: 10,
-                    // ),
                     CustomContainer(
                       width: 270,
                       height: 50,
@@ -72,9 +69,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                 radius: BorderRadius.all(Radius.circular(10)),
                 child: Row(
                   children: [
-                    // SizedBox(
-                    //   width: 10,
-                    // ),
                     CustomContainer(
                       width: 270,
                       height: 50,

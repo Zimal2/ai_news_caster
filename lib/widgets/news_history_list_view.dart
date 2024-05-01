@@ -39,7 +39,8 @@ class NewsHistoryListView extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => NewsScreen(),
                     )),
-                child: Container(
+                child: 
+                Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -123,6 +124,7 @@ class NewsHistoryListView extends StatelessWidget {
                     ),
                   ),
                 ),
+              
               ),
             );
           },

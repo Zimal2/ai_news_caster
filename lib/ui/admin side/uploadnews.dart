@@ -5,13 +5,12 @@ import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
 class UploadNews extends StatefulWidget {
   int uploadedImagesCount = 0;
-
-
   // Define a list to store selected images
   List<File?> selectedImages = [];
   List<String> ImagesToFirebase = [];
@@ -78,71 +77,102 @@ class UploadNewsState extends State<UploadNews> {
                                       width: 150,
                                       height: 150,
                                       child: Image.asset(
-                                          "lib/assests/images/image.png"),
+                                          "lib/assests/images/uploadImage.png"),
                                     ),
                           const SizedBox(
-                            height: 20,
+                            height: 5,
                           ),
-                          sampleText(
-                            text: "Upload images from gallery(maximum 4)",
-                            fontsize: 10,
-                            textAlign: TextAlign.center,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          Column(
+                            children: [
+                              sampleText(
+                                text: "Click on above icon to upload",
+                                fontsize: 12,
+                                textAlign: TextAlign.center,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              sampleText(
+                                text: "Note:  Max Images: 4",
+                                fontsize: 10,
+                                color: Colors.red,
+                                textAlign: TextAlign.center,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),
                   ),
                 ),
-                // Define a variable to track the number of images uploaded
-
-// Inside your widget build method or function
+                SizedBox(
+                  height: 10,
+                ),
+                // Row to track the number of images uploaded
                 Row(
                   children: [
-                    // Display previously selected images
-                    for (int i = 0; i < widget.selectedImages.length; i++)
-                      Image.file(
-                        widget.selectedImages[i]!,
-                        height: MediaQuery.of(context).size.height * 0.12,
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        fit: BoxFit.cover,
-                      ),
-
-                    // Display a placeholder or add new image button
-                    if (widget.selectedImages.length < 4)
-                      GestureDetector(
-                        onTap: () {
-                          // Call the method to pick an image
-                          // methodsProvider.pickImage(context).then((image) {
-                          //   // Update the selected images list with the newly picked image
-                          //   if (methodsProvider.image != null) {
-                          //     setState(() {
-                          //       //add selected images to list to upload into firebase
-                          //       widget.ImagesToFirebase.add(
-                          //           methodsProvider.urlDownload.toString());
-                          //       print(
-                          //           "urlDownload: ${widget.ImagesToFirebase}");
-                          //       widget.selectedImages
-                          //           .add(methodsProvider.image);
-                          //     });
-                          //   }
-                          // });
-                        },
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          child: Image.asset("lib/assests/images/image.png"),
+                    for (int index = 0;
+                        index < widget.selectedImages.length;
+                        index++)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 2),
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.12,
+                              width: MediaQuery.of(context).size.width * 0.20,
+                            ),
+                            Positioned(
+                              top: 7,
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.09,
+                                width: MediaQuery.of(context).size.width * 0.15,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                                child: Image.file(
+                                  widget.selectedImages[index]!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              right: 5,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    // Remove the image from the selectedImages list
+                                    widget.ImagesToFirebase.removeAt(index);
+                                    widget.selectedImages.removeAt(index);
+                                  });
+                                },
+                                child: Container(
+                                  width: 25,
+                                  height: 25,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.red,
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.remove,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                   ],
                 ),
-
                 const SizedBox(
-                  height: 10,
-                ),
-
-                const SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 //title
                 sampleText(text: "Enter title:"),
@@ -279,9 +309,6 @@ class UploadNewsState extends State<UploadNews> {
                   child: button(
                       title: "Done",
                       ontap: () {
-                        debugPrint(
-                            "useridA in upload class: ${widget.useridA ?? 'nothing'}");
-                      
                         methodsProvider.newsUploadToFirebase(
                             context, widget.useridA, widget.ImagesToFirebase);
                       }),

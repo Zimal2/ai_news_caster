@@ -1,9 +1,11 @@
+import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/change_password.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:ai_news_caster/widgets/text_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -15,6 +17,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
+    final methodsProvider = Provider.of<Methods>(context);
     return Scaffold(
       body: CustomContainer(
         width: double.infinity,
@@ -62,11 +65,6 @@ class _ProfileState extends State<Profile> {
                         builder: (context) => ChangePassword(),
                       ));
                 }),
-            // CustomContainer(
-            //   width: double.infinity,
-            //   height: 10,
-            //   child: Image.asset('assets/images/line.png', fit: BoxFit.cover),
-            // ),
             SizedBox(
               height: 10,
             ),
@@ -82,6 +80,7 @@ class _ProfileState extends State<Profile> {
                           width: double.infinity,
                           height: 50,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -90,9 +89,6 @@ class _ProfileState extends State<Profile> {
                                     color: Colors.black,
                                     fontsize: 15,
                                     fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: 100,
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -107,16 +103,14 @@ class _ProfileState extends State<Profile> {
                           width: double.infinity,
                           height: 30,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 child: sampleText(
-                                    text: " First Name",
+                                    text: "First Name",
                                     color: Colors.black,
                                     fontsize: 15),
-                              ),
-                              SizedBox(
-                                width: 150,
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -131,6 +125,7 @@ class _ProfileState extends State<Profile> {
                           width: double.infinity,
                           height: 30,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -138,9 +133,6 @@ class _ProfileState extends State<Profile> {
                                     text: "Last Name",
                                     color: Colors.black,
                                     fontsize: 15),
-                              ),
-                              SizedBox(
-                                width: 150,
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -155,6 +147,7 @@ class _ProfileState extends State<Profile> {
                           width: double.infinity,
                           height: 30,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -162,9 +155,6 @@ class _ProfileState extends State<Profile> {
                                     text: "Userame",
                                     color: Colors.black,
                                     fontsize: 15),
-                              ),
-                              SizedBox(
-                                width: 200,
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -193,6 +183,7 @@ class _ProfileState extends State<Profile> {
                           width: double.infinity,
                           height: 50,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -201,9 +192,6 @@ class _ProfileState extends State<Profile> {
                                     color: Colors.black,
                                     fontsize: 15,
                                     fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: 100,
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -218,6 +206,7 @@ class _ProfileState extends State<Profile> {
                           width: double.infinity,
                           height: 30,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -225,9 +214,6 @@ class _ProfileState extends State<Profile> {
                                     text: "Phone Number",
                                     color: Colors.black,
                                     fontsize: 15),
-                              ),
-                              SizedBox(
-                                width: 100,
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -242,6 +228,7 @@ class _ProfileState extends State<Profile> {
                           width: double.infinity,
                           height: 30,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -250,13 +237,32 @@ class _ProfileState extends State<Profile> {
                                     color: Colors.black,
                                     fontsize: 15),
                               ),
-                              SizedBox(
-                                width: 100,
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: sampleText(
+                                    text: methodsProvider.loginEmail ?? "",
+                                    color: Colors.black,
+                                    fontsize: 15),
+                              ),
+                            ],
+                          )),
+                      CustomContainer(
+                          width: double.infinity,
+                          height: 30,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: sampleText(
+                                    text: "Password",
+                                    color: Colors.black,
+                                    fontsize: 15),
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 child: sampleText(
-                                    text: "jacobfitts@gamil.com",
+                                    text: methodsProvider.loginPass ?? "",
                                     color: Colors.black,
                                     fontsize: 15),
                               ),

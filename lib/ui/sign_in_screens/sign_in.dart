@@ -21,69 +21,6 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-  final emailController = new TextEditingController();
-  final passwordController = new TextEditingController();
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  final _formkey = GlobalKey<FormState>();
-  // void login() {
-  //   if (_formkey.currentState!.validate()) {
-  //     _auth
-  //         .signInWithEmailAndPassword(
-  //             email: emailController.text.toString(),
-  //             password: passwordController.text.toString())
-  //         .then((value) {
-  //       Utils().toastMessage(value.user!.email!);
-  //       Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => const DashboardScreen(),
-  //           ));
-  //     }).catchError((error) {
-  //       // Handle sign-in errors
-  //       String errorMessage = "Sign-in failed: ";
-  //       if (error is FirebaseAuthException) {
-  //         errorMessage += error.message ?? "Unknown error";
-  //       } else {
-  //         errorMessage += error.toString();
-  //       }
-  //       Utils().toastMessage(errorMessage);
-  //     });
-  //   }
-  // }
-
-  void login() {
-    if (_formkey.currentState!.validate()) {
-      _auth
-          .signInWithEmailAndPassword(
-              email: emailController.text.toString(),
-              password: passwordController.text.toString())
-          .then((value) {
-        Utils().toastMessage(value.user!.email!);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const DashboardScreen(),
-          ),
-        );
-      }).catchError((error) {
-        // Handle sign-in errors
-        String errorMessage = "Sign-in failed: ";
-        if (error is FirebaseAuthException) {
-          if (error.code == 'user-not-found') {
-            errorMessage += 'No user found with this email.';
-          } else if (error.code == 'wrong-password') {
-            errorMessage += 'Wrong password provided for this user.';
-          } else {
-            errorMessage += error.message ?? "Unknown error";
-          }
-        } else {
-          errorMessage += error.toString();
-        }
-        Utils().toastMessage(errorMessage);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -91,16 +28,13 @@ class _SigninScreenState extends State<SigninScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Form(
-            key: _formkey,
+            key: methodsProvider.formkey,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: CustomContainer(
-                // width: double.infinity,
-                // height: double.infinity,
                 child: Column(
                   children: [
                     const SizedBox(
-                      //  width: double.infinity,
                       height: 100,
                     ),
                     Center(
@@ -135,7 +69,7 @@ class _SigninScreenState extends State<SigninScreen> {
                                 }
                                 return null;
                               },
-                              controller: emailController,
+                              controller: methodsProvider.emailController,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Email Address'),
@@ -172,7 +106,7 @@ class _SigninScreenState extends State<SigninScreen> {
                                 }
                                 return null;
                               },
-                              controller: passwordController,
+                              controller: methodsProvider.passwordController,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Password'),
@@ -206,7 +140,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     button(
                       title: 'Sign in',
                       ontap: () {
-                        login();
+                        methodsProvider.login(context);
                       },
                     ),
                     CustomContainer(

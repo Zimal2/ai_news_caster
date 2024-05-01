@@ -30,6 +30,8 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
               child: CustomContainer(
                 width: double.infinity,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
                       width: double.infinity,
@@ -47,6 +49,12 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                     const SizedBox(
                       height: 30,
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    sampleText(
+                        text: "Enter Phone Number",
+                        fontWeight: FontWeight.w400),
                     const SizedBox(
                       height: 10,
                     ),
@@ -74,7 +82,8 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                               keyboardType: TextInputType.phone,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: 'Phone Number'),
+                                  //   labelText: "Phone Number",
+                                  hintText: '+92 30303030303'),
                             ),
                           ),
                           CustomContainer(
@@ -85,6 +94,11 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                         ],
                       ),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    sampleText(
+                        text: "Enter Password", fontWeight: FontWeight.w400),
                     const SizedBox(
                       height: 10,
                     ),
@@ -140,13 +154,15 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                     const SizedBox(
                       height: 30,
                     ),
-                    button(
-                      title: 'Sign in as Administrator',
-                      ontap: () {
-                        if (_formkey.currentState!.validate()) {
-                          methodsProvider.signinA(context);
-                        }
-                      },
+                    Center(
+                      child: button(
+                        title: 'Sign in as Administrator',
+                        ontap: () {
+                          if (_formkey.currentState!.validate()) {
+                            methodsProvider.signinA(context);
+                          }
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: 5,
@@ -160,11 +176,13 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                     const SizedBox(
                       height: 30,
                     ),
-                    button(
-                        title: 'Sign in with Google',
-                        ontap: () {
-                          methodsProvider.signInWithGoogle(context);
-                        }),
+                    Center(
+                      child: button(
+                          title: 'Sign in with Google',
+                          ontap: () {
+                            methodsProvider.signInWithGoogle(context);
+                          }),
+                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,

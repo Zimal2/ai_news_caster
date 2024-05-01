@@ -1,5 +1,4 @@
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
-import 'package:ai_news_caster/ui/admin%20side/uploadnews.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:flutter/material.dart';

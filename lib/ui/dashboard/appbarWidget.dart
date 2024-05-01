@@ -21,7 +21,17 @@ class AppBarWidget extends StatelessWidget {
       height: 100,
       child: Row(
         children: [
-          CustomContainer(width: 50, height: 50, child: const Icon(Icons.menu)),
+          CustomContainer(
+              onTap: () {
+                methodsProvider.getSharedPref();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              },
+              width: 50,
+              height: 50,
+              child: const Icon(Icons.menu)),
           const SizedBox(
             width: 35,
           ),

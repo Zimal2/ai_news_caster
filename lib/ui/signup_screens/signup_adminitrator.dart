@@ -18,14 +18,6 @@ class SignupAdminitrator extends StatefulWidget {
 }
 
 class _SignupAdministratorState extends State<SignupAdminitrator> {
-  // final usernameController = new TextEditingController();
-  // final emailController = new TextEditingController();
-  // final passwordController = new TextEditingController();
-  // final institueController = new TextEditingController();
-  // final designationController = new TextEditingController();
-  // final phoneController = new TextEditingController();
-  // FirebaseAuth _auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -261,7 +253,8 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                               }
                               return null;
                             },
-                            controller: methodsProvider.passwordControllerSignup,
+                            controller:
+                                methodsProvider.passwordControllerSignup,
                             decoration: const InputDecoration(
                                 border: InputBorder.none, hintText: 'Password'),
                           ),
@@ -281,24 +274,6 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                     title: 'Next',
                     ontap: () {
                       methodsProvider.verify(context);
-                      // _auth.verifyPhoneNumber(
-                      //     phoneNumber: methodsProvider.phoneController.text,
-                      //     verificationCompleted: (_) {},
-                      //     verificationFailed: (e) {
-                      //       Utils().toastMessage(e.toString());
-                      //     },
-                      //     codeSent: (String verificationId, int? token) {
-                      //       Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //             builder: (context) => PhoneNumberConfirm(
-                      //               verificationId: verificationId,
-                      //             ),
-                      //           ));
-                      //     },
-                      //     codeAutoRetrievalTimeout: (e) {
-                      //       Utils().toastMessage(e.toString());
-                      //     });
                     },
                   ),
                   const SizedBox(

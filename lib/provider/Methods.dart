@@ -19,6 +19,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Methods with ChangeNotifier {
   //variables
@@ -167,27 +168,11 @@ class Methods with ChangeNotifier {
     } catch (e) {
       // Error occurred
       showSnackBar(context, "Sign In Failed", SnackBarType.fail);
-      // showDialog(
-      //   context: context,
-      //   builder: (BuildContext context) {
-      //     return AlertDialog(
-      //       title: Text("Sign In Failed"),
-      //       content: Text(e.toString()),
-      //       actions: [
-      //         TextButton(
-      //           onPressed: () {
-      //             Navigator.of(context).pop();
-      //           },
-      //           child: Text("OK"),
-      //         ),
-      //       ],
-      //     );
-      //   },
-      // );
+  
     }
   }
-  //google sign in
 
+  //google sign in
   void signInWithGoogle(BuildContext context) async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -214,7 +199,7 @@ class Methods with ChangeNotifier {
     }
   }
 
-//get mews api model
+//get news api model
   Future<NewsModel> getPostApimethod() async {
     final response = await http.get(Uri.parse(
         'https://newsapi.org/v2/everything?q=category&apiKey=8a5ec37e26f845dcb4c2b78463734448'));
@@ -252,23 +237,7 @@ class Methods with ChangeNotifier {
       // User is not signed in, display an error message or redirect to sign-in page
       showSnackBar(context, "Sign In Failed, Please Sign in to upload news",
           SnackBarType.fail);
-      // showDialog(
-      //   context: context,
-      //   builder: (BuildContext context) {
-      //     return AlertDialog(
-      //       title: Text("Error"),
-      //       content: Text("Please sign in to upload news."),
-      //       actions: [
-      //         TextButton(
-      //           onPressed: () {
-      //             Navigator.of(context).pop();
-      //           },
-      //           child: Text("OK"),
-      //         ),
-      //       ],
-      //     );
-      //   },
-      // );
+     
 
       return; // Exit the function if user is not signed in
     }
@@ -444,6 +413,84 @@ class Methods with ChangeNotifier {
         showSnackBar(context, "Password update Failed", SnackBarType.fail);
       });
     });
+  }
+
+  //simple login
+  final formkey = GlobalKey<FormState>();
+  final passwordController = new TextEditingController();
+  void login(BuildContext context) async {
+    if (formkey.currentState!.validate()) {
+      try {
+        final userCredential = await _auth.signInWithEmailAndPassword(
+          email: emailController.text.toString(),
+          password: passwordController.text.toString(),
+        );
+
+        Utils().toastMessage(userCredential.user!.email!);
+
+        final pref = await SharedPreferences.getInstance();
+        print("LoginEmail: ${emailController.text.toString()}");
+        print("Login password: ${passwordController.text.toString()}");
+
+        pref.setString("LoginEmail", emailController.text.toString());
+        pref.setString("LoginPass", passwordController.text.toString());
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DashboardScreen(),
+          ),
+        );
+      } catch (error) {
+        String errorMessage = "Sign-in failed: ";
+        if (error is FirebaseAuthException) {
+          if (error.code == 'user-not-found') {
+            errorMessage += 'No user found with this email.';
+          } else if (error.code == 'wrong-password') {
+            errorMessage += 'Wrong password provided for this user.';
+          } else {
+            errorMessage += error.message ?? "Unknown error";
+          }
+        } else {
+          errorMessage += error.toString();
+        }
+        Utils().toastMessage(errorMessage);
+      }
+    }
+  }
+
+//get login data from shared pref
+  String? loginEmail, loginPass;
+  void getSharedPref() async {
+    final pref = await SharedPreferences.getInstance();
+    loginEmail = pref.getString("LoginEmail");
+    print("login email value in sp:${loginEmail}");
+    loginPass = pref.getString("LoginPass");
+    print("login pass value in sp:${loginPass}");
+  }
+
+//data upload to dahbord-> new uploaded data
+  Future<List<dynamic>> getCollectionData() async {
+    try {
+      // Reference to the collection
+      CollectionReference collectionRef =
+          FirebaseFirestore.instance.collection('NewsUploadData');
+      // Get documents in the collection
+      QuerySnapshot querySnapshot = await collectionRef.get();
+      List<dynamic> allNewsData = [];
+
+      // Loop through documents
+      querySnapshot.docs.forEach((doc) {
+        // Access document data
+        var data = doc.data() as Map<String, dynamic>;
+        List<dynamic> newsDataList = data['NewsData'];
+        allNewsData.addAll(newsDataList);
+      });
+
+      return allNewsData;
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
   }
 
 // Python file integration
