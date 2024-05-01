@@ -18,6 +18,25 @@ class SignupAdminitrator extends StatefulWidget {
 }
 
 class _SignupAdministratorState extends State<SignupAdminitrator> {
+<<<<<<< Updated upstream
+=======
+  // final usernameController = new TextEditingController();
+  // final emailController = new TextEditingController();
+  // final passwordController = new TextEditingController();
+  // final institueController = new TextEditingController();
+  // final designationController = new TextEditingController();
+  // final phoneController = new TextEditingController();
+  // FirebaseAuth _auth = FirebaseAuth.instance;
+
+  bool _isPasswordVisible = false;
+
+  void togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
+
+>>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -244,7 +263,7 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                           width: 10,
                         ),
                         CustomContainer(
-                          width: 270,
+                          width: 320,
                           height: 50,
                           child: TextFormField(
                             validator: (value) {
@@ -253,16 +272,26 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                               }
                               return null;
                             },
+<<<<<<< Updated upstream
                             controller:
                                 methodsProvider.passwordControllerSignup,
                             decoration: const InputDecoration(
                                 border: InputBorder.none, hintText: 'Password'),
+=======
+                            controller: methodsProvider.passwordControllerSignup,
+                            obscureText: !_isPasswordVisible,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Password',
+                                suffixIcon: IconButton(
+                                  icon: Icon(_isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: togglePasswordVisibility,
+                                ),
+                              ),
+>>>>>>> Stashed changes
                           ),
-                        ),
-                        CustomContainer(
-                          width: 50,
-                          height: 50,
-                          child: const Icon(Icons.visibility),
                         ),
                       ],
                     ),
@@ -271,6 +300,7 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                     height: 10,
                   ),
                   button(
+                    loading: methodsProvider.loading,
                     title: 'Next',
                     ontap: () {
                       methodsProvider.verify(context);
