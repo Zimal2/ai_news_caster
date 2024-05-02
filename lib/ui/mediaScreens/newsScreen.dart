@@ -1,4 +1,5 @@
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
+import 'package:ai_news_caster/ui/mediaScreens/lip-sync/lipsyncWidget.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsMedia.dart';
 import 'package:ai_news_caster/ui/mediaScreens/readMore.dart';
 import 'package:ai_news_caster/widgets/button.dart';
@@ -13,35 +14,6 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
-  // late VideoPlayerController _videoPlayerController;
-  // late ChewieController _chewieController;
-
-  // void dispose() {
-  //   _controller.dispose();
-
-  //   _videoPlayerController.dispose();
-  //   _chewieController.dispose();
-  //   super.dispose();
-  // }
-
-  // void initState() {
-  //   _videoPlayerController =
-  //       VideoPlayerController.asset('lib/assests/videos/uploadvideo.mp4');
-  //   _chewieController = ChewieController(
-  //       videoPlayerController: _videoPlayerController,
-  //       autoPlay: true,
-  //       looping: true,
-  //       allowFullScreen: true,
-  //       showControls: false,
-  //       allowMuting: false,
-  //       allowedScreenSleep: false,
-  //       autoInitialize: true,
-  //       aspectRatio: 800 / 1640,
-  //       fullScreenByDefault: true);
-
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,17 +64,17 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
               ],
             ),
 
-            //video upload here
             Container(
-                color: Colors.black,
-                height: 250,
-                width: double.infinity,
-                child: Text("data")
-                //Chewie(controller: _chewieController),
-                ),
+              color: Colors.black,
+              height: 250,
+              width: 300,
+              child: LipSyncWidget(
+                text:
+                    "HI i am here",
+              ),
+            ),
 
-            ////
-            Padding(
+                   Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
