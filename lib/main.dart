@@ -1,9 +1,11 @@
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/change_password.dart';
+import 'package:ai_news_caster/ui/mediaScreens/newsScreen.dart';
 import 'package:ai_news_caster/ui/profile.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/forget_password.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in-administrator.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
+import 'package:ai_news_caster/ui/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home:SigninScreen()
+        home:NewsScreen()
          ,
       ),
     );

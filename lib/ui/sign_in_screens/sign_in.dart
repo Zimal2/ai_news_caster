@@ -21,13 +21,7 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-<<<<<<< Updated upstream
-=======
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  final _formkey = GlobalKey<FormState>();
-  bool _isLoading = false;
+
   bool _isPasswordVisible = false;
 
   void togglePasswordVisibility() {
@@ -35,50 +29,6 @@ class _SigninScreenState extends State<SigninScreen> {
       _isPasswordVisible = !_isPasswordVisible;
     });
   }
-
-  void login() {
-    if (_formkey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-      _auth
-          .signInWithEmailAndPassword(
-              email: emailController.text.toString(),
-              password: passwordController.text.toString())
-          .then((value) {
-        setState(() {
-          _isLoading = false;
-        });
-        Utils().toastMessage(value.user!.email!);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const DashboardScreen(),
-          ),
-        );
-      }).catchError((error) {
-        setState(() {
-          _isLoading = false;
-        });
-        // Handle sign-in errors
-        String errorMessage = "Sign-in failed: ";
-        if (error is FirebaseAuthException) {
-          if (error.code == 'user-not-found') {
-            errorMessage += 'No user found with this email.';
-          } else if (error.code == 'wrong-password') {
-            errorMessage += 'Wrong password provided for this user.';
-          } else {
-            errorMessage += error.message ?? "Unknown error";
-          }
-        } else {
-          errorMessage += error.toString();
-        }
-        Utils().toastMessage(errorMessage);
-      });
-    }
-  }
-
->>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -92,13 +42,9 @@ class _SigninScreenState extends State<SigninScreen> {
               child: CustomContainer(
                 child: Column(
                   children: [
-<<<<<<< Updated upstream
                     const SizedBox(
                       height: 100,
                     ),
-=======
-                    const SizedBox(height: 100),
->>>>>>> Stashed changes
                     Center(
                       child: sampleText(text: 'Welcome!', fontsize: 30),
                     ),
@@ -160,13 +106,7 @@ class _SigninScreenState extends State<SigninScreen> {
                                 }
                                 return null;
                               },
-<<<<<<< Updated upstream
                               controller: methodsProvider.passwordController,
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Password'),
-=======
-                              controller: passwordController,
                               obscureText: !_isPasswordVisible,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -178,7 +118,6 @@ class _SigninScreenState extends State<SigninScreen> {
                                   onPressed: togglePasswordVisibility,
                                 ),
                               ),
->>>>>>> Stashed changes
                             ),
                           ),
                         ],
@@ -200,20 +139,12 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                     const SizedBox(height: 30),
                     button(
-<<<<<<< Updated upstream
+                      loading: methodsProvider.loading,
                       title: 'Sign in',
                       ontap: () {
                         methodsProvider.login(context);
                       },
                     ),
-=======
-                            loading: _isLoading,
-                            title: 'Sign in',
-                            ontap: () {
-                                login();
-                            },
-                          ),
->>>>>>> Stashed changes
                     CustomContainer(
                         width: double.infinity,
                         height: 40,

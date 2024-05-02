@@ -1,4 +1,7 @@
+import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:provider/provider.dart';
 
 class LipSyncWidget extends StatelessWidget {
   final String text;
@@ -65,26 +68,34 @@ class LipSyncWidget extends StatelessWidget {
     "th": "lib/assests/images/lip-sync Images/TH.png",
   };
 
+  final FlutterTts flutterTts = FlutterTts(); 
+
   @override
   Widget build(BuildContext context) {
+    final methodsProvider = Provider.of<Methods>(context);
     List<String> letters = text.split('');
 
-    return Container(
-      color: Colors.black,
-      height: 250,
-      width: 300,
-      child: ListView.builder(
-        itemCount: letters.length,
-        itemBuilder: (context, index) {
-          return Container(
-            height: 250,
-            width: 300,
-            child: Image.asset(
-              getImagePath(letters[index]),
-              fit: BoxFit.contain,
-            ),
-          );
-        },
+    return GestureDetector(
+      onTap: () {
+        methodsProvider.speak(text);
+      },
+      child: Container(
+        color: Colors.black,
+        height: 250,
+        width: 300,
+        child: ListView.builder(
+          itemCount: letters.length,
+          itemBuilder: (context, index) {
+            return Container(
+              height: 250,
+              width: 300,
+              child: Image.asset(
+                getImagePath(letters[index]),
+                fit: BoxFit.contain,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

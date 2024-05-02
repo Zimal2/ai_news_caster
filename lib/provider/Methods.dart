@@ -10,6 +10,8 @@ import 'package:ai_news_caster/ui/signup_screens/phoneNumber_confirm.dart';
 import 'package:ai_news_caster/ui/admin%20side/uploadnews.dart';
 import 'package:ai_news_caster/utils/flutterToast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter/return_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Methods with ChangeNotifier {
@@ -432,6 +435,7 @@ class Methods with ChangeNotifier {
   void login(BuildContext context) async {
     if (formkey.currentState!.validate()) {
       try {
+        setloading(true);
         final userCredential = await _auth.signInWithEmailAndPassword(
           email: emailController.text.toString(),
           password: passwordController.text.toString(),
@@ -452,6 +456,7 @@ class Methods with ChangeNotifier {
           ),
         );
       } catch (error) {
+        setloading(false);
         String errorMessage = "Sign-in failed: ";
         if (error is FirebaseAuthException) {
           if (error.code == 'user-not-found') {
@@ -539,5 +544,32 @@ class Methods with ChangeNotifier {
     } else {
       throw Exception('Failed to update audio');
     }
+  }
+
+  // // //creating video of images
+  Future<void> convertImageToVideo(BuildContext context) async {
+    const String BASE_PATH = 'lib/assets/images/lip-sync Images/';
+    const String OUTPUT_PATH = BASE_PATH + 'OUTPUT.mp4';
+    if(await Permission.storage.request().isGranted){
+      String commandToExecute = 
+      '-framerate 2'
+      '-i ${BASE_PATH} -s 1080X1620 -y ${OUTPUT_PATH}';
+      await FFmpegKit.execute(commandToExecute).then((session) async {
+        final returnCode = await session.getReturnCode();
+        if(ReturnCode.isSuccess(returnCode)){
+          print('Video is successfully created');
+          showSnackBar(context, 'Video is created successfully', SnackBarType.success);
+        }
+        else if(ReturnCode.isCancel(returnCode)){
+          print('Video is cancel');
+        }
+        else{
+
+        }
+      });
+    }
+    else if(await Permission.storage.isPermanentlyDenied){
+        print('Permission Denied');
+      }
   }
 }

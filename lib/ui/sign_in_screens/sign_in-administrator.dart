@@ -164,18 +164,8 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                     const SizedBox(
                       height: 30,
                     ),
-<<<<<<< Updated upstream
                     Center(
                       child: button(
-                        title: 'Sign in as Administrator',
-                        ontap: () {
-                          if (_formkey.currentState!.validate()) {
-                            methodsProvider.signinA(context);
-                          }
-                        },
-                      ),
-=======
-                    button(
                       loading: methodsProvider.loading,
                       title: 'Sign in as Administrator',
                       ontap: () {
@@ -183,7 +173,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                           methodsProvider.signinA(context);
                         }
                       },
->>>>>>> Stashed changes
+                    ),
                     ),
                     const SizedBox(
                       height: 5,

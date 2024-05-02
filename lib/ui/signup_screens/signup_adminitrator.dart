@@ -18,8 +18,6 @@ class SignupAdminitrator extends StatefulWidget {
 }
 
 class _SignupAdministratorState extends State<SignupAdminitrator> {
-<<<<<<< Updated upstream
-=======
   // final usernameController = new TextEditingController();
   // final emailController = new TextEditingController();
   // final passwordController = new TextEditingController();
@@ -35,8 +33,6 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
       _isPasswordVisible = !_isPasswordVisible;
     });
   }
-
->>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -272,12 +268,6 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                               }
                               return null;
                             },
-<<<<<<< Updated upstream
-                            controller:
-                                methodsProvider.passwordControllerSignup,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none, hintText: 'Password'),
-=======
                             controller: methodsProvider.passwordControllerSignup,
                             obscureText: !_isPasswordVisible,
                               decoration: InputDecoration(
@@ -290,7 +280,6 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                                   onPressed: togglePasswordVisibility,
                                 ),
                               ),
->>>>>>> Stashed changes
                           ),
                         ),
                       ],
