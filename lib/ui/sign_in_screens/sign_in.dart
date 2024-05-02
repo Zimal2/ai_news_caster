@@ -21,6 +21,64 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
+<<<<<<< Updated upstream
+=======
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  final _formkey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  bool _isPasswordVisible = false;
+
+  void togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
+
+  void login() {
+    if (_formkey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      _auth
+          .signInWithEmailAndPassword(
+              email: emailController.text.toString(),
+              password: passwordController.text.toString())
+          .then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+        Utils().toastMessage(value.user!.email!);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DashboardScreen(),
+          ),
+        );
+      }).catchError((error) {
+        setState(() {
+          _isLoading = false;
+        });
+        // Handle sign-in errors
+        String errorMessage = "Sign-in failed: ";
+        if (error is FirebaseAuthException) {
+          if (error.code == 'user-not-found') {
+            errorMessage += 'No user found with this email.';
+          } else if (error.code == 'wrong-password') {
+            errorMessage += 'Wrong password provided for this user.';
+          } else {
+            errorMessage += error.message ?? "Unknown error";
+          }
+        } else {
+          errorMessage += error.toString();
+        }
+        Utils().toastMessage(errorMessage);
+      });
+    }
+  }
+
+>>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -34,9 +92,13 @@ class _SigninScreenState extends State<SigninScreen> {
               child: CustomContainer(
                 child: Column(
                   children: [
+<<<<<<< Updated upstream
                     const SizedBox(
                       height: 100,
                     ),
+=======
+                    const SizedBox(height: 100),
+>>>>>>> Stashed changes
                     Center(
                       child: sampleText(text: 'Welcome!', fontsize: 30),
                     ),
@@ -46,9 +108,7 @@ class _SigninScreenState extends State<SigninScreen> {
                           fontsize: 16,
                           color: Colors.grey),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    const SizedBox(height: 30),
                     CustomContainer(
                       width: double.infinity,
                       height: 60,
@@ -56,9 +116,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       radius: const BorderRadius.all(Radius.circular(10)),
                       child: Row(
                         children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10),
                           CustomContainer(
                             width: 270,
                             height: 50,
@@ -83,9 +141,7 @@ class _SigninScreenState extends State<SigninScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     CustomContainer(
                       width: double.infinity,
                       height: 60,
@@ -93,11 +149,9 @@ class _SigninScreenState extends State<SigninScreen> {
                       radius: const BorderRadius.all(Radius.circular(10)),
                       child: Row(
                         children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10),
                           CustomContainer(
-                            width: 270,
+                            width: 320,
                             height: 50,
                             child: TextFormField(
                               validator: (value) {
@@ -106,16 +160,26 @@ class _SigninScreenState extends State<SigninScreen> {
                                 }
                                 return null;
                               },
+<<<<<<< Updated upstream
                               controller: methodsProvider.passwordController,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Password'),
+=======
+                              controller: passwordController,
+                              obscureText: !_isPasswordVisible,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Password',
+                                suffixIcon: IconButton(
+                                  icon: Icon(_isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: togglePasswordVisibility,
+                                ),
+                              ),
+>>>>>>> Stashed changes
                             ),
-                          ),
-                          CustomContainer(
-                            width: 50,
-                            height: 50,
-                            child: const Icon(Icons.visibility),
                           ),
                         ],
                       ),
@@ -134,15 +198,22 @@ class _SigninScreenState extends State<SigninScreen> {
                           color: Colors.black,
                           fontsize: 12),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    const SizedBox(height: 30),
                     button(
+<<<<<<< Updated upstream
                       title: 'Sign in',
                       ontap: () {
                         methodsProvider.login(context);
                       },
                     ),
+=======
+                            loading: _isLoading,
+                            title: 'Sign in',
+                            ontap: () {
+                                login();
+                            },
+                          ),
+>>>>>>> Stashed changes
                     CustomContainer(
                         width: double.infinity,
                         height: 40,
@@ -164,17 +235,13 @@ class _SigninScreenState extends State<SigninScreen> {
                       child: Image.asset('lib/assests/images/line.png',
                           fit: BoxFit.cover),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    const SizedBox(height: 30),
                     button(
                         title: 'Sign in with Google',
                         ontap: () {
                           methodsProvider.signInWithGoogle(context);
                         }),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -182,9 +249,7 @@ class _SigninScreenState extends State<SigninScreen> {
                         sampleText(
                             text: 'Don\'t have an account?',
                             color: Colors.black),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
                         Textbutton(
                             title: 'Sign up',
                             color: const Color(0xFFBD1616),

@@ -17,6 +17,13 @@ class SigninAdminitrator extends StatefulWidget {
 
 class _SigninAdministratorState extends State<SigninAdminitrator> {
   final _formkey = GlobalKey<FormState>();
+  bool _isPasswordVisible = false;
+
+  void togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -113,7 +120,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                             width: 10,
                           ),
                           CustomContainer(
-                            width: 270,
+                            width: 320,
                             height: 50,
                             child: TextFormField(
                               validator: (value) {
@@ -124,15 +131,18 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                               },
                               controller:
                                   methodsProvider.passwordControllerSignin,
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Password'),
+                             obscureText: !_isPasswordVisible,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Password',
+                                suffixIcon: IconButton(
+                                  icon: Icon(_isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: togglePasswordVisibility,
+                                ),
+                              ),
                             ),
-                          ),
-                          CustomContainer(
-                            width: 50,
-                            height: 50,
-                            child: const Icon(Icons.visibility),
                           ),
                         ],
                       ),
@@ -154,6 +164,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                     const SizedBox(
                       height: 30,
                     ),
+<<<<<<< Updated upstream
                     Center(
                       child: button(
                         title: 'Sign in as Administrator',
@@ -163,6 +174,16 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                           }
                         },
                       ),
+=======
+                    button(
+                      loading: methodsProvider.loading,
+                      title: 'Sign in as Administrator',
+                      ontap: () {
+                        if (_formkey.currentState!.validate()) {
+                          methodsProvider.signinA(context);
+                        }
+                      },
+>>>>>>> Stashed changes
                     ),
                     const SizedBox(
                       height: 5,

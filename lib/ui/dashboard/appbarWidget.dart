@@ -1,14 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import "package:flutter_icon_snackbar/flutter_icon_snackbar.dart";
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/profile.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/dialog_box.dart';
 import 'package:ai_news_caster/widgets/text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:provider/provider.dart';
 
 class AppBarWidget extends StatelessWidget {
   const AppBarWidget({super.key});

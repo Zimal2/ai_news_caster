@@ -23,6 +23,15 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController passwordController = new TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
   final _formkey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  bool _isPasswordVisible = false;
+
+  void togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -103,7 +112,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             width: 10,
                           ),
                           CustomContainer(
-                            width: 270,
+                            width: 320,
                             height: 50,
                             child: TextFormField(
                               validator: (value) {
@@ -113,15 +122,18 @@ class _SignupScreenState extends State<SignupScreen> {
                                 return null;
                               },
                               controller: passwordController,
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Password'),
+                              obscureText: !_isPasswordVisible,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Password',
+                                suffixIcon: IconButton(
+                                  icon: Icon(_isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: togglePasswordVisibility,
+                                ),
+                              ),
                             ),
-                          ),
-                          CustomContainer(
-                            width: 50,
-                            height: 50,
-                            child: const Icon(Icons.visibility),
                           ),
                         ],
                       ),
@@ -133,12 +145,17 @@ class _SignupScreenState extends State<SignupScreen> {
                       title: 'Sign Up',
                       ontap: () {
                         if (_formkey.currentState!.validate()) {
+                          setState(() {
+                            _isLoading = true;
+                          });
                           _auth
                               .createUserWithEmailAndPassword(
                                   email: emailController.text.toString(),
                                   password: passwordController.text.toString())
                               .then((value) {
-                              
+                                 setState(() {
+                                  _isLoading = false;
+                                });                            
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -146,6 +163,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ));
                           }).onError((error, stackTrace) {
                             Utils().toastMessage(error.toString());
+                             setState(() {
+                              _isLoading = false;
+                            });
                           });
                         }
                       },

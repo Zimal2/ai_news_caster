@@ -79,6 +79,7 @@ class _PhoneNumberConfirmState extends State<PhoneNumberConfirm> {
                 height: 30,
               ),
               button(
+                loading: methodProvider.loading,
                   title: 'Confirm',
                   ontap: () {
                     methodProvider.confirmPhoneNumber(

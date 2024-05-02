@@ -55,11 +55,19 @@ class Methods with ChangeNotifier {
 
   //keys
   final GlobalKey<FormState> forgetFormKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  bool get loading => _isLoading;
+
+  setloading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 
   //methods
 
   //for signup admin
   void verify(BuildContext context) {
+    setloading(true);
     _auth.verifyPhoneNumber(
         phoneNumber: phoneControllerSignup.text,
         verificationCompleted: (_) {},
@@ -77,6 +85,7 @@ class Methods with ChangeNotifier {
               ));
         },
         codeAutoRetrievalTimeout: (e) {
+          setloading(false);
           Utils().toastMessage(e.toString());
         });
   }
@@ -120,6 +129,7 @@ class Methods with ChangeNotifier {
 //signin admin
   void signinA(BuildContext context) async {
     try {
+      setloading(true);
       QuerySnapshot querySnapshot = await _firebaseFirestore
           .collection("SignUpAdminData")
           .where('PhoneNumber', isEqualTo: phoneControllerSignin.text)
@@ -164,6 +174,7 @@ class Methods with ChangeNotifier {
       } else {
         // User not found or password incorrect
         showSnackBar(context, "Sign In Failed", SnackBarType.fail);
+        setloading(false);
       }
     } catch (e) {
       // Error occurred
@@ -496,7 +507,7 @@ class Methods with ChangeNotifier {
 // Python file integration
   Future<void> showLips(String text) async {
     final response = await http.post(
-      Uri.parse('http://your_server_ip:5000/show_lips'),
+      Uri.parse('http://127.0.0.1:5000/show_lips'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -514,7 +525,7 @@ class Methods with ChangeNotifier {
 
   Future<void> updateAudio(String text) async {
     final response = await http.post(
-      Uri.parse('http://your_server_ip:5000/update_audio'),
+      Uri.parse('http://127.0.0.1:5000/update_audio'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -6,6 +6,7 @@ class button extends StatelessWidget {
   final Color containerColor;
   final double? width;
   final Color? textColor;
+  final bool loading;
 
   const button(
       {super.key,
@@ -13,6 +14,7 @@ class button extends StatelessWidget {
       this.containerColor = const Color(0xFFBD1616),
       this.width,
       this.textColor,
+      this.loading = false,
       required this.ontap});
 
   @override
@@ -30,7 +32,8 @@ class button extends StatelessWidget {
         height: 40,
         width: width != null ? (width! > 300 ? 300 : width) : 300,
         child: Center(
-          child: Text(
+          child: loading! ? const CircularProgressIndicator(strokeWidth: 3, color: Colors.white,)
+            : Text(
             title,
             style: TextStyle(color: defaultTextColor),
           ),
