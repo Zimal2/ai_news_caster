@@ -33,243 +33,249 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
       _isPasswordVisible = !_isPasswordVisible;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 50),
-            child: CustomContainer(
-              width: double.infinity,
-              // height: double.infinity,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    width: double.infinity,
-                    height: 30,
-                  ),
-                  Center(
-                    child: sampleText(text: 'Welcome!', fontsize: 30),
-                  ),
-                  Center(
-                    child: sampleText(
-                        text: 'Sign up as Administrator',
-                        fontsize: 16,
-                        color: const Color(0xFFBD1616)),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  CustomContainer(
-                    width: double.infinity,
-                    height: 60,
-                    color: const Color(0xFFD9D9D9),
-                    radius: const BorderRadius.all(Radius.circular(10)),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        CustomContainer(
-                          width: 270,
-                          height: 50,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter username';
-                              }
-                              return null;
-                            },
-                            controller: methodsProvider.usernameController,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none, hintText: 'Username'),
-                          ),
-                        ),
-                        CustomContainer(
-                          width: 50,
-                          height: 50,
-                          child: const Icon(Icons.person),
-                        ),
-                      ],
+          child: Form(
+            key: methodsProvider.signUpKey,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 50),
+              child: CustomContainer(
+                width: double.infinity,
+                // height: double.infinity,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      width: double.infinity,
+                      height: 30,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomContainer(
-                    width: double.infinity,
-                    height: 60,
-                    color: const Color(0xFFD9D9D9),
-                    radius: const BorderRadius.all(Radius.circular(10)),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        CustomContainer(
-                          width: 270,
-                          height: 50,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter email';
-                              }
-                              return null;
-                            },
-                            controller: methodsProvider.emailController,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Email Address'),
-                          ),
-                        ),
-                        CustomContainer(
-                          width: 50,
-                          height: 50,
-                          child: const Icon(Icons.email),
-                        ),
-                      ],
+                    Center(
+                      child: sampleText(text: 'Welcome!', fontsize: 30),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomContainer(
-                    width: double.infinity,
-                    height: 60,
-                    color: const Color(0xFFD9D9D9),
-                    radius: const BorderRadius.all(Radius.circular(10)),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        CustomContainer(
-                          width: 270,
-                          height: 50,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter institute';
-                              }
-                              return null;
-                            },
-                            controller: methodsProvider.institueController,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Institute'),
-                          ),
-                        ),
-                        CustomContainer(
-                          width: 50,
-                          height: 50,
-                          child: Image.asset('lib/assests/images/institue.png'),
-                        ),
-                      ],
+                    Center(
+                      child: sampleText(
+                          text: 'Sign up as Administrator',
+                          fontsize: 16,
+                          color: const Color(0xFFBD1616)),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomContainer(
-                    width: double.infinity,
-                    height: 60,
-                    color: const Color(0xFFD9D9D9),
-                    radius: const BorderRadius.all(Radius.circular(10)),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        CustomContainer(
-                          width: 270,
-                          height: 50,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter your designation';
-                              }
-                              return null;
-                            },
-                            controller: methodsProvider.designationController,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Post/Position'),
-                          ),
-                        ),
-                        CustomContainer(
-                          width: 50,
-                          height: 50,
-                          child: Image.asset('lib/assests/images/post.png'),
-                        ),
-                      ],
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomContainer(
-                    width: double.infinity,
-                    height: 60,
-                    color: const Color(0xFFD9D9D9),
-                    radius: const BorderRadius.all(Radius.circular(10)),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        CustomContainer(
-                          width: 270,
-                          height: 50,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter phone number';
-                              }
-                              return null;
-                            },
-                            controller: methodsProvider.phoneControllerSignup,
-                            keyboardType: TextInputType.phone,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                // labelText: 'Phone Number',
-                                labelText: '+92 3030330303'),
+                    CustomContainer(
+                      width: double.infinity,
+                      height: 60,
+                      color: const Color(0xFFD9D9D9),
+                      radius: const BorderRadius.all(Radius.circular(10)),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
                           ),
-                        ),
-                        CustomContainer(
-                          width: 50,
-                          height: 50,
-                          child: const Icon(Icons.phone),
-                        ),
-                      ],
+                          CustomContainer(
+                            width: 270,
+                            height: 50,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter username';
+                                }
+                                return null;
+                              },
+                              controller: methodsProvider.usernameController,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Username'),
+                            ),
+                          ),
+                          CustomContainer(
+                            width: 50,
+                            height: 50,
+                            child: const Icon(Icons.person),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomContainer(
-                    width: double.infinity,
-                    height: 60,
-                    color: const Color(0xFFD9D9D9),
-                    radius: const BorderRadius.all(Radius.circular(10)),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        CustomContainer(
-                          width: 320,
-                          height: 50,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter password';
-                              }
-                              return null;
-                            },
-                            controller: methodsProvider.passwordControllerSignup,
-                            obscureText: !_isPasswordVisible,
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomContainer(
+                      width: double.infinity,
+                      height: 60,
+                      color: const Color(0xFFD9D9D9),
+                      radius: const BorderRadius.all(Radius.circular(10)),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          CustomContainer(
+                            width: 270,
+                            height: 50,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter email';
+                                }
+                                return null;
+                              },
+                              controller: methodsProvider.emailController,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Email Address'),
+                            ),
+                          ),
+                          CustomContainer(
+                            width: 50,
+                            height: 50,
+                            child: const Icon(Icons.email),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomContainer(
+                      width: double.infinity,
+                      height: 60,
+                      color: const Color(0xFFD9D9D9),
+                      radius: const BorderRadius.all(Radius.circular(10)),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          CustomContainer(
+                            width: 270,
+                            height: 50,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter institute';
+                                }
+                                return null;
+                              },
+                              controller: methodsProvider.institueController,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Institute'),
+                            ),
+                          ),
+                          CustomContainer(
+                            width: 50,
+                            height: 50,
+                            child:
+                                Image.asset('lib/assests/images/institue.png'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomContainer(
+                      width: double.infinity,
+                      height: 60,
+                      color: const Color(0xFFD9D9D9),
+                      radius: const BorderRadius.all(Radius.circular(10)),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          CustomContainer(
+                            width: 270,
+                            height: 50,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter your designation';
+                                }
+                                return null;
+                              },
+                              controller: methodsProvider.designationController,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Post/Position'),
+                            ),
+                          ),
+                          CustomContainer(
+                            width: 50,
+                            height: 50,
+                            child: Image.asset('lib/assests/images/post.png'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomContainer(
+                      width: double.infinity,
+                      height: 60,
+                      color: const Color(0xFFD9D9D9),
+                      radius: const BorderRadius.all(Radius.circular(10)),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          CustomContainer(
+                            width: 270,
+                            height: 50,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter phone number';
+                                }
+                                return null;
+                              },
+                              controller: methodsProvider.phoneControllerSignup,
+                              keyboardType: TextInputType.phone,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  // labelText: 'Phone Number',
+                                  labelText: '+92 3030330303'),
+                            ),
+                          ),
+                          CustomContainer(
+                            width: 50,
+                            height: 50,
+                            child: const Icon(Icons.phone),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomContainer(
+                      width: double.infinity,
+                      height: 60,
+                      color: const Color(0xFFD9D9D9),
+                      radius: const BorderRadius.all(Radius.circular(10)),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          CustomContainer(
+                            width: 320,
+                            height: 50,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter password';
+                                }
+                                return null;
+                              },
+                              controller:
+                                  methodsProvider.passwordControllerSignup,
+                              obscureText: !_isPasswordVisible,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Password',
@@ -280,59 +286,64 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                                   onPressed: togglePasswordVisibility,
                                 ),
                               ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  button(
-                    loading: methodsProvider.loading,
-                    title: 'Next',
-                    ontap: () {
-                      methodsProvider.verify(context);
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomContainer(
-                    width: double.infinity,
-                    height: 10,
-                    child: Image.asset('lib/assests/images/line.png',
-                        fit: BoxFit.cover),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  button(
-                      title: 'Sign Up with Google',
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    button(
+                      loading: methodsProvider.loading,
+                      title: 'Next',
                       ontap: () {
-                        methodsProvider.signInWithGoogle(context);
-                      }),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      sampleText(
-                          text: 'Already have an account?',
-                          color: Colors.black),
-                      Textbutton(
-                          title: "Sign in",
-                          color: const Color(0xFFBD1616),
-                          ontap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SigninAdminitrator(),
-                                ));
-                          }),
-                    ],
-                  )
-                ],
+                        if (methodsProvider.signUpKey.currentState!
+                            .validate()) {
+                          methodsProvider.verify(context);
+                        }
+                        //      methodsProvider.verify(context);
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomContainer(
+                      width: double.infinity,
+                      height: 10,
+                      child: Image.asset('lib/assests/images/line.png',
+                          fit: BoxFit.cover),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    button(
+                        title: 'Sign Up with Google',
+                        ontap: () {
+                          methodsProvider.signInWithGoogle(context);
+                        }),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        sampleText(
+                            text: 'Already have an account?',
+                            color: Colors.black),
+                        Textbutton(
+                            title: "Sign in",
+                            color: const Color(0xFFBD1616),
+                            ontap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SigninAdminitrator(),
+                                  ));
+                            }),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

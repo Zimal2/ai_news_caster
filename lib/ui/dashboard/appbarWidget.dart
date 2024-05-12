@@ -32,7 +32,7 @@ class AppBarWidget extends StatelessWidget {
               },
               width: 50,
               height: 50,
-              child: const Icon(Icons.menu)),
+              child: const Icon(Icons.person)),
           const SizedBox(
             width: 35,
           ),

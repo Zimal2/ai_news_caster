@@ -58,39 +58,50 @@ class Methods with ChangeNotifier {
 
   //keys
   final GlobalKey<FormState> forgetFormKey = GlobalKey<FormState>();
-  bool _isLoading = false;
-  bool get loading => _isLoading;
+
+  final GlobalKey<FormState> signUpKey = GlobalKey<FormState>();
+
+  bool isLoading = false;
+  bool get loading => isLoading;
 
   setloading(bool value) {
-    _isLoading = value;
+    isLoading = value;
     notifyListeners();
   }
 
   //methods
-
+  //here
   //for signup admin
   void verify(BuildContext context) {
-    setloading(true);
-    _auth.verifyPhoneNumber(
-        phoneNumber: phoneControllerSignup.text,
-        verificationCompleted: (_) {},
-        verificationFailed: (e) {
-          showSnackBar(context, "Verfication Failed", SnackBarType.fail);
-          Utils().toastMessage(e.toString());
-        },
-        codeSent: (String verificationId, int? token) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PhoneNumberConfirm(
-                  verificationId: verificationId,
-                ),
-              ));
-        },
-        codeAutoRetrievalTimeout: (e) {
-          setloading(false);
-          Utils().toastMessage(e.toString());
-        });
+    if (signUpKey.currentState!.validate()) {
+      try {
+        setloading(true);
+        _auth.verifyPhoneNumber(
+            phoneNumber: phoneControllerSignup.text,
+            verificationCompleted: (_) {},
+            verificationFailed: (e) {
+              showSnackBar(context, "Verfication Failed", SnackBarType.fail);
+              Utils().toastMessage(e.toString());
+            },
+            codeSent: (String verificationId, int? token) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PhoneNumberConfirm(
+                      verificationId: verificationId,
+                    ),
+                  ));
+            },
+            codeAutoRetrievalTimeout: (e) {
+              setloading(false);
+              Utils().toastMessage(e.toString());
+            });
+      } catch (error) {
+        setloading(false);
+
+        Utils().toastMessage("Error while Sign up");
+      }
+    }
   }
 
   //for phonenumber confirm
@@ -146,27 +157,10 @@ class Methods with ChangeNotifier {
         userIDSignin = userId;
 
         debugPrint("User ID while sign in: ${userIDSignin}");
-        // showAwesomeSnackbar(context, "Sign In Success",
-
-        //     "Admin signed in successfully.", ContentType.success);
         showSnackBar(context, "Sign In Success", SnackBarType.success);
-        // showDialog(
-        //   context: context,
-        //   builder: (BuildContext context) {
-        //     return AlertDialog(
-        //       title: Text("Sign In Success"),
-        //       content: Text("Admin signed in successfully."),
-        //       actions: [
-        //         TextButton(
-        //           onPressed: () {
-        //             Navigator.of(context).pop();
-        //           },
-        //           child: Text("OK"),
-        //         ),
-        //       ],
-        //     );
-        //   },
-        // );
+        //clear values of text feilds when move to next
+        phoneControllerSignin.clear();
+        passwordControllerSignin.clear();
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -182,7 +176,6 @@ class Methods with ChangeNotifier {
     } catch (e) {
       // Error occurred
       showSnackBar(context, "Sign In Failed", SnackBarType.fail);
-  
     }
   }
 
@@ -251,7 +244,6 @@ class Methods with ChangeNotifier {
       // User is not signed in, display an error message or redirect to sign-in page
       showSnackBar(context, "Sign In Failed, Please Sign in to upload news",
           SnackBarType.fail);
-     
 
       return; // Exit the function if user is not signed in
     }
@@ -288,7 +280,12 @@ class Methods with ChangeNotifier {
           });
           showSnackBar(
               context, "News Uploaded Successfully", SnackBarType.success);
-          Navigator.push(
+
+          titleController.clear();
+          decriptionController.clear();
+          image = null;
+          selectedItem = null;
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => NewsUploaded(),
@@ -550,26 +547,21 @@ class Methods with ChangeNotifier {
   Future<void> convertImageToVideo(BuildContext context) async {
     const String BASE_PATH = 'lib/assets/images/lip-sync Images/';
     const String OUTPUT_PATH = BASE_PATH + 'OUTPUT.mp4';
-    if(await Permission.storage.request().isGranted){
-      String commandToExecute = 
-      '-framerate 2'
-      '-i ${BASE_PATH} -s 1080X1620 -y ${OUTPUT_PATH}';
+    if (await Permission.storage.request().isGranted) {
+      String commandToExecute = '-framerate 2'
+          '-i ${BASE_PATH} -s 1080X1620 -y ${OUTPUT_PATH}';
       await FFmpegKit.execute(commandToExecute).then((session) async {
         final returnCode = await session.getReturnCode();
-        if(ReturnCode.isSuccess(returnCode)){
+        if (ReturnCode.isSuccess(returnCode)) {
           print('Video is successfully created');
-          showSnackBar(context, 'Video is created successfully', SnackBarType.success);
-        }
-        else if(ReturnCode.isCancel(returnCode)){
+          showSnackBar(
+              context, 'Video is created successfully', SnackBarType.success);
+        } else if (ReturnCode.isCancel(returnCode)) {
           print('Video is cancel');
-        }
-        else{
-
-        }
+        } else {}
       });
+    } else if (await Permission.storage.isPermanentlyDenied) {
+      print('Permission Denied');
     }
-    else if(await Permission.storage.isPermanentlyDenied){
-        print('Permission Denied');
-      }
   }
 }

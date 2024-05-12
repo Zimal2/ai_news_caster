@@ -24,11 +24,15 @@ class UploadNews extends StatefulWidget {
 
 class UploadNewsState extends State<UploadNews> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
     double size = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(title: const Text("Upload News")),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -37,6 +41,17 @@ class UploadNewsState extends State<UploadNews> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Upload News",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Center(
                   child: GestureDetector(
                     onTap: () {
@@ -177,6 +192,12 @@ class UploadNewsState extends State<UploadNews> {
                 //title
                 sampleText(text: "Enter title:"),
                 TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter title';
+                    }
+                    return null;
+                  },
                   controller: methodsProvider.titleController,
                   decoration: InputDecoration(
                     filled: true,
@@ -201,6 +222,12 @@ class UploadNewsState extends State<UploadNews> {
                 //description
                 sampleText(text: "Enter Description:"),
                 TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter description';
+                    }
+                    return null;
+                  },
                   controller: methodsProvider.decriptionController,
                   decoration: InputDecoration(
                     filled: true,

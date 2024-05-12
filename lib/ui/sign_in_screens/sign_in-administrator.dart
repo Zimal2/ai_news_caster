@@ -24,6 +24,16 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
       _isPasswordVisible = !_isPasswordVisible;
     });
   }
+
+  // @override
+  // void dispose() {
+  //   // Dispose text controllers to clear their values
+  //   Provider.of<Methods>(context, listen: false).phoneControllerSignin.dispose();
+  //   Provider.of<Methods>(context, listen: false).passwordControllerSignin.dispose();
+
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -131,7 +141,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                               },
                               controller:
                                   methodsProvider.passwordControllerSignin,
-                             obscureText: !_isPasswordVisible,
+                              obscureText: !_isPasswordVisible,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Password',
@@ -166,17 +176,14 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                     ),
                     Center(
                       child: button(
-                      loading: methodsProvider.loading,
-                      title: 'Sign in as Administrator',
-                      ontap: () {
-                        if (_formkey.currentState!.validate()) {
-                          methodsProvider.signinA(context);
-                        }
-                      },
-                    ),
-                    ),
-                    const SizedBox(
-                      height: 5,
+                        loading: methodsProvider.loading,
+                        title: 'Sign in as Administrator',
+                        ontap: () {
+                          if (_formkey.currentState!.validate()) {
+                            methodsProvider.signinA(context);
+                          }
+                        },
+                      ),
                     ),
                     CustomContainer(
                       width: double.infinity,

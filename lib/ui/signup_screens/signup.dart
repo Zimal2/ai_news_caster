@@ -1,7 +1,6 @@
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/signup_adminitrator.dart';
-import 'package:ai_news_caster/utils/flutterToast.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
@@ -18,12 +17,11 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  //TextEditingController usernameController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
   final _formkey = GlobalKey<FormState>();
-  bool _isLoading = false;
+  bool isLoading = false;
   bool _isPasswordVisible = false;
 
   void togglePasswordVisibility() {
@@ -146,25 +144,45 @@ class _SignupScreenState extends State<SignupScreen> {
                       ontap: () {
                         if (_formkey.currentState!.validate()) {
                           setState(() {
-                            _isLoading = true;
+                            isLoading = true;
                           });
                           _auth
                               .createUserWithEmailAndPassword(
                                   email: emailController.text.toString(),
                                   password: passwordController.text.toString())
                               .then((value) {
-                                 setState(() {
-                                  _isLoading = false;
-                                });                            
+                            setState(() {
+                              isLoading = false;
+                            });
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const SigninScreen(),
                                 ));
                           }).onError((error, stackTrace) {
-                            Utils().toastMessage(error.toString());
-                             setState(() {
-                              _isLoading = false;
+                            if (error is FirebaseAuthException) {
+                              if (error.code == 'email-already-in-use') {
+                                // Show snackbar indicating that the email is already in use
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'Email is already in use. Please use a different email.'),
+                                    duration: const Duration(seconds: 3),
+                                  ),
+                                );
+                              } else {
+                                // Show generic error snackbar
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'An error occurred. Please try again later.'),
+                                    duration: Duration(seconds: 3),
+                                  ),
+                                );
+                              }
+                            }
+                            setState(() {
+                              isLoading = false;
                             });
                           });
                         }

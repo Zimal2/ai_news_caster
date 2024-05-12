@@ -21,7 +21,6 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-
   bool _isPasswordVisible = false;
 
   void togglePasswordVisibility() {
@@ -29,177 +28,169 @@ class _SigninScreenState extends State<SigninScreen> {
       _isPasswordVisible = !_isPasswordVisible;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Form(
-            key: methodsProvider.formkey,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: CustomContainer(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 100,
-                    ),
-                    Center(
-                      child: sampleText(text: 'Welcome!', fontsize: 30),
-                    ),
-                    Center(
-                      child: sampleText(
-                          text: 'Please Sign in to your account',
-                          fontsize: 16,
-                          color: Colors.grey),
-                    ),
-                    const SizedBox(height: 30),
-                    CustomContainer(
-                      width: double.infinity,
-                      height: 60,
-                      color: const Color(0xFFD9D9D9),
-                      radius: const BorderRadius.all(Radius.circular(10)),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          CustomContainer(
-                            width: 270,
-                            height: 50,
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter email';
-                                }
-                                return null;
-                              },
-                              controller: methodsProvider.emailController,
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Email Address'),
-                            ),
-                          ),
-                          CustomContainer(
-                            width: 50,
-                            height: 50,
-                            child: const Icon(Icons.email),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    CustomContainer(
-                      width: double.infinity,
-                      height: 60,
-                      color: const Color(0xFFD9D9D9),
-                      radius: const BorderRadius.all(Radius.circular(10)),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          CustomContainer(
-                            width: 320,
-                            height: 50,
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter password';
-                                }
-                                return null;
-                              },
-                              controller: methodsProvider.passwordController,
-                              obscureText: !_isPasswordVisible,
-                              decoration: InputDecoration(
+        body: SafeArea(
+      child: SingleChildScrollView(
+        child: Form(
+          key: methodsProvider.formkey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: CustomContainer(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  const SizedBox(height: 100),
+                  Center(
+                    child: sampleText(text: 'Welcome!', fontsize: 30),
+                  ),
+                  Center(
+                    child: sampleText(
+                        text: 'Please Sign in to your account',
+                        fontsize: 16,
+                        color: Colors.grey),
+                  ),
+                  const SizedBox(height: 30),
+                  CustomContainer(
+                    width: double.infinity,
+                    height: 60,
+                    color: const Color(0xFFD9D9D9),
+                    radius: const BorderRadius.all(Radius.circular(10)),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        CustomContainer(
+                          width: 270,
+                          height: 50,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter email';
+                              }
+                              return null;
+                            },
+                            controller: methodsProvider.emailController,
+                            decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'Password',
-                                suffixIcon: IconButton(
-                                  icon: Icon(_isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
-                                  onPressed: togglePasswordVisibility,
-                                ),
-                              ),
-                            ),
+                                hintText: 'Email Address'),
                           ),
-                        ],
-                      ),
+                        ),
+                        CustomContainer(
+                          width: 50,
+                          height: 50,
+                          child: const Icon(Icons.email),
+                        ),
+                      ],
                     ),
-                    CustomContainer(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ForgetPassword(),
-                          )),
+                  ),
+                  const SizedBox(height: 10),
+                  CustomContainer(
+                    width: double.infinity,
+                    height: 60,
+                    color: const Color(0xFFD9D9D9),
+                    radius: const BorderRadius.all(Radius.circular(10)),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        CustomContainer(
+                          width: 320,
+                          height: 50,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter password';
+                              }
+                              return null;
+                            },
+                            controller: methodsProvider.passwordController,
+                            decoration: const InputDecoration(
+                                border: InputBorder.none, hintText: 'Password'),
+                            obscureText: !_isPasswordVisible,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  CustomContainer(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ForgetPassword(),
+                        )),
+                    width: double.infinity,
+                    height: 40,
+                    alignment: Alignment.centerRight,
+                    child: sampleText(
+                        text: 'Forget Password?',
+                        color: Colors.black,
+                        fontsize: 12),
+                  ),
+                  const SizedBox(height: 30),
+                  button(
+                    loading: methodsProvider.isLoading,
+                    title: 'Sign in',
+                    ontap: () {
+                      methodsProvider.login(context);
+                    },
+                  ),
+                  CustomContainer(
                       width: double.infinity,
                       height: 40,
                       alignment: Alignment.centerRight,
-                      child: sampleText(
-                          text: 'Forget Password?',
-                          color: Colors.black,
-                          fontsize: 12),
-                    ),
-                    const SizedBox(height: 30),
-                    button(
-                      loading: methodsProvider.loading,
-                      title: 'Sign in',
+                      child: Textbutton(
+                          title: 'Sign in as Administrator?',
+                          color: const Color(0xFFBD1616),
+                          ontap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SigninAdminitrator(),
+                                ));
+                          })),
+                  CustomContainer(
+                    width: double.infinity,
+                    height: 10,
+                    child: Image.asset('lib/assests/images/line.png',
+                        fit: BoxFit.cover),
+                  ),
+                  const SizedBox(height: 30),
+                  button(
+                      title: 'Sign in with Google',
                       ontap: () {
-                        methodsProvider.login(context);
-                      },
-                    ),
-                    CustomContainer(
-                        width: double.infinity,
-                        height: 40,
-                        alignment: Alignment.centerRight,
-                        child: Textbutton(
-                            title: 'Sign in as Administrator?',
-                            color: const Color(0xFFBD1616),
-                            ontap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SigninAdminitrator(),
-                                  ));
-                            })),
-                    CustomContainer(
-                      width: double.infinity,
-                      height: 10,
-                      child: Image.asset('lib/assests/images/line.png',
-                          fit: BoxFit.cover),
-                    ),
-                    const SizedBox(height: 30),
-                    button(
-                        title: 'Sign in with Google',
-                        ontap: () {
-                          methodsProvider.signInWithGoogle(context);
-                        }),
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        sampleText(
-                            text: 'Don\'t have an account?',
-                            color: Colors.black),
-                        const SizedBox(width: 10),
-                        Textbutton(
-                            title: 'Sign up',
-                            color: const Color(0xFFBD1616),
-                            ontap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const SignupScreen(),
-                                  ));
-                            })
-                      ],
-                    )
-                  ],
-                ),
+                        methodsProvider.signInWithGoogle(context);
+                      }),
+                  const SizedBox(height: 10),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      sampleText(
+                          text: 'Don\'t have an account?', color: Colors.black),
+                      const SizedBox(width: 10),
+                      Textbutton(
+                          title: 'Sign up',
+                          color: const Color(0xFFBD1616),
+                          ontap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SignupScreen(),
+                                ));
+                          })
+                    ],
+                  )
+                ],
               ),
             ),
           ),
         ),
       ),
-    );
+    ));
   }
 }
