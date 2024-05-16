@@ -30,45 +30,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 10,
             ),
             //menu
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: CustomContainer(
-                width: double.infinity,
-                height: 25,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      child: sampleText(
-                          text: 'ALL',
-                          color: const Color(0xFFBD1616),
-                          fontsize: 18),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      child: sampleText(
-                        text: 'PROGRAMMING',
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: CustomContainer(
+                  width: double.infinity,
+                  height: 25,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      Container(
+                        child: sampleText(
+                            text: 'ALL',
+                            color: const Color(0xFFBD1616),
+                            fontsize: 18),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      child: sampleText(
-                        text: 'SPORTS',
+                      const SizedBox(
+                        width: 40,
                       ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      child: sampleText(
-                        text: 'MEDIA',
+                      Container(
+                        child: sampleText(
+                          text: 'PROGRAMMING',
+                        ),
                       ),
-                    )
-                  ],
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      Container(
+                        child: sampleText(
+                          text: 'SPORTS',
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      Container(
+                        child: sampleText(
+                          text: 'MEDIA',
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

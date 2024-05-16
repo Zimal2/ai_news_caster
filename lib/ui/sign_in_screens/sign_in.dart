@@ -42,9 +42,6 @@ class _SigninScreenState extends State<SigninScreen> {
             child: CustomContainer(
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 100,
-                  ),
                   const SizedBox(height: 100),
                   Center(
                     child: sampleText(text: 'Welcome!', fontsize: 30),
@@ -108,9 +105,17 @@ class _SigninScreenState extends State<SigninScreen> {
                               return null;
                             },
                             controller: methodsProvider.passwordController,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none, hintText: 'Password'),
                             obscureText: !_isPasswordVisible,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Password',
+                                suffixIcon: IconButton(
+                                  icon: Icon(_isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: togglePasswordVisibility,
+                                ),
+                              ),
                           ),
                         ),
                       ],

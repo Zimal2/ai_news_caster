@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:ai_news_caster/provider/Methods.dart';
+import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsMedia.dart';
 import 'package:ai_news_caster/ui/mediaScreens/readMore.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/text.dart';
-import 'package:ai_news_caster/widgets/video_player_widget.dart';
-import 'package:provider/provider.dart'; // Import VideoPlayerWidget here
+import 'package:flutter/material.dart';
 
 class NewsScreen extends StatefulWidget {
-  const NewsScreen({Key? key}) : super(key: key);
+  final Articles? article;
+  const NewsScreen({Key? key, this.article}) : super(key: key);
 
   @override
   State<NewsScreen> createState() => _NewsScreenState();
@@ -18,7 +17,7 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final methodsProvider = Provider.of<Methods>(context);
+    final article = widget.article;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 104, 103, 103),
       body: SafeArea(
@@ -33,7 +32,7 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                   child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
                 ),
                 title: sampleText(
-                  text: "International News",
+                  text: article?.title ?? "International News",
                   fontsize: 20,
                   color: Colors.white,
                 ),
@@ -52,30 +51,31 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       sampleText(
-                        text: "Jacob nancy",
+                        text: article?.author,
                         color: Colors.white,
-                        fontsize: 20,
+                        fontsize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                       sampleText(
-                        text: "Uploaded on 2:30 AM",
+                        text: article?.publishedAt,
                         color: Colors.white,
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
               GestureDetector(
                 onTap: () {
-                  methodsProvider.speak('In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visua form of a document or a typeface without relying on meaningful content.');
+                  // Handle onTap
                 },
                 child: Container(
                   color: Colors.black,
                   height: 250,
                   width: double.infinity,
                   child: Center(
-                    child: Image.asset('lib/assests/images/avatar.png',
-                    fit: BoxFit.contain,
+                    child: Image.asset(
+                      'lib/assests/images/avatar.png',
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
@@ -91,7 +91,7 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                       fontsize: 20,
                       fontWeight: FontWeight.w400,
                       color: Colors.white,
-                      text: "News of digital market regarding the ups and downs",
+                      text: article?.title ?? "No Title",
                     ),
                     Image.asset('lib/assests/images/line.png'),
                     sampleText(
@@ -103,8 +103,7 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                     ),
                     sampleText(
                       color: Colors.white,
-                      text:
-                          "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visua form of a document or a typeface without relying on meaningful content.",
+                      text: article?.description ?? "No Description",
                     ),
                     InkWell(
                       child: sampleText(
@@ -113,12 +112,7 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                         color: Colors.blue,
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReadMore(),
-                          ),
-                        );
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ReadMore(article: article,),));
                       },
                     ),
                     Row(
@@ -152,10 +146,10 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                           },
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

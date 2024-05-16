@@ -1,3 +1,4 @@
+import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsScreen.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
@@ -6,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class NewsHistoryListView extends StatelessWidget {
-  NewsHistoryListView({Key? key});
+  NewsHistoryListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
-    return FutureBuilder(
+    return FutureBuilder<NewsModel>(
       future: methodsProvider.getPostApimethod(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -35,75 +36,72 @@ class NewsHistoryListView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: GestureDetector(
                 onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NewsScreen(),
-                    )),
-                child: 
-                Container(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewsScreen(article: doc),
+                  ),
+                ),
+                child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20)),
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
                         blurRadius: 10,
                         color: Color.fromARGB(255, 19, 85, 139),
-                      )
+                      ),
                     ],
                   ),
-                  margin:
-                      const EdgeInsets.only(bottom: 15, left: 10, right: 10),
+                  margin: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              width: 100,
-                              height: 150,
-                              color: Colors.brown,
-                              child: Image.network(
-                                doc.urlToImage != null && doc.urlToImage != ""
-                                    ? doc.urlToImage!
-                                    : 'https://i.pinimg.com/564x/4e/d1/26/4ed126ab70265d07682cba1995385822.jpg',
-                                fit: BoxFit.cover,
-                              ),
-                            )),
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            width: 100,
+                            height: 150,
+                            color: Colors.brown,
+                            child: Image.network(
+                              doc.urlToImage != null && doc.urlToImage != ""
+                                  ? doc.urlToImage!
+                                  : 'https://i.pinimg.com/564x/4e/d1/26/4ed126ab70265d07682cba1995385822.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 sampleText(
-                                    text: doc.description.toString(),
-                                    fontsize: 13),
+                                  text: doc.description.toString(),
+                                  fontsize: 13,
+                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Image.asset("lib/assests/images/mark.png",
-                                        fit: BoxFit.cover),
+                                    Image.asset("lib/assests/images/mark.png", fit: BoxFit.cover),
                                     const SizedBox(width: 10),
                                     Container(
                                       height: 20,
                                       width: 100,
                                       child: sampleText(
-                                          text: doc.source!.name.toString(),
-                                          fontsize: 12,
-                                          overflow: TextOverflow.fade,
-                                          fontWeight: FontWeight.w500),
-                                    )
+                                        text: doc.source!.name.toString(),
+                                        fontsize: 12,
+                                        overflow: TextOverflow.fade,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
+                                const SizedBox(height: 10),
                               ],
                             ),
                           ),
@@ -119,12 +117,11 @@ class NewsHistoryListView extends StatelessWidget {
                               ),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ),
-              
               ),
             );
           },

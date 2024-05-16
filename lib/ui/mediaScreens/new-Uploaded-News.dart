@@ -1,3 +1,4 @@
+import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsScreen.dart';
 import 'package:flutter/material.dart';
@@ -37,12 +38,27 @@ class _NewNewsState extends State<NewNews> {
                     ? imagePaths[0]
                     : ''; // Get the first image path
 
+                // Create an Articles instance from newsData
+                Articles article = Articles(
+                  source: Source(
+                    id: newsData['source']['id'],
+                    name: newsData['source']['name'],
+                  ),
+                  author: newsData['author'],
+                  title: newsData['title'],
+                  description: newsData['description'],
+                  url: newsData['url'],
+                  urlToImage: firstImagePath,
+                  publishedAt: newsData['publishedAt'],
+                  content: newsData['content'],
+                );
+
                 return InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NewsScreen(),
+                          builder: (context) => NewsScreen(article: article),
                         ));
                   },
                   child: Padding(
