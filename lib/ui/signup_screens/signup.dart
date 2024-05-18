@@ -5,6 +5,7 @@ import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:ai_news_caster/widgets/text_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  TextEditingController usernameController = new TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
   final _formkey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -61,6 +63,43 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     const SizedBox(
                       height: 30,
+                    ),
+                    CustomContainer(
+                      width: double.infinity,
+                      height: 60,
+                      color: const Color(0xFFD9D9D9),
+                      radius: const BorderRadius.all(Radius.circular(10)),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          CustomContainer(
+                            width: 270,
+                            height: 50,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter username';
+                                }
+                                return null;
+                              },
+                              controller: usernameController,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Username'),
+                            ),
+                          ),
+                          CustomContainer(
+                            width: 50,
+                            height: 50,
+                            child: const Icon(Icons.person),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     CustomContainer(
                       width: double.infinity,
@@ -150,9 +189,15 @@ class _SignupScreenState extends State<SignupScreen> {
                               .createUserWithEmailAndPassword(
                                   email: emailController.text.toString(),
                                   password: passwordController.text.toString())
-                              .then((value) {
-                            setState(() {
-                              isLoading = false;
+                              .then((value) async {
+                            CollectionReference _information = FirebaseFirestore.instance.collection('UserSignUpData');
+                            String userID = _information.doc().id;
+                            
+                            await _information.doc(userID).set({
+                              "EmailAdress": emailController.text.trim(),
+                              "UserName": usernameController.text.trim(),
+                              "Password": passwordController.text.trim(),
+                              "userId": userID,
                             });
                             Navigator.push(
                                 context,
@@ -160,6 +205,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                   builder: (context) => const SigninScreen(),
                                 ));
                           }).onError((error, stackTrace) {
+                            setState(() {
+                              isLoading = false;
+                            });
                             if (error is FirebaseAuthException) {
                               if (error.code == 'email-already-in-use') {
                                 // Show snackbar indicating that the email is already in use
