@@ -226,6 +226,13 @@ class Methods with ChangeNotifier {
     await flutterTts.speak(text);
   }
 
+  //duration to speak
+  double calculateSpeakingTime(String text, {int wordsPerMinute = 150}) {
+    final wordCount = text.split(' ').length;
+    final wordsPerSecond = wordsPerMinute / 60.0;
+    return wordCount / wordsPerSecond;
+  }
+
 //Upload news data
 // Dropdown items
   String? selectedItem;

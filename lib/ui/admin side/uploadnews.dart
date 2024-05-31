@@ -1,11 +1,9 @@
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/admin%20side/gemini.dart';
-import 'package:ai_news_caster/ui/mediaScreens/newsUploaded.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
@@ -80,7 +78,7 @@ class UploadNewsState extends State<UploadNews> {
                       child: Column(
                         children: [
                           methodsProvider.isUploadingImage
-                              ? CircularProgressIndicator()
+                              ? const CircularProgressIndicator()
                               : methodsProvider.image != null
                                   ? Image.file(
                                       methodsProvider.image!,
@@ -122,7 +120,7 @@ class UploadNewsState extends State<UploadNews> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 // Row to track the number of images uploaded
@@ -167,11 +165,11 @@ class UploadNewsState extends State<UploadNews> {
                                 child: Container(
                                   width: 25,
                                   height: 25,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.red,
                                   ),
-                                  child: Center(
+                                  child:const Center(
                                     child: Icon(
                                       Icons.remove,
                                       color: Colors.white,
@@ -264,8 +262,7 @@ class UploadNewsState extends State<UploadNews> {
                     }
                   },
 
-                  //  methodsProvider
-                  //     .speak(methodsProvider.decriptionController.text),
+                
                   child: Container(
                     height: 50,
                     width: 130,
