@@ -1,15 +1,14 @@
 import 'dart:async';
-
 import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
-import 'package:ai_news_caster/ui/mediaScreens/lip-sync/lipsyncWidget.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsMedia.dart';
 import 'package:ai_news_caster/ui/mediaScreens/readMore.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -24,43 +23,61 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
   late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
-  // late final AnimationController _controller =
-  //     AnimationController(vsync: this, duration: Duration(seconds: 4))
-  //       ..repeat();
-  void dispose() {
-    //  _controller.dispose();
+  late FlutterTts flutterTts;
+  late Methods methodsProvider;
+  String? description;
+  double speakingTime = 0.0;
+  bool isTtsPlaying = false;
 
+  @override
+  void dispose() {
     _videoPlayerController.dispose();
     _chewieController.dispose();
+    flutterTts.stop();
     super.dispose();
   }
 
   @override
   void initState() {
-    final methodsProvider = Provider.of<Methods>(context, listen: false);
-    final description = widget.article?.description;
-    final speakingTime = methodsProvider
+    super.initState();
+
+    methodsProvider = Provider.of<Methods>(context, listen: false);
+    description = widget.article?.description;
+    speakingTime = methodsProvider
         .calculateSpeakingTime(description ?? "no news to deliver");
 
-    print("speach time:$speakingTime");
+    print("speaking time: $speakingTime");
+
+    flutterTts = FlutterTts();
+
     _videoPlayerController =
         VideoPlayerController.asset('lib/assests/videos/avatar1.mp4');
     _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController,
-        autoPlay: false,
-        looping: false,
-        allowFullScreen: false,
-        showControls: true,
-        allowMuting: true,
-        allowedScreenSleep: false,
-        autoInitialize: false,
-        aspectRatio: 800 / 800,
-        progressIndicatorDelay: Duration(microseconds: 5),
-        fullScreenByDefault: false);
+      videoPlayerController: _videoPlayerController,
+      autoPlay: false,
+      looping: false,
+      allowFullScreen: false,
+      showControls: true,
+      allowMuting: true,
+      allowedScreenSleep: false,
+      autoInitialize: false,
+      aspectRatio: 800 / 800,
+      progressIndicatorDelay: Duration(microseconds: 5),
+      fullScreenByDefault: false,
+    );
+
     _videoPlayerController.addListener(() {
+      final bool isPlaying = _videoPlayerController.value.isPlaying;
+      if (isPlaying && !isTtsPlaying) {
+        playTTS();
+      } else if (!isPlaying && isTtsPlaying) {
+        stopTTS();
+      }
+
       if (_videoPlayerController.value.position >=
           Duration(seconds: speakingTime.toInt())) {
         _videoPlayerController.pause();
+        stopTTS();
         showReplayDialog();
       }
     });
@@ -68,17 +85,26 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
     Timer(Duration(seconds: speakingTime.toInt()), () {
       if (_videoPlayerController.value.isPlaying) {
         _videoPlayerController.pause();
+        stopTTS();
         showReplayDialog();
       }
     });
+  }
 
-    // Timer(Duration(seconds: speakingTime.toInt()), () {
-    //   print("speach time:2:${speakingTime.toInt()}");
-    //   _videoPlayerController.pause();
+  Future<void> playTTS() async {
+    setState(() {
+      isTtsPlaying = true;
+    });
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setPitch(1); // range 0.5-1.5
+    await flutterTts.speak(description!);
+  }
 
-    // });
-
-    super.initState();
+  Future<void> stopTTS() async {
+    setState(() {
+      isTtsPlaying = false;
+    });
+    await flutterTts.stop();
   }
 
   void showReplayDialog() {
@@ -93,15 +119,16 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
             TextButton(
               child: Text("Watch Again"),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
                 _videoPlayerController.seekTo(Duration.zero);
+                Navigator.of(context).pop();
                 _videoPlayerController.play();
+                playTTS();
               },
             ),
             TextButton(
               child: Text("Next"),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => NewsMedia()),
@@ -116,8 +143,8 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final methodsProvider = Provider.of<Methods>(context);
     final article = widget.article;
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 104, 103, 103),
       body: SafeArea(
@@ -164,31 +191,12 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  methodsProvider
-                      .speak(methodsProvider.decriptionController.text);
-                },
-                child: Container(
-                  color: Colors.black,
-                  height: 250,
-                  width: double.infinity,
-                  child: InkWell(
-                    onTap: () {
-                      methodsProvider
-                          .speak(methodsProvider.decriptionController.text);
-                    },
-                    child: Chewie(
-                      controller: _chewieController,
-                    ),
-                  ),
-                  // LipSyncWidget(text: "Added here")
-                  // Center(
-                  //   child: Image.asset(
-                  //     'lib/assests/images/avatar.png',
-                  //     fit: BoxFit.contain,
-                  //   ),
-                  // ),
+              Container(
+                color: Colors.black,
+                height: 250,
+                width: double.infinity,
+                child: Chewie(
+                  controller: _chewieController,
                 ),
               ),
               Padding(
@@ -224,12 +232,11 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                       ),
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReadMore(
-                                article: article,
-                              ),
-                            ));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReadMore(article: article),
+                          ),
+                        );
                       },
                     ),
                     Row(
@@ -242,8 +249,7 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DashboardScreen(),
-                              ),
+                                  builder: (context) => DashboardScreen()),
                             );
                           },
                         ),
