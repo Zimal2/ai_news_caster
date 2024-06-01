@@ -337,6 +337,17 @@ class Methods with ChangeNotifier {
     }
   }
 
+  //Tags method
+  Future<NewsModel> getNewsByCategory(String category) async {
+    final response = await http.get(Uri.parse(
+        'https://newsapi.org/v2/top-headlines?country=us&category=$category&apiKey=8a5ec37e26f845dcb4c2b78463734448'));
+    var jsonData = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return NewsModel.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to load news');
+    }
+  }
   //text to speech
   final FlutterTts flutterTts = FlutterTts();
   speak(String text) async {
@@ -358,8 +369,7 @@ class Methods with ChangeNotifier {
 
   List<String> items = [
     'Sports',
-    'Programming',
-    'Media',
+    'Technology',
     'Entertainment',
   ];
 //get user id
@@ -579,6 +589,7 @@ class Methods with ChangeNotifier {
         //clear values of text feilds when move to next
         emailController.clear();
         passwordController.clear();
+        setloading(false);
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => DashboardScreen()));
       } else {

@@ -16,6 +16,7 @@ class AppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLoading = false;
     final methodsProvider = Provider.of<Methods>(context);
     return CustomContainer(
       width: double.infinity,
@@ -86,6 +87,7 @@ class AppBarWidget extends StatelessWidget {
 
                   methodsProvider.showSnackBar(
                       context, "Logout Sucessfully", SnackBarType.success);
+                  isLoading = false;
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SigninScreen()),

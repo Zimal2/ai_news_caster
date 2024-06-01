@@ -1,5 +1,6 @@
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/dashboard/appbarWidget.dart';
+import 'package:ai_news_caster/ui/dashboard/tags.dart';
 import 'package:ai_news_caster/ui/mediaScreens/new-Uploaded-News.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/image_slider.dart';
@@ -53,34 +54,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      Container(
-                        child: sampleText(
-                            text: 'ALL',
-                            color: const Color(0xFFBD1616),
-                            fontsize: 18),
-                      ),
-                      const SizedBox(
-                        width: 40,
-                      ),
-                      Container(
-                        child: sampleText(
-                          text: 'PROGRAMMING',
+                      GestureDetector(
+                        onTap: () {
+                          
+                        },
+                        child: Container(
+                          child: sampleText(
+                              text: 'ALL',
+                              color: const Color(0xFFBD1616),
+                              fontsize: 18),
                         ),
                       ),
                       const SizedBox(
                         width: 40,
                       ),
-                      Container(
-                        child: sampleText(
-                          text: 'SPORTS',
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Tags(category: 'Technology'),));
+                        },
+                        child: Container(
+                          child: sampleText(
+                            text: 'TECHNOLOGY',
+                          ),
                         ),
                       ),
                       const SizedBox(
                         width: 40,
                       ),
-                      Container(
-                        child: sampleText(
-                          text: 'MEDIA',
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Tags(category: 'Sports'),));
+                        },
+                        child: Container(
+                          child: sampleText(
+                            text: 'SPORTS',
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Tags(category: 'Entertainment',),));
+                        },
+                        child: Container(
+                          child: sampleText(
+                            text: 'ENTERTAINMENT',
+                          ),
                         ),
                       )
                     ],
