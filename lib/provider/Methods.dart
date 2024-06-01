@@ -4,6 +4,7 @@ import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsUploaded.dart';
 import 'package:ai_news_caster/ui/phoneNumberconfirmed.dart';
+import 'package:ai_news_caster/ui/profile.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in-administrator.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/phoneNumber_confirm.dart';
@@ -43,6 +44,8 @@ class Methods with ChangeNotifier {
   TextEditingController PhoneNumberForgetPassPhoneNumberController =
       new TextEditingController();
 
+  final newPassController = new TextEditingController();
+  final confirmPassController = new TextEditingController();
   final passwordControllerSignin = TextEditingController();
   final passwordControllerSignup = TextEditingController();
 
@@ -176,6 +179,122 @@ class Methods with ChangeNotifier {
     } catch (e) {
       // Error occurred
       showSnackBar(context, "Sign In Failed", SnackBarType.fail);
+    }
+  }
+
+
+  String? nameOFUser;
+//profile data
+  Future<String?> fetchUserNameForLoggedInUser(String email) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('UserSignUpData')
+          .doc(email)
+          .get();
+      return userDoc['username'];
+    } catch (e) {
+      print('Error fetching username: $e');
+      return null;
+    }
+  }
+
+  Future<void> pickProfileImage(BuildContext context) async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      print("here check 1");
+      if (image == null) return;
+      print("here check 2");
+
+      final imageTemporary = File(image.path);
+
+      _isUploadingImage = true; // Set uploading to true
+      notifyListeners();
+      print("here check 4");
+
+      // Upload image to Firebase Storage
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('News_Image/${DateTime.now().millisecondsSinceEpoch}.jpg');
+      await ref.putFile(imageTemporary);
+
+      // Get the download URL of the uploaded image
+      final urlDownload = await ref.getDownloadURL();
+
+      // Update user profile image URL in Firestore
+      await _updateUserProfileImage(urlDownload);
+
+      _isUploadingImage =
+          false; // Set uploading to false when upload is complete
+      notifyListeners();
+
+      print('Image uploaded successfully');
+    } on PlatformException catch (e) {
+      print('Error picking image: $e');
+    }
+  }
+
+  Future<void> _updateUserProfileImage(String imageUrl) async {
+    if (loginEmail != null) {
+      print("here check 6");
+      var querySnapshot = await FirebaseFirestore.instance
+          .collection('UserSignUpData')
+          .where('EmailAdress', isEqualTo: loginEmail)
+          .get();
+      print("login email check:$loginEmail");
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var docId = querySnapshot.docs.first.id;
+        await FirebaseFirestore.instance
+            .collection('UserSignUpData')
+            .doc(docId)
+            .update({'image': imageUrl});
+      }
+    }
+  }
+
+  String? imageurl;
+  Future<DocumentSnapshot?> fetchUserProfileImage() async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('UserSignUpData')
+          .where('EmailAdress', isEqualTo: loginEmail)
+          .get()
+          .then((snapshot) => snapshot.docs.first);
+      print("image url: ${userDoc['image']}");
+      return userDoc;
+    } catch (e) {
+      print('Error fetching user image: $e');
+      return null;
+    }
+  }
+
+//update password
+  Future<void> updatePassword(String password, BuildContext context) async {
+    if (loginEmail != null) {
+      var querySnapshot = await FirebaseFirestore.instance
+          .collection('UserSignUpData')
+          .where('EmailAdress', isEqualTo: loginEmail)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        var docId = querySnapshot.docs.first.id;
+        await FirebaseFirestore.instance
+            .collection('UserSignUpData')
+            .doc(docId)
+            .update({'Password': password}).then((value) async {
+          showSnackBar(
+              context, "Password updated sucessfully.", SnackBarType.success);
+          final pref = await SharedPreferences.getInstance();
+
+          pref.setString("LoginPass", password);
+          loginPass = password;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Profile(),
+            ),
+          );
+        });
+      }
     }
   }
 
@@ -436,56 +555,55 @@ class Methods with ChangeNotifier {
   //simple login
   final formkey = GlobalKey<FormState>();
   final passwordController = new TextEditingController();
-  void login(BuildContext context) async {
-    if (formkey.currentState!.validate()) {
-      try {
-        setloading(true);
-        final userCredential = await _auth.signInWithEmailAndPassword(
-          email: emailController.text.toString(),
-          password: passwordController.text.toString(),
-        );
+  //set simple sign in 2nd time
+  void signinUser(BuildContext context) async {
+    try {
+      setloading(true);
+      QuerySnapshot querySnapshot = await _firebaseFirestore
+          .collection("UserSignUpData")
+          .where('EmailAdress', isEqualTo: emailController.text)
+          .where('Password',
+              isEqualTo: passwordController
+                  .text) // Assuming the field name for the password is 'Password'
+          .get();
+      print("inside....");
+      if (querySnapshot.docs.isNotEmpty) {
+        String userId = querySnapshot.docs[0].get('userId');
+        userIDSignin = userId;
 
-        Utils().toastMessage(userCredential.user!.email!);
-
+        debugPrint("User ID while sign in: ${userIDSignin}");
         final pref = await SharedPreferences.getInstance();
-        print("LoginEmail: ${emailController.text.toString()}");
-        print("Login password: ${passwordController.text.toString()}");
-
         pref.setString("LoginEmail", emailController.text.toString());
         pref.setString("LoginPass", passwordController.text.toString());
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const DashboardScreen(),
-          ),
-        );
-      } catch (error) {
+        showSnackBar(context, "Sign In Success", SnackBarType.success);
+        //clear values of text feilds when move to next
+        emailController.clear();
+        passwordController.clear();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DashboardScreen()));
+      } else {
+        // User not found or password incorrect
+        showSnackBar(context, "Sign In Failed", SnackBarType.fail);
         setloading(false);
-        String errorMessage = "Sign-in failed: ";
-        if (error is FirebaseAuthException) {
-          if (error.code == 'user-not-found') {
-            errorMessage += 'No user found with this email.';
-          } else if (error.code == 'wrong-password') {
-            errorMessage += 'Wrong password provided for this user.';
-          } else {
-            errorMessage += error.message ?? "Unknown error";
-          }
-        } else {
-          errorMessage += error.toString();
-        }
-        Utils().toastMessage(errorMessage);
       }
+    } catch (e) {
+      // Error occurred
+      showSnackBar(context, "Sign In Failed", SnackBarType.fail);
     }
   }
 
+  
+
 //get login data from shared pref
-  String? loginEmail, loginPass;
+  String? loginEmail, loginPass, loginUserName;
   void getSharedPref() async {
     final pref = await SharedPreferences.getInstance();
     loginEmail = pref.getString("LoginEmail");
     print("login email value in sp:${loginEmail}");
     loginPass = pref.getString("LoginPass");
     print("login pass value in sp:${loginPass}");
+    loginUserName = pref.getString("LoginName");
+    print("login name value in sp:${loginUserName}");
   }
 
 //data upload to dahbord-> new uploaded data

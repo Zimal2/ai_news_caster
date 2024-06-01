@@ -1,15 +1,11 @@
 import 'package:ai_news_caster/provider/Methods.dart';
-import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/forget_password.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in-administrator.dart';
 import 'package:ai_news_caster/ui/signup_screens/signup.dart';
-import 'package:ai_news_caster/utils/flutterToast.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:ai_news_caster/widgets/text_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -106,16 +102,16 @@ class _SigninScreenState extends State<SigninScreen> {
                             },
                             controller: methodsProvider.passwordController,
                             obscureText: !_isPasswordVisible,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Password',
-                                suffixIcon: IconButton(
-                                  icon: Icon(_isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
-                                  onPressed: togglePasswordVisibility,
-                                ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Password',
+                              suffixIcon: IconButton(
+                                icon: Icon(_isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: togglePasswordVisibility,
                               ),
+                            ),
                           ),
                         ),
                       ],
@@ -140,7 +136,8 @@ class _SigninScreenState extends State<SigninScreen> {
                     loading: methodsProvider.isLoading,
                     title: 'Sign in',
                     ontap: () {
-                      methodsProvider.login(context);
+                      methodsProvider.signinUser(context);
+                      //.login(context);
                     },
                   ),
                   CustomContainer(

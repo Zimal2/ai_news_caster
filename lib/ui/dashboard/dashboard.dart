@@ -1,3 +1,4 @@
+import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/dashboard/appbarWidget.dart';
 import 'package:ai_news_caster/ui/mediaScreens/new-Uploaded-News.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
@@ -6,6 +7,7 @@ import 'package:ai_news_caster/widgets/news_history_list_view.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -15,6 +17,18 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  void initState() {
+    final methodsProvider = Provider.of<Methods>(context, listen: false);
+
+    methodsProvider
+        .fetchUserProfileImage()
+        .then((value) => methodsProvider.imageurl);
+ //   print("image url check :2: ${methodsProvider.imageurl!}");
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

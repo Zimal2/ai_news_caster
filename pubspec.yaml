@@ -59,6 +59,7 @@ dependencies:
   ffmpeg_kit_flutter: 
   permission_handler: ^11.3.1
   audioplayers: 
+  cached_network_image: ^3.3.1
   # flick_video_player: ^0.7.0
 
 

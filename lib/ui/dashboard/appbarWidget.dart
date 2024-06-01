@@ -94,14 +94,6 @@ class AppBarWidget extends StatelessWidget {
               );
             },
             child: CustomContainer(
-              // onTap: () async {
-              //   await GoogleSignIn().signOut();
-              //   FirebaseAuth.instance.signOut();
-              //   Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) => SigninScreen()));
-              // },
               width: 50,
               height: 50,
               child: const Icon(Icons.power_settings_new_outlined),

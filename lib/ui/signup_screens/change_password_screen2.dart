@@ -1,5 +1,4 @@
 import 'package:ai_news_caster/provider/Methods.dart';
-import 'package:ai_news_caster/ui/signup_screens/change_password_screen2.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
@@ -7,16 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:provider/provider.dart';
 
-class ChangePassword extends StatefulWidget {
-  const ChangePassword({super.key});
+class ChangePasswordScreen2 extends StatefulWidget {
+  const ChangePasswordScreen2({super.key});
 
   @override
-  State<ChangePassword> createState() => _ChangePasswordState();
+  State<ChangePasswordScreen2> createState() => _ChangePasswordScreen2State();
 }
 
-class _ChangePasswordState extends State<ChangePassword> {
-  final currentPassController = new TextEditingController();
-
+class _ChangePasswordScreen2State extends State<ChangePasswordScreen2> {
   @override
   Widget build(BuildContext context) {
     final methodsProvider = Provider.of<Methods>(context);
@@ -36,11 +33,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                 height: 30,
               ),
               TextField(
-                controller: currentPassController,
+                controller: methodsProvider.newPassController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey[200],
-                  hintText: 'Current Password',
+                  hintText: 'New Password',
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   border: OutlineInputBorder(
@@ -51,24 +48,39 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
               ),
               const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                controller: methodsProvider.confirmPassController,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  hintText: 'Confirm Password',
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  suffixIcon: const Icon(Icons.phone),
+                ),
+              ),
+              const SizedBox(
                 height: 40,
               ),
               button(
-                title: 'Next',
+                title: 'Change your Password',
                 ontap: () {
-                  if (currentPassController.text == methodsProvider.loginPass) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChangePasswordScreen2(),
-                      ),
-                    );
-                  } else {
-                    methodsProvider.showSnackBar(context,
-                        "Wrong password. Please try again.", SnackBarType.fail);
-                  }
+                  methodsProvider.newPassController.text ==
+                          methodsProvider.confirmPassController.text
+                      ? methodsProvider.updatePassword(
+                          methodsProvider.newPassController.text, context)
+                      : methodsProvider.showSnackBar(
+                          context,
+                          "Password mismatch. Please try again.",
+                          SnackBarType.fail);
                 },
-              )
+              ),
             ],
           ),
         ),
