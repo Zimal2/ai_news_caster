@@ -1,17 +1,41 @@
 import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/widgets/button.dart';
-import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class NewsMedia extends StatefulWidget {
-  const NewsMedia({super.key});
+  final List? imagesList;
+  NewsMedia({super.key, this.imagesList});
 
   @override
   State<NewsMedia> createState() => _NewsMediaState();
 }
 
 class _NewsMediaState extends State<NewsMedia> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _showFullScreenImage(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
+            fit: BoxFit.contain,
+            placeholder: (context, url) => Center(
+              child: CircularProgressIndicator(),
+            ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,116 +54,53 @@ class _NewsMediaState extends State<NewsMedia> {
                     child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
                   ),
                   title: sampleText(
-                      text: "Media", fontsize: 20, color: Colors.white),
+                    text: "Media",
+                    fontsize: 20,
+                    color: Colors.white,
+                  ),
                 ),
-                Image.asset(
-                  'lib/assests/images/line.png',
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CustomContainer(
-                          height: 165,
-                          width: 162,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              'lib/assests/images/slider3.png',
-                              fit: BoxFit
-                                  .cover, // Use BoxFit.cover or the appropriate fit
+                Image.asset('lib/assests/images/line.png'),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  width: MediaQuery.of(context).size.width,
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // 2 images per row
+                      crossAxisSpacing: 10.0, // Space between columns
+                      mainAxisSpacing: 12.0, // Space between rows
+                    ),
+                    itemCount: widget.imagesList!.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () => _showFullScreenImage(
+                            context, widget.imagesList![index]),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.imagesList![index],
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
                             ),
                           ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
                         ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        CustomContainer(
-                          height: 165,
-                          width: 162,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              'lib/assests/images/slider1.png',
-                              fit: BoxFit
-                                  .cover, // Use BoxFit.cover or the appropriate fit
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    CustomContainer(
-                      height: 200,
-                      width: double.infinity,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          'lib/assests/images/slider2.png',
-                          fit: BoxFit
-                              .cover, // Use BoxFit.cover or the appropriate fit
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CustomContainer(
-                          height: 165,
-                          width: 162,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              'lib/assests/images/slider2.png',
-                              fit: BoxFit
-                                  .cover, // Use BoxFit.cover or the appropriate fit
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        CustomContainer(
-                          height: 165,
-                          width: 162,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              'lib/assests/images/slider3.png',
-                              fit: BoxFit
-                                  .cover, // Use BoxFit.cover or the appropriate fit
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 70,
+                      );
+                    },
+                    padding: const EdgeInsets.all(10.0),
+                  ),
                 ),
                 button(
                   title: "Go to dashboard",
-                  //ontap: () => EmailConfirmation(),
                   ontap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DashboardScreen(),
-                        ));
-                    // EmailConfirmation(); // Call the function EmailConfirmation() here
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DashboardScreen(),
+                      ),
+                    );
                   },
-                )
+                ),
               ],
             ),
           ),

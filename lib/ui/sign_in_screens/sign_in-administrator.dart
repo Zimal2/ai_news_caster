@@ -1,5 +1,6 @@
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/forget_password_admin.dart';
+import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/signup_adminitrator.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:ai_news_caster/widgets/containers.dart';
@@ -186,13 +187,27 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                       ),
                     ),
                     CustomContainer(
+                        width: double.infinity,
+                        height: 40,
+                        alignment: Alignment.centerRight,
+                        child: Textbutton(
+                            title: 'Sign in as User?',
+                            color: const Color(0xFFBD1616),
+                            ontap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SigninScreen(),
+                                  ));
+                            })),
+                    CustomContainer(
                       width: double.infinity,
                       height: 10,
                       child: Image.asset('lib/assests/images/line.png',
                           fit: BoxFit.cover),
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
                     Center(
                       child: button(

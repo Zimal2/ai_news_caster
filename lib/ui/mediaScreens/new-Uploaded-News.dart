@@ -29,6 +29,7 @@ class _NewNewsState extends State<NewNews> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             List<dynamic> allNewsData = snapshot.data!;
+            print("all news data:2::$allNewsData");
             return ListView.builder(
               itemCount: allNewsData.length,
               itemBuilder: (BuildContext context, int index) {
@@ -37,13 +38,14 @@ class _NewNewsState extends State<NewNews> {
                 String firstImagePath = imagePaths.isNotEmpty
                     ? imagePaths[0]
                     : ''; // Get the first image path
-
+                List allImagesPath = imagePaths;
+                print("all images:$allImagesPath");
                 // Create an Articles instance from newsData
                 Articles article = Articles(
-                  source: Source(
-                    id: newsData['source']['id'],
-                    name: newsData['source']['name'],
-                  ),
+                  // source: Source(
+                  //   id: newsData['source']['id'],
+                  //   name: newsData['source']['name'],
+                  // ),
                   author: newsData['author'],
                   title: newsData['title'],
                   description: newsData['description'],
@@ -58,7 +60,10 @@ class _NewNewsState extends State<NewNews> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NewsScreen(article: article),
+                          builder: (context) => NewsScreen(
+                            article: article,
+                            imagesList: allImagesPath,
+                          ),
                         ));
                   },
                   child: Padding(
@@ -70,7 +75,7 @@ class _NewNewsState extends State<NewNews> {
                         boxShadow: const [
                           BoxShadow(
                             blurRadius: 10,
-                            color: Color.fromARGB(255, 19, 85, 139),
+                            color: Colors.grey,
                           )
                         ],
                       ),

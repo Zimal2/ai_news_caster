@@ -83,12 +83,11 @@ class _ReadMoreState extends State<ReadMore> {
                           title: "Check for Media",
                           textColor: Colors.black,
                           ontap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => NewsMedia(),
-                                ));
-                            // EmailConfirmation(); // Call the function EmailConfirmation() here
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => NewsMedia(),
+                            //     ));
                           },
                         )
                       ],

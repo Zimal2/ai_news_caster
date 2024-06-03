@@ -182,7 +182,6 @@ class Methods with ChangeNotifier {
     }
   }
 
-
   String? nameOFUser;
 //profile data
   Future<String?> fetchUserNameForLoggedInUser(String email) async {
@@ -348,6 +347,7 @@ class Methods with ChangeNotifier {
       throw Exception('Failed to load news');
     }
   }
+
   //text to speech
   final FlutterTts flutterTts = FlutterTts();
   speak(String text) async {
@@ -603,8 +603,6 @@ class Methods with ChangeNotifier {
     }
   }
 
-  
-
 //get login data from shared pref
   String? loginEmail, loginPass, loginUserName;
   void getSharedPref() async {
@@ -634,7 +632,7 @@ class Methods with ChangeNotifier {
         List<dynamic> newsDataList = data['NewsData'];
         allNewsData.addAll(newsDataList);
       });
-
+      print("all news data:$allNewsData");
       return allNewsData;
     } catch (e) {
       print('Error: $e');
@@ -700,4 +698,6 @@ class Methods with ChangeNotifier {
       print('Permission Denied');
     }
   }
+
+  newsImages() {}
 }

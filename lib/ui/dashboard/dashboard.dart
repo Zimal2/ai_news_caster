@@ -25,7 +25,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     methodsProvider
         .fetchUserProfileImage()
         .then((value) => methodsProvider.imageurl);
- //   print("image url check :2: ${methodsProvider.imageurl!}");
     // TODO: implement initState
     super.initState();
   }
@@ -55,9 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     scrollDirection: Axis.horizontal,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                         child: Container(
                           child: sampleText(
                               text: 'ALL',
@@ -70,7 +67,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Tags(category: 'Technology'),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    Tags(category: 'Technology'),
+                              ));
                         },
                         child: Container(
                           child: sampleText(
@@ -83,7 +85,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Tags(category: 'Sports'),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Tags(category: 'Sports'),
+                              ));
                         },
                         child: Container(
                           child: sampleText(
@@ -96,7 +102,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Tags(category: 'Entertainment',),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Tags(
+                                  category: 'Entertainment',
+                                ),
+                              ));
                         },
                         child: Container(
                           child: sampleText(
@@ -126,45 +138,35 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       color: Colors.black,
                       fontsize: 35)),
             ),
-            Padding(
-                padding: EdgeInsets.only(
-                    top: 5, left: MediaQuery.of(context).size.width * 0.6),
-                child: InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NewNews(),
-                        )),
-                    child: Row(
-                      children: [
-                        sampleText(
-                            text: "Whats New",
-                            color: const Color.fromARGB(255, 120, 28, 21),
-                            fontsize: 20,
-                            decoration: TextDecoration.combine(
-                                [TextDecoration.underline]),
-                            fontWeight: FontWeight.w700),
-                        SizedBox(width: 2),
-                        const Icon(
-                          Icons.arrow_forward,
-                          size: 20,
-                          color: const Color.fromARGB(255, 120, 28, 21),
-                        )
-                      ],
-                    ))),
-
             //slider
             ImageSlider(),
             const SizedBox(
               height: 5,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 5, left: 10),
-              child: sampleText(
-                  text: "News History",
-                  color: const Color.fromARGB(255, 120, 28, 21),
-                  fontsize: 20,
-                  fontWeight: FontWeight.w700),
+              padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  sampleText(
+                      text: "News History",
+                      color: const Color.fromARGB(255, 120, 28, 21),
+                      fontsize: 20,
+                      fontWeight: FontWeight.w700),
+                  InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewNews(),
+                        )),
+                    child: sampleText(
+                        text: "Whats New?",
+                        color: Colors.black,
+                        fontsize: 17,
+                        fontWeight: FontWeight.w700),
+                  )
+                ],
+              ),
             ),
 
             Expanded(

@@ -1,7 +1,6 @@
 import 'package:ai_news_caster/modals/news_modals.dart';
 import 'package:ai_news_caster/provider/Methods.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsScreen.dart';
-import 'package:ai_news_caster/widgets/containers.dart';
 import 'package:ai_news_caster/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,29 +31,48 @@ class NewsHistoryListView extends StatelessWidget {
           itemCount: snapshot.data!.articles!.length,
           itemBuilder: (context, index) {
             final doc = snapshot.data!.articles![index];
+            print("data check here: $doc");
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NewsScreen(article: doc),
-                  ),
-                ),
+                onTap: () {
+                  if (doc.urlToImage != null && doc.urlToImage!.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NewsScreen(
+                          article: doc,
+                          imagesList: [doc.urlToImage!],
+                        ),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NewsScreen(
+                          article: doc,
+                          imagesList: [
+                            'https://i.pinimg.com/564x/4e/d1/26/4ed126ab70265d07682cba1995385822.jpg'
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                },
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     boxShadow: [
-                      BoxShadow(
-                        blurRadius: 10,
-                        color: Color.fromARGB(255, 19, 85, 139),
-                      ),
+                      BoxShadow(blurRadius: 10, color: Colors.grey),
                     ],
                   ),
-                  margin: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
+                  margin:
+                      const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +93,8 @@ class NewsHistoryListView extends StatelessWidget {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +106,8 @@ class NewsHistoryListView extends StatelessWidget {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Image.asset("lib/assests/images/mark.png", fit: BoxFit.cover),
+                                    Image.asset("lib/assests/images/mark.png",
+                                        fit: BoxFit.cover),
                                     const SizedBox(width: 10),
                                     Container(
                                       height: 20,

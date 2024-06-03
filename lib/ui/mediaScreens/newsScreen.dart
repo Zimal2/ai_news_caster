@@ -14,7 +14,8 @@ import 'package:video_player/video_player.dart';
 
 class NewsScreen extends StatefulWidget {
   final Articles? article;
-  const NewsScreen({Key? key, this.article}) : super(key: key);
+  final List? imagesList;
+  NewsScreen({Key? key, this.article, this.imagesList}) : super(key: key);
 
   @override
   State<NewsScreen> createState() => _NewsScreenState();
@@ -40,7 +41,6 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     methodsProvider = Provider.of<Methods>(context, listen: false);
     description = widget.article?.description;
     speakingTime = methodsProvider
@@ -131,7 +131,10 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                 Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NewsMedia()),
+                  MaterialPageRoute(
+                      builder: (context) => NewsMedia(
+                            imagesList: widget.imagesList,
+                          )),
                 );
               },
             ),
@@ -178,13 +181,13 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       sampleText(
-                        text: article?.author,
+                        text: "LISA MANUBAN", //article?.author,
                         color: Colors.white,
                         fontsize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                       sampleText(
-                        text: article?.publishedAt,
+                        text: "12 dec 2024", //article?.publishedAt,
                         color: Colors.white,
                       ),
                     ],
@@ -260,10 +263,15 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                           title: "Check for Media",
                           textColor: Colors.black,
                           ontap: () {
+                            print(
+                                "images check on news screen ${widget.imagesList}");
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => NewsMedia(),
+                                builder: (context) => NewsMedia(
+                                  imagesList: widget.imagesList,
+                                ),
                               ),
                             );
                           },
