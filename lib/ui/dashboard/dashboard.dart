@@ -35,23 +35,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: CustomContainer(
         width: double.infinity,
         height: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppBarWidget(),
-            const SizedBox(
-              height: 10,
-            ),
-            //menu
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: CustomContainer(
-                  width: double.infinity,
-                  height: 25,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppBarWidget(),
+              const SizedBox(
+                height: 10,
+              ),
+              //menu
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Row(
                     children: [
                       GestureDetector(
                         onTap: () {},
@@ -120,59 +118,63 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
               ),
-            ),
-            //divider
-            const Divider(
-              height: 20,
-              thickness: 2,
-              color: Colors.grey,
-            ),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: CustomContainer(
-                  width: double.infinity,
-                  height: 100,
-                  child: sampleText(
-                      text: "What interests you today?",
-                      color: Colors.black,
-                      fontsize: 35)),
-            ),
-            //slider
-            ImageSlider(),
-            const SizedBox(
-              height: 5,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  sampleText(
-                      text: "News History",
-                      color: const Color.fromARGB(255, 120, 28, 21),
-                      fontsize: 20,
-                      fontWeight: FontWeight.w700),
-                  InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NewNews(),
-                        )),
-                    child: sampleText(
-                        text: "Whats New?",
-                        color: Colors.black,
-                        fontsize: 17,
-                        fontWeight: FontWeight.w700),
-                  )
-                ],
+              //divider
+              const Divider(
+                height: 20,
+                thickness: 2,
+                color: Colors.grey,
               ),
-            ),
 
-            Expanded(
-              child: NewsHistoryListView(),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: CustomContainer(
+                    width: double.infinity,
+                    height: 100,
+                    child: sampleText(
+                        text: "What interests you today?",
+                        color: Colors.black,
+                        fontsize: 35)),
+              ),
+              //slider
+              ImageSlider(),
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    sampleText(
+                        text: "News History",
+                        color: const Color.fromARGB(255, 120, 28, 21),
+                        fontsize: 20,
+                        fontWeight: FontWeight.w700),
+                    InkWell(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewNews(),
+                          )),
+                      child: sampleText(
+                          text: "Whats New?",
+                          color: Colors.black,
+                          fontsize: 17,
+                          fontWeight: FontWeight.w700),
+                    )
+                  ],
+                ),
+              ),
+
+              // Ensure the NewsHistoryListView is properly constrained
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.4,
+                ),
+                child: NewsHistoryListView(),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -173,7 +173,7 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                   SizedBox(width: 20),
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage: AssetImage("lib/assests/images/women.jpg"),
+                    backgroundImage: AssetImage("lib/assests/images/profile.jpg"),
                   ),
                   SizedBox(width: 10),
                   Column(
@@ -181,13 +181,13 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       sampleText(
-                        text: "LISA MANUBAN", //article?.author,
+                        text: article?.author?? 'LISA MANUBAN', //article?.author,
                         color: Colors.white,
                         fontsize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                       sampleText(
-                        text: "12 dec 2024", //article?.publishedAt,
+                        text: article?.publishedAt?? '12 dec 2024', //article?.publishedAt,
                         color: Colors.white,
                       ),
                     ],
