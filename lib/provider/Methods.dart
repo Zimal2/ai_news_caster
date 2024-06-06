@@ -326,13 +326,24 @@ class Methods with ChangeNotifier {
 
 //get news api model
   Future<NewsModel> getPostApimethod() async {
-    final response = await http.get(Uri.parse(
-        'https://newsapi.org/v2/everything?q=category&apiKey=8a5ec37e26f845dcb4c2b78463734448'));
-    var jsonData = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      return NewsModel.fromJson(jsonData);
-    } else {
-      return NewsModel.fromJson(jsonData);
+    try {
+      final response = await http.get(Uri.parse(
+          'https://newsapi.org/v2/everything?q=category&apiKey=8a5ec37e26f845dcb4c2b78463734448'));
+
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        return NewsModel.fromJson(jsonData);
+      } else {
+        // Handle other status codes here if needed
+        var jsonData = jsonDecode(response.body);
+        return NewsModel.fromJson(jsonData);
+      }
+    } on SocketException {
+      // Handle no internet connection
+      throw Exception('No Internet connection');
+    } catch (e) {
+      // Handle other errors
+      throw Exception('Failed to load news');
     }
   }
 
