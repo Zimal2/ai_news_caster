@@ -29,6 +29,8 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
   String? description;
   double speakingTime = 0.0;
   bool isTtsPlaying = false;
+  bool isExpandedDescription = false;
+  bool isExpandedTitle = false;
 
   @override
   void dispose() {
@@ -45,8 +47,6 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
     description = widget.article?.description;
     speakingTime = methodsProvider
         .calculateSpeakingTime(description ?? "no news to deliver");
-
-    print("speaking time: $speakingTime");
 
     flutterTts = FlutterTts();
 
@@ -151,147 +151,185 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 104, 103, 103),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ListTile(
-                leading: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
-                ),
-                title: sampleText(
-                  text: article?.title == "[Removed]"
-                      ? "International News"
-                      : article?.title ?? "International News",
-                  fontsize: 20,
-                  color: Colors.white,
-                ),
-              ),
-              Image.asset('lib/assests/images/line.png'),
-              Row(
-                children: [
-                  SizedBox(width: 20),
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage:
-                        AssetImage("lib/assests/images/profile.jpg"),
-                  ),
-                  SizedBox(width: 10),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      sampleText(
-                        text: article?.author ??
-                            'LISA MANUBAN', //article?.author,
-                        color: Colors.white,
-                        fontsize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      sampleText(
-                        text: article?.publishedAt ??
-                            '12 dec 2024', //article?.publishedAt,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                color: Colors.black,
-                height: 250,
-                width: double.infinity,
-                child: Chewie(
-                  controller: _chewieController,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset('lib/assests/images/line.png'),
-                    sampleText(
-                      fontsize: 20,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                      text: article?.title == "[Removed]"
-                          ? "Pakistan Faces Economic and Security Challenges Amidst Political Instability"
-                          : article?.title ?? "No Title",
-                    ),
-                    Image.asset('lib/assests/images/line.png'),
-                    sampleText(
-                      textAlign: TextAlign.start,
-                      fontsize: 20,
-                      fontWeight: FontWeight.w400,
-                      text: "Description:",
-                      color: Colors.white,
-                    ),
-                    sampleText(
-                      color: Colors.white,
-                      text: article?.title == "[Removed]"
-                          ? "Pakistan is currently navigating a period of significant challenges, both economically and in terms of security, as the country prepares for the upcoming 2024 general elections. The political landscape is fraught with instability, exacerbating the nation's existing problems."
-                          : article?.description ?? "No Description",
-                    ),
-                    InkWell(
-                      child: sampleText(
-                        text: "Read More",
-                        decoration: TextDecoration.underline,
-                        color: Colors.blue,
+                    ListTile(
+                      leading: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
                       ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReadMore(article: article),
+                      title: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isExpandedTitle = !isExpandedTitle;
+                          });
+                        },
+                        child: AnimatedCrossFade(
+                          firstChild: Container(
+                            constraints: BoxConstraints(maxHeight: 40.0),
+                            child: sampleText(
+                              text: article?.title == "[Removed]"
+                                  ? "International News"
+                                  : article?.title ?? "International News",
+                              fontsize: 20,
+                              color: Colors.white,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        );
-                      },
+                          secondChild: sampleText(
+                            text: article?.title == "[Removed]"
+                                ? "International News"
+                                : article?.title ?? "International News",
+                            fontsize: 20,
+                            color: Colors.white,
+                          ),
+                          crossFadeState: isExpandedTitle
+                              ? CrossFadeState.showSecond
+                              : CrossFadeState.showFirst,
+                          duration: Duration(milliseconds: 300),
+                        ),
+                      ),
                     ),
+                    Image.asset('lib/assests/images/line.png'),
                     Row(
                       children: [
-                        SizedBox(width: 10),
-                        button(
-                          width: 120,
-                          title: "Go Back",
-                          ontap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DashboardScreen()),
-                            );
-                          },
+                        SizedBox(width: 20),
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundImage:
+                              AssetImage("lib/assests/images/profile.jpg"),
                         ),
                         SizedBox(width: 10),
-                        button(
-                          containerColor: Colors.white,
-                          width: 180,
-                          title: "Check for Media",
-                          textColor: Colors.black,
-                          ontap: () {
-                            print(
-                                "images check on news screen ${widget.imagesList}");
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NewsMedia(
-                                  imagesList: widget.imagesList,
-                                ),
-                              ),
-                            );
-                          },
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            sampleText(
+                              text: article?.author ??
+                                  'LISA MANUBAN', //article?.author,
+                              color: Colors.white,
+                              fontsize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            sampleText(
+                              text: article?.publishedAt ??
+                                  '12 dec 2024', //article?.publishedAt,
+                              color: Colors.white,
+                            ),
+                          ],
                         ),
                       ],
+                    ),
+                    Container(
+                      color: Colors.black,
+                      height: 250,
+                      width: double.infinity,
+                      child: Chewie(
+                        controller: _chewieController,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset('lib/assests/images/line.png'),
+                          sampleText(
+                            fontsize: 20,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                            text: article?.title == "[Removed]"
+                                ? "Pakistan Faces Economic and Security Challenges Amidst Political Instability"
+                                : article?.title ?? "No Title",
+                          ),
+                          Image.asset('lib/assests/images/line.png'),
+                          sampleText(
+                            textAlign: TextAlign.start,
+                            fontsize: 20,
+                            fontWeight: FontWeight.w400,
+                            text: "Description:",
+                            color: Colors.white,
+                          ),
+                          AnimatedCrossFade(
+                            firstChild: sampleText(
+                              color: Colors.white,
+                              text: article?.description != null &&
+                                      article!.description!.length > 100
+                                  ? article.description!.substring(0, 100) + "..."
+                                  : article?.description ?? "No Description",
+                            ),
+                            secondChild: sampleText(
+                              color: Colors.white,
+                              text: article?.description ?? "No Description",
+                            ),
+                            crossFadeState: isExpandedDescription
+                                ? CrossFadeState.showSecond
+                                : CrossFadeState.showFirst,
+                            duration: Duration(milliseconds: 300),
+                          ),
+                          InkWell(
+                            child: sampleText(
+                              text: isExpandedDescription ? "Show Less" : "Read More",
+                              decoration: TextDecoration.underline,
+                              color: Colors.blue,
+                            ),
+                            onTap: () {
+                              setState(() {
+                                isExpandedDescription = !isExpandedDescription;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              color: Colors.transparent,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  button(
+                    width: 120,
+                    title: "Go Back",
+                    ontap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DashboardScreen()),
+                      );
+                    },
+                  ),
+                  button(
+                    containerColor: Colors.white,
+                    width: 180,
+                    title: "Check for Media",
+                    textColor: Colors.black,
+                    ontap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NewsMedia(
+                                  imagesList: widget.imagesList,
+                                )),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
