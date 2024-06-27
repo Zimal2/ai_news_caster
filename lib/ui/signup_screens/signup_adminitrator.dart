@@ -317,11 +317,11 @@ class _SignupAdministratorState extends State<SignupAdminitrator> {
                     const SizedBox(
                       height: 10,
                     ),
-                    button(
-                        title: 'Sign Up with Google',
-                        ontap: () {
-                          methodsProvider.signInWithGoogle(context);
-                        }),
+                    // button(
+                    //     title: 'Sign Up with Google',
+                    //     ontap: () {
+                    //       methodsProvider.signInWithGoogle(context);
+                    //     }),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,

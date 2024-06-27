@@ -162,7 +162,9 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                   child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
                 ),
                 title: sampleText(
-                  text: article?.title ?? "International News",
+                  text: article?.title == "[Removed]"
+                      ? "International News"
+                      : article?.title ?? "International News",
                   fontsize: 20,
                   color: Colors.white,
                 ),
@@ -173,7 +175,8 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                   SizedBox(width: 20),
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage: AssetImage("lib/assests/images/profile.jpg"),
+                    backgroundImage:
+                        AssetImage("lib/assests/images/profile.jpg"),
                   ),
                   SizedBox(width: 10),
                   Column(
@@ -181,13 +184,15 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       sampleText(
-                        text: article?.author?? 'LISA MANUBAN', //article?.author,
+                        text: article?.author ??
+                            'LISA MANUBAN', //article?.author,
                         color: Colors.white,
                         fontsize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                       sampleText(
-                        text: article?.publishedAt?? '12 dec 2024', //article?.publishedAt,
+                        text: article?.publishedAt ??
+                            '12 dec 2024', //article?.publishedAt,
                         color: Colors.white,
                       ),
                     ],
@@ -213,7 +218,9 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                       fontsize: 20,
                       fontWeight: FontWeight.w400,
                       color: Colors.white,
-                      text: article?.title ?? "No Title",
+                      text: article?.title == "[Removed]"
+                          ? "Pakistan Faces Economic and Security Challenges Amidst Political Instability"
+                          : article?.title ?? "No Title",
                     ),
                     Image.asset('lib/assests/images/line.png'),
                     sampleText(
@@ -225,7 +232,9 @@ class _NewsScreenState extends State<NewsScreen> with TickerProviderStateMixin {
                     ),
                     sampleText(
                       color: Colors.white,
-                      text: article?.description ?? "No Description",
+                      text: article?.title == "[Removed]"
+                          ? "Pakistan is currently navigating a period of significant challenges, both economically and in terms of security, as the country prepares for the upcoming 2024 general elections. The political landscape is fraught with instability, exacerbating the nation's existing problems."
+                          : article?.description ?? "No Description",
                     ),
                     InkWell(
                       child: sampleText(

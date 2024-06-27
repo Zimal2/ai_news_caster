@@ -5,6 +5,7 @@ import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 import 'package:ai_news_caster/ui/mediaScreens/newsUploaded.dart';
 import 'package:ai_news_caster/ui/phoneNumberconfirmed.dart';
 import 'package:ai_news_caster/ui/profile.dart';
+import 'package:ai_news_caster/ui/sign_in_screens/forgetPass2User.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in-administrator.dart';
 import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/ui/signup_screens/phoneNumber_confirm.dart';
@@ -39,6 +40,8 @@ class Methods with ChangeNotifier {
   final emailController = TextEditingController();
 
   TextEditingController newPassForgetController = new TextEditingController();
+  TextEditingController confirmPassForgetController =
+      new TextEditingController();
   TextEditingController PassForgetPassPhoneNumberController =
       new TextEditingController();
   TextEditingController PhoneNumberForgetPassPhoneNumberController =
@@ -61,6 +64,8 @@ class Methods with ChangeNotifier {
 
   //keys
   final GlobalKey<FormState> forgetFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> forget2FormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> forgetFormKeyAdmin = GlobalKey<FormState>();
 
   final GlobalKey<FormState> signUpKey = GlobalKey<FormState>();
 
@@ -164,13 +169,14 @@ class Methods with ChangeNotifier {
         //clear values of text feilds when move to next
         phoneControllerSignin.clear();
         passwordControllerSignin.clear();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UploadNews(
-                useridA: userIDSignin,
-              ),
-            ));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UploadNews(
+              useridA: userIDSignin,
+            ),
+          ),
+        );
       } else {
         // User not found or password incorrect
         showSnackBar(context, "Sign In Failed", SnackBarType.fail);
@@ -259,7 +265,11 @@ class Methods with ChangeNotifier {
           .where('EmailAdress', isEqualTo: loginEmail)
           .get()
           .then((snapshot) => snapshot.docs.first);
-      print("image url: ${userDoc['image']}");
+      // print("here:::::");
+      // print("image url here: ${userDoc['image']}");
+      // print("user data: ${userDoc['UserName']}");
+      // print("user data: ${userDoc['Password']}");
+
       return userDoc;
     } catch (e) {
       print('Error fetching user image: $e');
@@ -514,34 +524,72 @@ class Methods with ChangeNotifier {
   }
 
 //for forget password: SIMPLE SIGNIN
-  validateForm(BuildContext context) async {
-    FocusManager.instance.primaryFocus!.unfocus();
-    final valid = forgetFormKey.currentState!.validate();
-    if (!valid) {
+  void validateForm(
+      BuildContext context, TextEditingController emailController) async {
+    // Extract the email address from TextEditingController
+    String email = emailController.text.trim(); // Trim whitespace
+    print("email check:$email");
+    // Check if the email is valid (optional)
+    if (email.isEmpty || !email.contains('@')) {
+      showSnackBar(context, "Please enter a valid email", SnackBarType.fail);
       return;
     }
-    forgetFormKey.currentState!.save();
-    // loading(true);
-    bool value = await makeResetPassword(newPassForgetController.text, context);
-    if (value == false) {
-      // loading(false);
-      return;
-    }
-    Navigator.pop(context);
-    showSnackBar(
-        context,
-        "Successfully Send Link, Please Check Your Email and Update Password",
-        SnackBarType.success);
 
-    // loading(false);
+    // Query Firestore to check if the email exists in UserSignUpData collection
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('UserSignUpData')
+        .where('EmailAdress', isEqualTo: email)
+        .get();
+
+    if (querySnapshot.size > 0) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ForgetPassword2(
+              email: email,
+            ),
+          ));
+    } else {
+      // Email doesn't exist, show snackbar
+      showSnackBar(
+          context, "Email with this account doesn't exist.", SnackBarType.fail);
+    }
   }
 
   Future<bool> makeResetPassword(String email, BuildContext context) async {
+    print("pass check:${newPassForgetController.text}");
+
+    if (newPassForgetController.text != confirmPassForgetController.text) {
+      showSnackBar(context, "Passwords do not match", SnackBarType.fail);
+      return false;
+    }
+
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      return true;
+      // Update password in Firestore
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection('UserSignUpData')
+              .where('EmailAdress', isEqualTo: email)
+              .get();
+
+      if (querySnapshot.size > 0) {
+        DocumentReference<Map<String, dynamic>> userDoc =
+            querySnapshot.docs.first.reference;
+        await userDoc.update({'Password': newPassForgetController.text});
+
+        showSnackBar(
+            context, "Password updated successfully", SnackBarType.success);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SigninScreen()));
+        return true;
+      } else {
+        showSnackBar(context, "Email with this account doesn't exist.",
+            SnackBarType.fail);
+        return false;
+      }
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, "Error in Password Reset: $e", SnackBarType.alert);
+      showSnackBar(context, "Error in Password Reset: $e", SnackBarType.fail);
       return false;
     }
   }
@@ -574,7 +622,7 @@ class Methods with ChangeNotifier {
   }
 
   //simple login
-  final formkey = GlobalKey<FormState>();
+  final loginFormkey = GlobalKey<FormState>();
   final passwordController = new TextEditingController();
   //set simple sign in 2nd time
   void signinUser(BuildContext context) async {
@@ -587,7 +635,6 @@ class Methods with ChangeNotifier {
               isEqualTo: passwordController
                   .text) // Assuming the field name for the password is 'Password'
           .get();
-      print("inside....");
       if (querySnapshot.docs.isNotEmpty) {
         String userId = querySnapshot.docs[0].get('userId');
         userIDSignin = userId;
@@ -601,7 +648,8 @@ class Methods with ChangeNotifier {
         emailController.clear();
         passwordController.clear();
         setloading(false);
-        Navigator.push(context,
+
+        Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => DashboardScreen()));
       } else {
         // User not found or password incorrect

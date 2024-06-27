@@ -24,7 +24,7 @@ class _NewsMediaState extends State<NewsMedia> {
       builder: (context) {
         return Dialog(
           child: CachedNetworkImage(
-            imageUrl: imageUrl,
+            imageUrl: imageUrl=='='?'https://i.pinimg.com/564x/4e/d1/26/4ed126ab70265d07682cba1995385822.jpg':imageUrl,
             fit: BoxFit.contain,
             placeholder: (context, url) => Center(
               child: CircularProgressIndicator(),
@@ -75,7 +75,9 @@ class _NewsMediaState extends State<NewsMedia> {
                         onTap: () => _showFullScreenImage(
                             context, widget.imagesList![index]),
                         child: CachedNetworkImage(
-                          imageUrl: widget.imagesList![index],
+                          imageUrl: widget.imagesList![index] == "="
+                              ? 'https://i.pinimg.com/564x/4e/d1/26/4ed126ab70265d07682cba1995385822.jpg'
+                              : widget.imagesList![index],
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Center(
                             child: CircularProgressIndicator(

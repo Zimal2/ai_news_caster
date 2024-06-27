@@ -17,7 +17,7 @@ class SigninAdminitrator extends StatefulWidget {
 }
 
 class _SigninAdministratorState extends State<SigninAdminitrator> {
-  final _formkey = GlobalKey<FormState>();
+  final _signInAdminformkey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
 
   void togglePasswordVisibility() {
@@ -42,7 +42,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Form(
-            key: _formkey,
+            key: _signInAdminformkey,
             child: Padding(
               padding: const EdgeInsets.only(top: 55, left: 10, right: 10),
               child: CustomContainer(
@@ -70,12 +70,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                     const SizedBox(
                       height: 10,
                     ),
-                    sampleText(
-                        text: "Enter Phone Number",
-                        fontWeight: FontWeight.w400),
-                    const SizedBox(
-                      height: 10,
-                    ),
+
                     CustomContainer(
                       width: double.infinity,
                       height: 60,
@@ -100,8 +95,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                               keyboardType: TextInputType.phone,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
-                                  //   labelText: "Phone Number",
-                                  hintText: '+92 30303030303'),
+                                  hintText: " Enter Phone Number"),
                             ),
                           ),
                           CustomContainer(
@@ -115,11 +109,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                     const SizedBox(
                       height: 10,
                     ),
-                    sampleText(
-                        text: "Enter Password", fontWeight: FontWeight.w400),
-                    const SizedBox(
-                      height: 10,
-                    ),
+
                     CustomContainer(
                       width: double.infinity,
                       height: 60,
@@ -180,7 +170,7 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                         loading: methodsProvider.loading,
                         title: 'Sign in as Administrator',
                         ontap: () {
-                          if (_formkey.currentState!.validate()) {
+                          if (_signInAdminformkey.currentState!.validate()) {
                             methodsProvider.signinA(context);
                           }
                         },
@@ -209,33 +199,36 @@ class _SigninAdministratorState extends State<SigninAdminitrator> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Center(
-                      child: button(
-                          title: 'Sign in with Google',
-                          ontap: () {
-                            methodsProvider.signInWithGoogle(context);
-                          }),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        sampleText(
-                            text: 'Don\'t have an account?',
-                            color: Colors.black),
-                        Textbutton(
-                          title: 'Sign up',
-                          color: const Color(0xFFBD1616),
-                          ontap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SignupAdminitrator(),
-                                ));
-                          },
-                        )
-                      ],
+                    // Center(
+                    //   child: button(
+                    //       title: 'Sign in with Google',
+                    //       ontap: () {
+                    //         methodsProvider.signInWithGoogle(context);
+                    //       }),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          sampleText(
+                              text: 'Don\'t have an account?',
+                              color: Colors.black),
+                          Textbutton(
+                            title: 'Sign up',
+                            color: const Color(0xFFBD1616),
+                            ontap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SignupAdminitrator(),
+                                  ));
+                            },
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),

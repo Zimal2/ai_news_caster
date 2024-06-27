@@ -85,7 +85,9 @@ class NewsHistoryListView extends StatelessWidget {
                             color: Colors.brown,
                             child: Image.network(
                               doc.urlToImage != null && doc.urlToImage != ""
-                                  ? doc.urlToImage!
+                                  ? doc.urlToImage == "="
+                                      ? 'https://i.pinimg.com/564x/4e/d1/26/4ed126ab70265d07682cba1995385822.jpg'
+                                      : doc.urlToImage!
                                   : 'https://i.pinimg.com/564x/4e/d1/26/4ed126ab70265d07682cba1995385822.jpg',
                               fit: BoxFit.cover,
                             ),
@@ -100,7 +102,10 @@ class NewsHistoryListView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 sampleText(
-                                  text: doc.description.toString(),
+                                  text: doc.description.toString() ==
+                                          "[Removed]"
+                                      ? "Pakistan Faces Economic and Security Challenges Amidst Political Instability"
+                                      : doc.description.toString(),
                                   fontsize: 13,
                                 ),
                                 Row(
@@ -113,7 +118,10 @@ class NewsHistoryListView extends StatelessWidget {
                                       height: 20,
                                       width: 100,
                                       child: sampleText(
-                                        text: doc.source!.name.toString(),
+                                        text: doc.source!.name.toString() ==
+                                                "[Removed]"
+                                            ? "GEO News"
+                                            : doc.source!.name.toString(),
                                         fontsize: 12,
                                         overflow: TextOverflow.fade,
                                         fontWeight: FontWeight.w500,

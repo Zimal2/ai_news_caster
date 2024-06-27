@@ -22,6 +22,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     final methodsProvider = Provider.of<Methods>(context, listen: false);
+    methodsProvider.fetchUserProfileImage();
 
     methodsProvider
         .fetchUserProfileImage()
@@ -35,10 +36,7 @@ class _ProfileState extends State<Profile> {
     final methodsProvider = Provider.of<Methods>(context);
     return Scaffold(
       appBar: AppBar(),
-      body: CustomContainer(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
+      body: SingleChildScrollView(child:  Column(
           children: [
             SizedBox(
               height: 20,
@@ -73,12 +71,14 @@ class _ProfileState extends State<Profile> {
                               color: Colors.grey),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child: Image.network(
-                              data['image'],
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.cover,
-                            ),
+                            child: data['image'] == ""
+                                ? Icon(Icons.person,size: 60,)
+                                : Image.network(
+                                    data['image'],
+                                    width: 120,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                         ),
                         SizedBox(
@@ -237,7 +237,7 @@ class _ProfileState extends State<Profile> {
             ),
           ],
         ),
-      ),
-    );
+    
+   ) );
   }
 }

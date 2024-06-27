@@ -14,7 +14,7 @@ class ForgetPasswordAdmin extends StatelessWidget {
           title: const Text('Change your password'),
         ),
         body: Form(
-          key: methodsProvider.forgetFormKey,
+          key: methodsProvider.forgetFormKeyAdmin,
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(

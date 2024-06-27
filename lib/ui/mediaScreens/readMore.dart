@@ -46,11 +46,12 @@ class _ReadMoreState extends State<ReadMore> {
                       width: double.infinity,
                       child: SingleChildScrollView(
                         child: sampleText(
-                          color: Colors.white,
-                          text: widget.article?.description
-                          // text:
-                          //     "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visua form of a document or a typeface without relying on meaningful content.In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visua form of a document or a typeface without relying on meaningful content. In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visua form of a document or a typeface without rIn publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visua form of a document or a typeface without relying on meaningful content.",
-                        ),
+                            color: Colors.white,
+                            text: widget.article?.description == "[Removed]"
+                                ? "Pakistan is currently navigating a period of significant challenges, both economically and in terms of security, as the country prepares for the upcoming 2024 general elections. The political landscape is fraught with instability, exacerbating the nation's existing problems."
+                                : widget.article?.description
+                           
+                            ),
                       ),
                     ),
                     SizedBox(
@@ -64,7 +65,6 @@ class _ReadMoreState extends State<ReadMore> {
                         button(
                           width: 120,
                           title: "Go Back",
-                          //ontap: () => EmailConfirmation(),
                           ontap: () {
                             Navigator.push(
                                 context,

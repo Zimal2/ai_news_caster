@@ -8,6 +8,7 @@ import 'package:ai_news_caster/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -190,15 +191,21 @@ class _SignupScreenState extends State<SignupScreen> {
                                   email: emailController.text.toString(),
                                   password: passwordController.text.toString())
                               .then((value) async {
-                            CollectionReference _information = FirebaseFirestore.instance.collection('UserSignUpData');
+                            CollectionReference _information = FirebaseFirestore
+                                .instance
+                                .collection('UserSignUpData');
                             String userID = _information.doc().id;
-                            
+
                             await _information.doc(userID).set({
                               "EmailAdress": emailController.text.trim(),
                               "UserName": usernameController.text.trim(),
                               "Password": passwordController.text.trim(),
                               "userId": userID,
+                              "image":""
                             });
+                            methodsProvider.showSnackBar(context,
+                                "Sign up successfull", SnackBarType.success);
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
