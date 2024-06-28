@@ -169,6 +169,7 @@ class Methods with ChangeNotifier {
         //clear values of text feilds when move to next
         phoneControllerSignin.clear();
         passwordControllerSignin.clear();
+        setloading(false);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -396,66 +397,57 @@ class Methods with ChangeNotifier {
 //get user id
 
   void newsUploadToFirebase(
-      BuildContext context, String? userIdA, List imageslist) async {
-    if (userIdA == null) {
-      // User is not signed in, display an error message or redirect to sign-in page
-      showSnackBar(context, "Sign In Failed, Please Sign in to upload news",
-          SnackBarType.fail);
-
-      return; // Exit the function if user is not signed in
-    }
-    if (userIdA != null) {
-      debugPrint("User ID in news upload method : ${userIdA}");
-      CollectionReference _information =
-          FirebaseFirestore.instance.collection('NewsUploadData');
-      final String documentId2 = userIdA.toString();
-      print("id here: $documentId2");
-      try {
-        DocumentSnapshot snapshot = await _information.doc(documentId2).get();
-        if (snapshot.exists) {
-          Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-          print("data here: $data");
-          List<Map<String, dynamic>> NewsDataList = [];
-          for (int i = 0; i < data['NewsData'].length; i++) {
-            NewsDataList.add(data['NewsData'][i]);
-          }
-          print("user id here 2: $userIdA");
-          NewsDataList.add({
-            "description": decriptionController.text,
-            "image path": imageslist,
-            "tag": selectedItem?.toString() ?? "no tag",
-            "title": titleController.text,
-            "uploaderId": userIdA,
-          });
-
-          print('after add 2 the ${NewsDataList}');
-          FirebaseFirestore.instance
-              .collection('NewsUploadData')
-              .doc(documentId2)
-              .update({
-            'NewsData': NewsDataList,
-          });
-          showSnackBar(
-              context, "News Uploaded Successfully", SnackBarType.success);
-
-          titleController.clear();
-          decriptionController.clear();
-          image = null;
-          selectedItem = null;
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NewsUploaded(),
-            ),
-          );
-        } else {
-          print("Document doesn't exist");
-        }
-      } catch (e) {
-        print(e);
-      }
-    }
+    BuildContext context, String? userIdA, List imageslist) async {
+  if (userIdA == null) {
+    // User is not signed in, display an error message or redirect to sign-in page
+    showSnackBar(context, "Sign In Failed, Please Sign in to upload news", SnackBarType.fail);
+    return; // Exit the function if user is not signed in
   }
+
+  debugPrint("User ID in news upload method : $userIdA");
+  CollectionReference _information = FirebaseFirestore.instance.collection('NewsUploadData');
+  final String documentId2 = userIdA;
+
+  try {
+    setloading(true);
+    DocumentSnapshot snapshot = await _information.doc(documentId2).get();
+    List<Map<String, dynamic>> NewsDataList = [];
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      NewsDataList = List<Map<String, dynamic>>.from(data['NewsData']);
+    }
+
+    NewsDataList.add({
+      "description": decriptionController.text,
+      "image path": imageslist,
+      "tag": selectedItem?.toString() ?? "no tag",
+      "title": titleController.text,
+      "uploaderId": userIdA,
+    });
+
+    await _information.doc(documentId2).set({
+      'NewsData': NewsDataList,
+    });
+
+    showSnackBar(context, "News Uploaded Successfully", SnackBarType.success);
+    titleController.clear();
+    decriptionController.clear();
+    image = null;
+    selectedItem = null;
+    setloading(false);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NewsUploaded(),
+      ),
+    );
+  } catch (e) {
+    setloading(false);
+    print("Error uploading news: $e");
+    showSnackBar(context, "Error uploading news", SnackBarType.fail);
+  }
+}
+
 
 // Define urlDownload variable as a class-level variable
   String? urlDownload;
