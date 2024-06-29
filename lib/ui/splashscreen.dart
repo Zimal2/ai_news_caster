@@ -1,7 +1,6 @@
-
+import 'package:ai_news_caster/ui/sign_in_screens/sign_in.dart';
 import 'package:ai_news_caster/widgets/button.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_news_caster/ui/dashboard/dashboard.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,10 +13,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 35,
-          vertical: 100,
+          vertical: 70,
         ),
         child: Column(
           children: [
@@ -29,14 +29,12 @@ class _SplashScreenState extends State<SplashScreen> {
             Spacer(),
             button(
               title: "Get Started",
-              //ontap: () => EmailConfirmation(),
               ontap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DashboardScreen(),
+                      builder: (context) => SigninScreen(),
                     ));
-                
               },
             )
           ],
